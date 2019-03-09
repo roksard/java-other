@@ -3,11 +3,10 @@ package multiple_dispatch_enum;
 import rx.Result;
 import static rx.Result.*;
 
+import competitor.Competitor;
 import net.mindview.util.Enums;
 
-interface Competitor<T extends Competitor<T>> {
-	Result compete(T arg);
-}
+
 
 enum RoShamBo2 implements Competitor<RoShamBo2> {
 	ROCK(DRAW, WIN, LOSE),
