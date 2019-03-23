@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html class="mob" lang="ru">
+<head>
+<link rel="preconnect" href="https://www.gosuslugi.ru/">
+<link rel="preconnect" href="https://gu-st.ru">
+<link rel="preconnect" href="//gosbar.gosuslugi.ru">
+<link rel="preconnect" href="https://mc.yandex.ru">
+<link rel="shortcut icon"
+	href="https://gu-st.ru/st/img/favicon.ico?ver=node">
+<link rel="apple-touch-icon"
+	href="https://gu-st.ru/st/img/icon/iphone/ico120.ba02db0747.png?ver=node">
+<link rel="apple-touch-icon" sizes="76x76"
+	href="https://gu-st.ru/st/img/icon/iphone/ico76.5eecaf9aaa.png?ver=node">
+<link rel="apple-touch-icon" sizes="120x120"
+	href="https://gu-st.ru/st/img/icon/iphone/ico120.ba02db0747.png?ver=node">
+<link rel="apple-touch-icon" sizes="152x152"
+	href="https://gu-st.ru/st/img/icon/iphone/ico152.d259837349.png?ver=node">
+<link rel="manifest" href="https://gu-st.ru/manifest.json">
+<meta charset="utf-8">
+<meta name="theme-color" content="#0173c1">
+<meta name="msapplication-navbutton-color" content="#0173c1">
+<meta name="apple-mobile-web-app-status-bar-style" content="#0173c1">
+<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Портал государственных услуг Российской Федерации</title>
+<meta name="twitter:site" content="@EPGU">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title"
+	content="Попробуйте новую версию портала Госуслуг">
+<meta name="twitter:description" content="">
+<meta name="twitter:image:src"
+	content="https://www.gosuslugi.ru//htdocs/img/social-hand.3e684b33fd.png?ver=1.1">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.gosuslugi.ru/">
+<meta property="og:title"
+	content="Попробуйте новую версию портала Госуслуг">
+<meta property="og:description"
+	content="Портал государственных услуг Российской Федерации">
+<meta property="og:image"
+	content="https://www.gosuslugi.ru//htdocs/img/social-hand.3e684b33fd.png?ver=1.1">
+<meta name="description"
+	content="Портал государственных услуг Российской Федерации">
+<meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE">
+<meta name="apple-mobile-web-app-title" content="Госуслуги">
+<meta name="author" content="Минкомсвязь России">
+<meta name="apple-itunes-app" content="app-id=1367959794">
+<meta name="google-play-app" content="app-id=ru.rostel">
+<style>
+body {
+	margin: 0;
+	font-size: 14px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	color: #000
+}
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box
+}
+
+a {
+	text-decoration: none;
+	color: #0173c1;
+	cursor: pointer
+}
+
+.top-wrapper {
+	-webkit-transform: translate3d(0, 0, 0);
+	position: relative;
+	background: #fff
+}
+
+[data-sticky].top-wrapper {
+	z-index: 100002
+}
+
+.hide {
+	display: none !important
+}
+
+.content-center-box {
+	width: 100%;
+	max-width: 100%;
+	margin: 0 auto;
+	padding: 0
+}
+
+.top {
+	width: auto;
+	height: 50px;
+	border-bottom: 1px solid #d0d0d0;
+	position: relative;
+	background: #fff
+}
+
+.main-navigation {
+	font: 400 16px/20px "Helvetica Neue", Helvetica, sans-serif;
+	position: relative;
+	height: 50px
+}
+
+.grid-wrap {
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	width: 85%
+}
+
+.grid-wrap__row {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	margin-left: -8px;
+	margin-right: -8px
+}
+
+.grid-wrap__col-sm-1 {
+	width: 16.66667%;
+	padding-left: 8px;
+	padding-right: 8px
+}
+
+.grid-wrap__col-sm-4 {
+	width: 66.66667%;
+	padding-left: 8px;
+	padding-right: 8px
+}
+
+.grid-wrap__col-sm-6 {
+	width: 100%;
+	padding-left: 8px;
+	padding-right: 8px
+}
+
+.align-items-center {
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center
+}
+
+.grid-wrap__row--nowrap {
+	-ms-flex-wrap: nowrap;
+	flex-wrap: nowrap
+}
+
+.sm-flex-column {
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-flow: column;
+	flex-flow: column
+}
+
+.sm-flex-order-1 {
+	-webkit-box-ordinal-group: 2;
+	-ms-flex-order: 1;
+	order: 1
+}
+
+.sm-flex-order-2 {
+	-webkit-box-ordinal-group: 3;
+	-ms-flex-order: 2;
+	order: 2
+}
+
+.flex-1 {
+	-webkit-box-flex: 1;
+	-ms-flex: 1 1 auto;
+	flex: 1 1 auto
+}
+
+.epgu-selectbox .select-text {
+	display: block;
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 17px;
+	color: #999;
+	border: none !important;
+	outline: 0 !important;
+	border-radius: 5px;
+	height: 52px
+}
+
+.visually-hidden {
+	border: 0;
+	clip: rect(0, 0, 0, 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px
+}
+
+.printable-logo {
+	display: none
+}
+
+.main-app-logo {
+	width: 100px;
+	height: 18px;
+	display: block;
+	position: relative;
+	top: 2px
+}
+
+.main-app-logo img {
+	max-width: 100%
+}
+
+.flex-container {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex
+}
+
+.justify-end {
+	-webkit-box-pack: end;
+	-ms-flex-pack: end;
+	justify-content: flex-end
+}
+
+.main-navigation__item, .main-navigation__item:last-child {
+	margin-right: 0
+}
+
+#float-user-menu-cover {
+	position: absolute;
+	width: 0;
+	overflow: hidden;
+	right: -100%;
+	-webkit-transition: right .5s ease;
+	transition: right .5s ease
+}
+
+.index-slider-banner {
+	margin-left: -8px;
+	margin-right: -8px
+}
+
+.index-slider {
+	height: auto;
+	padding: 32px 0;
+	font-size: 14px;
+	line-height: 1.5em;
+	position: relative;
+	min-height: 380px;
+	color: #565656;
+	background-size: cover
+}
+
+.index-slider.new-year {
+	background-size: auto !important
+}
+
+.button-base {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	color: #fff;
+	border-radius: 4px;
+	display: inline-block;
+	border: 0
+}
+
+.button-base--register {
+	line-height: 40px;
+	font-size: 14px;
+	background: 0 0;
+	border: 1px solid rgba(255, 255, 255, .5);
+	color: #fff
+}
+
+.button-base--enter {
+	line-height: 40px;
+	background: #fff;
+	font-size: 14px;
+	color: #0263b2
+}
+
+.button-long {
+	display: block;
+	width: 100%;
+	text-align: center
+}
+
+.sm-offset-top-16 {
+	margin-top: 16px
+}
+
+.index-slider-help__button {
+	text-align: center;
+	text-decoration: underline
+}
+
+.h-plain-text {
+	font-size: 14px;
+	line-height: 20px
+}
+
+.title-white {
+	color: #fff
+}
+
+.align-center {
+	text-align: center
+}
+
+.epgu-input-text.floating-placeholder label, .epgu-selectbox.floating-placeholder label
+	{
+	position: absolute;
+	left: 0;
+	top: 0;
+	line-height: 54px;
+	font-weight: 200;
+	font-size: 17px;
+	color: #a5aeb3;
+	transition: .4s ease-in-out all;
+	display: block;
+	margin-bottom: 30px;
+	cursor: text;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding: 0 16px;
+	width: 100%;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none
+}
+
+label {
+	color: #969696
+}
+
+.searchBox .epgu-selectbox.search-data label {
+	margin-bottom: 0 !important
+}
+
+.epgu-selectbox.floating-placeholder label {
+	display: none
+}
+
+.epgu-selectbox {
+	vertical-align: middle;
+	cursor: pointer;
+	width: 100%;
+	border-radius: 4px;
+	position: relative;
+	box-sizing: border-box;
+	-webkit-transition: border-color .25s, box-shadow .25s;
+	-o-transition: border-color .25s, box-shadow .25s;
+	transition: border-color .25s, box-shadow .25s;
+	margin-bottom: 20px;
+	text-align: left
+}
+
+.searchBox {
+	padding: 10px 0;
+	margin: 0;
+	height: 74px;
+	position: relative
+}
+
+.searchBox--main {
+	height: auto;
+	background: 0 0;
+	margin-top: 24px;
+	padding: 24px 0 0;
+	border-top: 1px solid rgba(255, 255, 255, .5)
+}
+
+.epgu-selectbox .select-el {
+	height: 54px;
+	padding: 0 53px 0 0;
+	color: #333;
+	font: 14px/54px Arial, sans-serif;
+	border-radius: 4px;
+	border: 1px solid #ccc;
+	position: relative;
+	background: #fff
+}
+
+.searchBox--main .epgu-selectbox.search-data {
+	padding-right: 0;
+	margin-bottom: 0;
+	background-color: #fff;
+	display: inline-block;
+	position: relative;
+	vertical-align: top
+}
+
+.searchBox--main .epgu-selectbox .select-el {
+	border: 0;
+	height: 56px;
+	line-height: 56px
+}
+
+.searchBox .epgu-selectbox.search-data .select-el {
+	padding: 0
+}
+
+.searchBox .epgu-selectbox.search-data .dropdown-el {
+	width: 100%;
+	top: 56px
+}
+
+.epgu-selectbox ul {
+	position: relative;
+	list-style: none;
+	overflow-y: auto;
+	overflow-x: hidden;
+	max-height: 378px;
+	margin: 0;
+	padding: 0
+}
+
+.epgu-selectbox .dropdown-el {
+	position: absolute;
+	display: none;
+	top: 60px;
+	left: 0;
+	width: 100%;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	border: 1px solid #cdd0db;
+	background: #fff;
+	font: 17px/18px Arial, sans-serif;
+	z-index: 101
+}
+
+.btn-base, input[type=button].btn-base {
+	display: inline-block;
+	height: 42px;
+	line-height: 42px;
+	padding: 0 20px;
+	color: #fff;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	font-weight: 400;
+	font-size: 18px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	border-width: 1px;
+	border-radius: 4px;
+	cursor: pointer;
+	background-color: #0063b0;
+	white-space: nowrap
+}
+
+.celebration {
+	background-color: #3d8871 !important
+}
+
+.btn-base.medium, .btn-sec.medium {
+	height: 50px;
+	font-size: 15px;
+	padding: 0 20px !important;
+	margin: 0;
+	line-height: 50px
+}
+
+.searchBox--main input {
+	padding: 0 65px 0 16px;
+	margin-bottom: 0
+}
+
+.index-page .searchBox--main .epgu-selectbox .select-text {
+	height: 56px
+}
+
+.searchBox .epgu-selectbox.search-data .select-el input {
+	width: 100%
+}
+
+.searchBox .btn-base.medium {
+	width: 60px;
+	height: 54px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding-left: 0
+}
+
+.searchBox--main .btn-base.medium {
+	width: 50px;
+	height: auto;
+	top: 8px;
+	bottom: 8px;
+	right: 8px
+}
+
+h3 {
+	margin: 20px 0 40px;
+	font: 600 18px ekibastuz, sans-serif
+}
+
+.search-label {
+	display: none
+}
+
+.offset-top-none {
+	margin-top: 0
+}
+
+.banner-place-2 {
+	padding: 32px 0 24px
+}
+
+.sm-offset-top-8 {
+	margin-top: 8px
+}
+
+.h1-small.bold, .h1.bold, .h3.bold, .h4.bold, .service-h1.bold,
+	.service-h3.bold, .service-h4.bold, .service-pad-h3.bold, .title-h2.bold,
+	.title-h3.bold, .title-h4.bold, [class^=lg-title-].bold, [class^=md-title-].bold,
+	[class^=sm-title-].bold {
+	font-weight: 600
+}
+
+[class^=lg-h-title-], [class^=md-h-title-], [class^=sm-h-title-] {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+}
+
+.sm-title-18 {
+	font-size: 18px;
+	line-height: 24px
+}
+
+.sm-h-title-14 {
+	font-size: 14px;
+	line-height: 20px
+}
+
+.sm-offset-bottom-16 {
+	margin-bottom: 16px
+}
+
+.sm-hide {
+	display: none
+}
+
+.main_banner_1 .banner-place-wrap {
+	padding-top: 24px;
+	border-top: 1px solid rgba(255, 255, 255, .5)
+}
+
+.banner-place-wrap {
+	position: relative
+}
+
+.banner-place-next, .banner-place-prev {
+	margin-left: 16px;
+	display: inline-block;
+	vertical-align: middle;
+	cursor: pointer;
+	width: 8px;
+	height: 8px;
+	border-bottom: 1px solid #fff;
+	border-left: 1px solid #fff;
+	z-index: 11;
+	transform: rotate(225deg)
+}
+
+.banner-place-prev {
+	margin-left: 0;
+	margin-right: 16px;
+	transform: rotate(45deg);
+	position: relative
+}
+
+.banner-place-bullet {
+	position: relative;
+	z-index: 10;
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	border: 1px solid #fff;
+	border-radius: 100%;
+	cursor: pointer;
+	margin-right: 15px
+}
+
+.banner-place-bullet.active {
+	background: #fff
+}
+
+.banner-place-bullet:last-of-type {
+	margin-right: 0
+}
+
+.sm-offset-top-40 {
+	margin-top: 40px
+}
+
+.popular-title {
+	margin: 0;
+	font: 600 20px/24px ekibastuz, sans-serif;
+	color: #000
+}
+</style>
+<!--[if IE 9]><script src="https://gu-st.ru/st/js/lib/xdomain.js"></script><script>xdomain.slaves({"http://www.gosuslugi.ru":"/corsproxy/proxy.html","https://www.gosuslugi.ru":"/corsproxy/proxy.html","http://gosbar.gosuslugi.ru":"/corsproxy/proxy.html","https://gosbar.gosuslugi.ru":"/corsproxy/proxy.html","https://gu-st.ru":"/corsproxy/proxy.html"});</script><![endif]-->
+<base href="/">
+</head>
+<body>
+	<div class="unlogined not-full-access index-page" id="page-wrap"
+		role="main">
+		<div id="header">
+			<div class="search-modal-wrap hide">
+				<div class="content-center-box search-modal" id="search-modal">
+					<div class="searchBox">
+						<div class="epgu-selectbox search-data floating-placeholder">
+							<label for="_epgu_el0">что вы ищете?</label>
+							<div class="serach-input select-el" id="_epgu_el0">
+								<input class="select-text" autocomplete="off"
+									aria-label="Введите название услуги" type="text"
+									placeholder="что вы ищете?">
+							</div>
+							<div class="dropdown-el">
+								<ul></ul>
+							</div>
+							<button class="btn-base medium blue"
+								onclick="APP.search.modal.sendSearch(event)">
+								<span>Найти</span>
+							</button>
+						</div>
+					</div>
+					<div class="close-search-modal"
+						onclick="APP.searchModal.toggle(event)"></div>
+				</div>
+			</div>
+			<div class="sticky-wrap">
+				<div class="top-wrapper">
+					<div id="float-user-menu-cover">
+						<div id="float-user-menu">
+							<div class="submenu">
+								<a class="bold" href="/catalog">Услуги</a><a class="bold"
+									href="/help">Поддержка</a><a class="bold" href="/pay">Оплата</a><a
+									class="menu-login lk-enter" href="/auth/esia/?redirectPage=/">Личный
+									кабинет</a>
+							</div>
+						</div>
+					</div>
+					<div class="top content-center-box">
+						<div class="grid-wrap">
+							<div
+								class="grid-wrap__row grid-wrap__row--nowrap main-navigation align-items-center">
+								<div
+									class="logo-wrapper grid-wrap__col-lg-4 grid-wrap__col-md-3 grid-wrap__col-md-land-4 grid-wrap__col-sm-4">
+									<div class="main-app-logo">
+										<img src="https://gu-st.ru/st/img/logo_nobeta.0a1f5dfe6b.svg"
+											alt="Госуслуги">
+									</div>
+									<div class="printable-logo"></div>
+								</div>
+								<div class="grid-wrap__col-sm-1">
+									<div class="flex-container justify-end">
+										<div class="search-ico-container main-navigation__item">
+											<span id="searchModalLink" onclick="APP.loadSearch(event)"><span
+												class="search-ico"></span></span>
+										</div>
+									</div>
+								</div>
+								<div
+									class="grid-wrap__col-lg-7 grid-wrap__col-md-3 grid-wrap__col-md-land-5 grid-wrap__col-sm-1">
+									<div class="flex-container justify-end">
+										<div id="user-menu"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="catalog-wrap"></div>
+			</div>
+		</div>
+		<div id="content-wrapper">
+			<div class="disclaimers-container main-page-disclaimers"
+				id="main-disclaimers-index"></div>
+			<div class="index-slider" style="background: #0263b2">
+				<div class="grid-wrap">
+					<div class="grid-wrap__row">
+						<div
+							class="grid-wrap__col-lg-17 grid-wrap__col-md-12 md-flex-order-2 sm-flex-order-2 grid-wrap__col-sm-6">
+							<div class="searchBox searchBox--main">
+								<div
+									class="epgu-selectbox search-data floating-placeholder search-data-empty">
+									<label for="_epgu_el1">Введите название услуги или
+										ведомства</label>
+									<div class="serach-input select-el">
+										<div>
+											<input class="select-text" autocomplete="off"
+												aria-label="Введите название услуги"
+												placeholder="Введите название услуги или ведомства"
+												type="text" id="_epgu_el1" onclick="APP.loadSearch()">
+										</div>
+									</div>
+									<div class="dropdown-el">
+										<ul></ul>
+									</div>
+									<a class="btn-base medium search"
+										onclick="APP.search.main.sendSearch(event)"><span
+										class="search-label">Найти</span></a>
+									<div class="plain-text"></div>
+								</div>
+							</div>
+							<div class="main_banner_2_wrap banner-place-border">
+								<div class="banner-place-2">
+									<h3
+										class="lg-title-20 md-title-18 sm-title-18 bold title-white offset-top-none lg-offset-bottom-24 md-offset-bottom-24 sm-offset-bottom-16">Рекомендуем
+										для жителей Иркутской области</h3>
+									<div class="grid-wrap__row">
+										<div
+											class="grid-wrap__col-lg-6 grid-wrap__col-md-4 grid-wrap__col-md-land-5 grid-wrap__col-sm-6">
+											<div>
+												<a
+													class="lg-h-title-14 md-h-title-14 sm-h-title-14 title-white"
+													href="https://www.gosuslugi.ru/10001/1?utm_source=main&utm_medium=banner&utm_campaign=federalrecommen&utm_content=10001">Проверка
+													штрафов</a>
+											</div>
+											<div
+												class="lg-offset-top-16 md-offset-top-16 sm-offset-top-8">
+												<a
+													class="lg-h-title-14 md-h-title-14 sm-h-title-14 title-white "
+													href="https://www.gosuslugi.ru/16587/1?utm_source=main&utm_medium=banner&utm_campaign=federalrecommen&utm_content=16587">Справка
+													об отсутствии судимости</a>
+											</div>
+										</div>
+										<div
+											class="grid-wrap__col-lg-6 grid-wrap__col-md-4 grid-wrap__col-md-land-5 grid-wrap__col-offset-land-1 grid-wrap__col-sm-6 sm-offset-top-8">
+											<div>
+												<a
+													class="lg-h-title-14 md-h-title-14 sm-h-title-14 title-white sm-offset-top-8"
+													href="https://www.gosuslugi.ru/10005?utm_source=main&utm_medium=banner&utm_campaign=federalrecommen&utm_content=10005">Получение
+													загранпаспорта</a>
+											</div>
+											<div
+												class="lg-offset-top-16 md-offset-top-16 sm-offset-top-8">
+												<a
+													class="lg-h-title-14 md-h-title-14 sm-h-title-14 title-white"
+													href="https://www.gosuslugi.ru/10066/1?utm_source=main&utm_medium=banner&utm_campaign=federalrecommen&utm_content=10066">Запись
+													к врачу</a>
+											</div>
+										</div>
+										<div
+											class="grid-wrap__col-lg-5 grid-wrap__col-md-4 grid-wrap__col-md-land-6 grid-wrap__col-offset-land-1 grid-wrap__col-sm-6 sm-offset-top-8">
+											<div>
+												<a
+													class="lg-h-title-14 md-h-title-14 sm-h-title-14 title-white sm-offset-top-24"
+													href="https://www.gosuslugi.ru/situation/birth?utm_source=main&utm_medium=banner&utm_campaign=federalrecommen&utm_content=birth">Родители
+													и дети</a>
+											</div>
+											<div
+												class="lg-offset-top-16 md-offset-top-16 sm-offset-top-8">
+												<a
+													class="lg-h-title-14 md-h-title-14 sm-h-title-14 title-white"
+													href="https://www.gosuslugi.ru/situation/uterya_dokumentov?utm_source=main&utm_medium=banner&utm_campaign=federalrecommen&utm_content=uterya_dokumentov">Восстановление
+													документов</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="main_banner_1"
+								data-ng-class="{'banner-place-border': requestConfig.main_banner_1.length &gt; 1}">
+								<div class="banner-place-wrap">
+									<div class="banner-place-item">
+										<div id="slider-banner-text">
+											<div class="grid-wrap__row">
+												<div
+													class="grid-wrap__col-lg-2 grid-wrap__col-md-1 grid-wrap__col-md-land-2 sm-hide">
+													<a style="color: inherit"
+														href="https://oplata.gosuslugi.ru"><img
+														src="https://gu-st.ru/content/Banner/OplataUIN/Desktop_icon.png"
+														alt="Быстрая оплата по квитанции без регистрации"></a>
+												</div>
+												<div
+													class="grid-wrap__col-lg-14 grid-wrap__col-md-11 grid-wrap__col-md-land-16 grid-wrap__col-sm-6">
+													<h4
+														class="lg-h-title-16 md-h-title-16 sm-title-18 bold title-white offset-top-none lg-offset-bottom-8 md-offset-bottom-8 sm-offset-bottom-16">
+														<a style="color: inherit"
+															href="https://oplata.gosuslugi.ru">Быстрая оплата по
+															квитанции без регистрации</a>
+													</h4>
+													<p
+														class="h-plain-text title-white offset-bottom-none offset-top-none">
+														<a style="color: inherit"
+															href="https://oplata.gosuslugi.ru">Оплачивайте
+															пошлины и штрафы картой без регистрации, чек придет на
+															почту.</a>
+													</p>
+												</div>
+											</div>
+										</div>
+										<span class="banner-place-close"></span>
+									</div>
+									<div class="lg-offset-top-24 md-offset-top-24 sm-offset-top-16">
+										<div class="grid-wrap__row">
+											<div
+												class="grid-wrap__col-lg-14 grid-wrap__col-md-11 grid-wrap__col-md-land-16 grid-wrap__col-offset-lg-2 grid-wrap__col-offset-md-1 grid-wrap__col-offset-land-2">
+												<div class="banner-place-prev"></div>
+												<span class="banner-place-bullet active" data-order="0"></span>
+												<div class="banner-place-next"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div
+							class="grid-wrap__col-lg-6 grid-wrap__col-offset-lg-1 md-flex-order-1 sm-flex-order-1 grid-wrap__col-sm-6">
+							<div class="index-slide-center-block index-slider-content">
+								<div class="index-slider-banner grid-wrap__row">
+									<div class="flex-container flex-wrap flex-1 sm-flex-column">
+										<div
+											class="grid-wrap__col-lg-6 grid-wrap__col-md-4 grid-wrap__col-offset-md-1 grid-wrap__col-md-land-5 grid-wrap__col-offset-land-2 grid-wrap__col-sm-6 sm-flex-order-1">
+											<div class="index-slider-buttons">
+												<div class="lg-offset-top-32">
+													<a class="button-base button-long button-base--enter"
+														id="auth" href="/auth/esia/?redirectPage=/">Войти</a>
+												</div>
+												<div
+													class="lg-offset-top-16 md-offset-top-16 sm-offset-top-16">
+													<a class="button-base button-long button-base--register"
+														id="reg" href="https://esia.gosuslugi.ru/registration">Зарегистрироваться</a>
+												</div>
+												<div
+													class="lg-offset-top-16 md-offset-top-16 sm-offset-top-16 align-center">
+													<a
+														class="index-slider-help__button h-plain-text title-white"
+														href="/help/faq/c-1/1">Как зарегистрироваться</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="grid-wrap">
+				<section>
+					<div
+						class="grid-wrap__row grid-wrap__row-lg--nowrap lg-offset-top-64 md-offset-top-40 sm-offset-top-40">
+						<h3
+							class="popular-title grid-wrap__col-lg-17 grid-wrap__col-md-6 grid-wrap__col-md-land-10 grid-wrap__col-sm-6">
+							Популярное на портале
+							<div>
+								<span class="popular-title__text">для&nbsp;<a
+									class="region-case popular-title__link"
+									onclick="APP.regionSelect.show()">Иркутской области</a></span>
+							</div>
+						</h3>
+						<div
+							class="grid-wrap__col-lg-7 grid-wrap__col-md-5 grid-wrap__col-offset-md-1 grid-wrap__col-offset-land-1 grid-wrap__col-md-land-7 grid-wrap__col-sm-6">
+							<div class="popular-switcher">
+								<span class="popular-switcher__item active" data-item="popular">Услуги</span><span
+									class="popular-switcher__item" data-item="situations">Жизненные
+									ситуации</span>
+							</div>
+						</div>
+					</div>
+					<div>
+						<div class="throbber-popular"></div>
+						<div class="grid-wrap__row main-popular">
+							<div
+								class="grid-wrap__col-lg-7 grid-wrap__col-md-6 grid-wrap__col-md-land-9 lg-offset-top-56 md-offset-top-32 sm-offset-top-32 grid-wrap__col-sm-6 popular-item">
+								<a class="grid-wrap__row align-items-center"
+									href="/10002?from=main"><div
+										class="grid-wrap__col-lg-2 grid-wrap__col-md-2 grid-wrap__col-md-land-4 grid-wrap__col-sm-1">
+										<div>
+											<img class="popular-icon lazy"
+												alt="Достаточно вашего ИНН, чтобы проверить задолженность по налогам"
+												data-src="https://gu-st.ru/content/catalog/pas/16.svg">
+										</div>
+									</div>
+									<div
+										class="grid-wrap__col-lg-5 grid-wrap__col-md-10 grid-wrap__col-md-land-14 grid-wrap__col-sm-5">
+										<h3 class="popular-item__title">
+											<span>Налоговая задолженность</span>
+											<svg class="popular-arrow-icon" width="6" height="8"
+												viewbox="0 0 6 8" xmlns="http://www.w3.org/2000/svg">
+												<path
+													d="M4.79 3.866L1.1 7.294c-.212.202-.212.47 0 .605.142.134.426.134.64 0l4.04-3.766c.214-.2.214-.47 0-.605L1.74.1c-.143-.134-.427-.134-.64 0C.89.304.89.57 1.1.707l3.69 3.16z"
+													fill="#0263B2" fill-rule="evenodd"></path></svg>
+										</h3>
+									</div></a>
+							</div>
+							<div
+								class="grid-wrap__col-lg-7 grid-wrap__col-md-6 grid-wrap__col-md-land-9 lg-offset-top-56 md-offset-top-32 sm-offset-top-32 grid-wrap__col-sm-6 popular-item">
+								<a class="grid-wrap__row align-items-center"
+									href="/10003?from=main"><div
+										class="grid-wrap__col-lg-2 grid-wrap__col-md-2 grid-wrap__col-md-land-4 grid-wrap__col-sm-1">
+										<div>
+											<img class="popular-icon lazy"
+												alt="Для проверки задолженности нужны только ваши имя, фамилия и дата рождения"
+												data-src="https://gu-st.ru/content/catalog/pas/45.svg">
+										</div>
+									</div>
+									<div
+										class="grid-wrap__col-lg-5 grid-wrap__col-md-10 grid-wrap__col-md-land-14 grid-wrap__col-sm-5">
+										<h3 class="popular-item__title">
+											<span>Судебная задолженность</span>
+											<svg class="popular-arrow-icon" width="6" height="8"
+												viewbox="0 0 6 8" xmlns="http://www.w3.org/2000/svg">
+												<path
+													d="M4.79 3.866L1.1 7.294c-.212.202-.212.47 0 .605.142.134.426.134.64 0l4.04-3.766c.214-.2.214-.47 0-.605L1.74.1c-.143-.134-.427-.134-.64 0C.89.304.89.57 1.1.707l3.69 3.16z"
+													fill="#0263B2" fill-rule="evenodd"></path></svg>
+										</h3>
+									</div></a>
+							</div>
+							<div
+								class="grid-wrap__col-lg-7 grid-wrap__col-md-6 grid-wrap__col-md-land-9 lg-offset-top-56 md-offset-top-32 sm-offset-top-32 grid-wrap__col-sm-6 popular-item">
+								<a class="grid-wrap__row align-items-center"
+									href="/10052?from=main"><div
+										class="grid-wrap__col-lg-2 grid-wrap__col-md-2 grid-wrap__col-md-land-4 grid-wrap__col-sm-1">
+										<div>
+											<img class="popular-icon lazy"
+												alt="Есть много причин, по которым нужно заменить паспорт, и мы о них знаем"
+												data-src="https://gu-st.ru/content/catalog/pas/7.svg">
+										</div>
+									</div>
+									<div
+										class="grid-wrap__col-lg-5 grid-wrap__col-md-10 grid-wrap__col-md-land-14 grid-wrap__col-sm-5">
+										<h3 class="popular-item__title">
+											<span>Выдача или замена паспорта гражданина РФ</span>
+											<svg class="popular-arrow-icon" width="6" height="8"
+												viewbox="0 0 6 8" xmlns="http://www.w3.org/2000/svg">
+												<path
+													d="M4.79 3.866L1.1 7.294c-.212.202-.212.47 0 .605.142.134.426.134.64 0l4.04-3.766c.214-.2.214-.47 0-.605L1.74.1c-.143-.134-.427-.134-.64 0C.89.304.89.57 1.1.707l3.69 3.16z"
+													fill="#0263B2" fill-rule="evenodd"></path></svg>
+										</h3>
+									</div></a>
+							</div>
+							<div
+								class="grid-wrap__col-lg-7 grid-wrap__col-md-6 grid-wrap__col-md-land-9 lg-offset-top-56 md-offset-top-32 sm-offset-top-32 grid-wrap__col-sm-6 popular-item">
+								<a class="grid-wrap__row align-items-center"
+									href="/10001?from=main"><div
+										class="grid-wrap__col-lg-2 grid-wrap__col-md-2 grid-wrap__col-md-land-4 grid-wrap__col-sm-1">
+										<div>
+											<img class="popular-icon lazy"
+												alt="Воспользуйтесь онлайн-оплатой штрафов ГИБДД и за парковку"
+												data-src="https://gu-st.ru/content/catalog/pas/10.svg">
+										</div>
+									</div>
+									<div
+										class="grid-wrap__col-lg-5 grid-wrap__col-md-10 grid-wrap__col-md-land-14 grid-wrap__col-sm-5">
+										<h3 class="popular-item__title">
+											<span>Автомобильные и дорожные штрафы</span>
+											<svg class="popular-arrow-icon" width="6" height="8"
+												viewbox="0 0 6 8" xmlns="http://www.w3.org/2000/svg">
+												<path
+													d="M4.79 3.866L1.1 7.294c-.212.202-.212.47 0 .605.142.134.426.134.64 0l4.04-3.766c.214-.2.214-.47 0-.605L1.74.1c-.143-.134-.427-.134-.64 0C.89.304.89.57 1.1.707l3.69 3.16z"
+													fill="#0263B2" fill-rule="evenodd"></path></svg>
+										</h3>
+									</div></a>
+							</div>
+							<div
+								class="grid-wrap__col-lg-7 grid-wrap__col-md-6 grid-wrap__col-md-land-9 lg-offset-top-56 md-offset-top-32 sm-offset-top-32 grid-wrap__col-sm-6 popular-item">
+								<a class="grid-wrap__row align-items-center"
+									href="/10056?from=main"><div
+										class="grid-wrap__col-lg-2 grid-wrap__col-md-2 grid-wrap__col-md-land-4 grid-wrap__col-sm-1">
+										<div>
+											<img class="popular-icon lazy"
+												alt="Экзамен, выдача и замена водительского удостоверения"
+												data-src="https://gu-st.ru/content/catalog/pas/12.svg">
+										</div>
+									</div>
+									<div
+										class="grid-wrap__col-lg-5 grid-wrap__col-md-10 grid-wrap__col-md-land-14 grid-wrap__col-sm-5">
+										<h3 class="popular-item__title">
+											<span>Получение права на управление транспортным
+												средством</span>
+											<svg class="popular-arrow-icon" width="6" height="8"
+												viewbox="0 0 6 8" xmlns="http://www.w3.org/2000/svg">
+												<path
+													d="M4.79 3.866L1.1 7.294c-.212.202-.212.47 0 .605.142.134.426.134.64 0l4.04-3.766c.214-.2.214-.47 0-.605L1.74.1c-.143-.134-.427-.134-.64 0C.89.304.89.57 1.1.707l3.69 3.16z"
+													fill="#0263B2" fill-rule="evenodd"></path></svg>
+										</h3>
+									</div></a>
+							</div>
+							<div
+								class="grid-wrap__col-lg-7 grid-wrap__col-md-6 grid-wrap__col-md-land-9 lg-offset-top-56 md-offset-top-32 sm-offset-top-32 grid-wrap__col-sm-6 popular-item">
+								<a class="grid-wrap__row align-items-center"
+									href="/group/kindergarten_enrollment?from=main"><div
+										class="grid-wrap__col-lg-2 grid-wrap__col-md-2 grid-wrap__col-md-land-4 grid-wrap__col-sm-1">
+										<div>
+											<img class="popular-icon lazy"
+												alt="Подайте заявление и получите направление в дошкольное учреждение"
+												data-src="https://gu-st.ru/content/catalog/pas/kindergarten_nut@1x.svg">
+										</div>
+									</div>
+									<div
+										class="grid-wrap__col-lg-5 grid-wrap__col-md-10 grid-wrap__col-md-land-14 grid-wrap__col-sm-5">
+										<h3 class="popular-item__title">
+											<span>Запись в детский сад</span>
+											<svg class="popular-arrow-icon" width="6" height="8"
+												viewbox="0 0 6 8" xmlns="http://www.w3.org/2000/svg">
+												<path
+													d="M4.79 3.866L1.1 7.294c-.212.202-.212.47 0 .605.142.134.426.134.64 0l4.04-3.766c.214-.2.214-.47 0-.605L1.74.1c-.143-.134-.427-.134-.64 0C.89.304.89.57 1.1.707l3.69 3.16z"
+													fill="#0263B2" fill-rule="evenodd"></path></svg>
+										</h3>
+									</div></a>
+							</div>
+							<div
+								class="grid-wrap__col-lg-7 grid-wrap__col-md-6 grid-wrap__col-md-land-9 lg-offset-top-56 md-offset-top-32 sm-offset-top-32 grid-wrap__col-sm-6 popular-item">
+								<a class="grid-wrap__row align-items-center"
+									href="/10050?from=main"><div
+										class="grid-wrap__col-lg-2 grid-wrap__col-md-2 grid-wrap__col-md-land-4 grid-wrap__col-sm-1">
+										<div>
+											<img class="popular-icon lazy"
+												alt="Постоянная или временная регистрация, а также снятие с регистрационного учета"
+												data-src="https://gu-st.ru/content/catalog/pas/9.svg">
+										</div>
+									</div>
+									<div
+										class="grid-wrap__col-lg-5 grid-wrap__col-md-10 grid-wrap__col-md-land-14 grid-wrap__col-sm-5">
+										<h3 class="popular-item__title">
+											<span>Регистрация по месту жительства или пребывания</span>
+											<svg class="popular-arrow-icon" width="6" height="8"
+												viewbox="0 0 6 8" xmlns="http://www.w3.org/2000/svg">
+												<path
+													d="M4.79 3.866L1.1 7.294c-.212.202-.212.47 0 .605.142.134.426.134.64 0l4.04-3.766c.214-.2.214-.47 0-.605L1.74.1c-.143-.134-.427-.134-.64 0C.89.304.89.57 1.1.707l3.69 3.16z"
+													fill="#0263B2" fill-rule="evenodd"></path></svg>
+										</h3>
+									</div></a>
+							</div>
+							<div
+								class="grid-wrap__col-lg-7 grid-wrap__col-md-6 grid-wrap__col-md-land-9 lg-offset-top-56 md-offset-top-32 sm-offset-top-32 grid-wrap__col-sm-6 popular-item">
+								<a class="grid-wrap__row align-items-center"
+									href="/10059?from=main"><div
+										class="grid-wrap__col-lg-2 grid-wrap__col-md-2 grid-wrap__col-md-land-4 grid-wrap__col-sm-1">
+										<div>
+											<img class="popular-icon lazy"
+												alt="Подайте заявление онлайн и запишитесь на прием в ближайшее отделение Госавтоинспекции"
+												data-src="https://gu-st.ru/content/catalog/pas/11.svg">
+										</div>
+									</div>
+									<div
+										class="grid-wrap__col-lg-5 grid-wrap__col-md-10 grid-wrap__col-md-land-14 grid-wrap__col-sm-5">
+										<h3 class="popular-item__title">
+											<span>Регистрация транспортного средства</span>
+											<svg class="popular-arrow-icon" width="6" height="8"
+												viewbox="0 0 6 8" xmlns="http://www.w3.org/2000/svg">
+												<path
+													d="M4.79 3.866L1.1 7.294c-.212.202-.212.47 0 .605.142.134.426.134.64 0l4.04-3.766c.214-.2.214-.47 0-.605L1.74.1c-.143-.134-.427-.134-.64 0C.89.304.89.57 1.1.707l3.69 3.16z"
+													fill="#0263B2" fill-rule="evenodd"></path></svg>
+										</h3>
+									</div></a>
+							</div>
+							<div
+								class="grid-wrap__col-lg-7 grid-wrap__col-md-6 grid-wrap__col-md-land-9 lg-offset-top-56 md-offset-top-32 sm-offset-top-32 grid-wrap__col-sm-6 popular-item">
+								<a class="grid-wrap__row align-items-center"
+									href="/10051?from=main"><div
+										class="grid-wrap__col-lg-2 grid-wrap__col-md-2 grid-wrap__col-md-land-4 grid-wrap__col-sm-1">
+										<div>
+											<img class="popular-icon lazy"
+												alt="Закажите загранпаспорт себе и ребенку без ожидания в очередях"
+												data-src="https://gu-st.ru/content/catalog/pas/8.svg">
+										</div>
+									</div>
+									<div
+										class="grid-wrap__col-lg-5 grid-wrap__col-md-10 grid-wrap__col-md-land-14 grid-wrap__col-sm-5">
+										<h3 class="popular-item__title">
+											<span>Оформление загранпаспорта гражданина РФ</span>
+											<svg class="popular-arrow-icon" width="6" height="8"
+												viewbox="0 0 6 8" xmlns="http://www.w3.org/2000/svg">
+												<path
+													d="M4.79 3.866L1.1 7.294c-.212.202-.212.47 0 .605.142.134.426.134.64 0l4.04-3.766c.214-.2.214-.47 0-.605L1.74.1c-.143-.134-.427-.134-.64 0C.89.304.89.57 1.1.707l3.69 3.16z"
+													fill="#0263B2" fill-rule="evenodd"></path></svg>
+										</h3>
+									</div></a>
+							</div>
+						</div>
+						<div class="grid-wrap__row main-situation hide"></div>
+						<div
+							class="grid-wrap__row lg-offset-bottom-56 md-offset-bottom-40 sm-offset-bottom-40">
+							<div
+								class="grid-wrap__col-lg-24 grid-wrap__col-md-12 grid-wrap__col-md-land-18 grid-wrap__col-sm-6">
+								<div class="popular-link-block">
+									<a
+										class="button-base button-medium button-blue button-medium--new button-long-phone"
+										href="/catalog?from=main">Все услуги</a><a
+										class="button-base button-medium button-blue button-medium--new button-long-phone hide"
+										href="/situation?from=main">Все жизненные ситуации</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+			<div class="faq-main-page index-page-faqs">
+				<div class="blue">
+					<div class="grid-wrap">
+						<div class="grid-wrap__row">
+							<div
+								class="grid-wrap__col-lg-24 grid-wrap__col-md-12 grid-wrap__col-sm-6">
+								<h3
+									class="service-h1 md-title-26 sm-title-20 bold lg-offset-bottom-48 sm-offset-bottom-32 md-offset-bottom-40 offset-top-none">Частые
+									вопросы</h3>
+							</div>
+						</div>
+						<div class="grid-wrap__row">
+							<section
+								class="grid-wrap__col-lg-7 grid-wrap__col-md-6 grid-wrap__col-sm-6">
+								<h4
+									class="lg-h-title-18 md-h-title-18 sm-h-title-16 dark bold offset-top-none lg-offset-bottom-24 md-offset-bottom-24 sm-offset-bottom-16">О
+									получении услуг</h4>
+								<div
+									class="lg-offset-bottom-16 md-offset-bottom-24 sm-offset-bottom-24">
+									<a href="/help/faq/zdravoohranenie/17"><span
+										class="lg-h-title-16-big md-h-title-16-big sm-h-title-14">Как
+											записаться на прием к врачу</span></a>
+								</div>
+								<div
+									class="lg-offset-bottom-16 md-offset-bottom-24 sm-offset-bottom-24">
+									<a href="/help/faq/roditeli_i_deti/21"><span
+										class="lg-h-title-16-big md-h-title-16-big sm-h-title-14">Как
+											записать ребенка в детский сад</span></a>
+								</div>
+								<div
+									class="lg-offset-bottom-16 md-offset-bottom-24 sm-offset-bottom-24">
+									<a href="/help/faq/pasporta_registracii_vizy/23"><span
+										class="lg-h-title-16-big md-h-title-16-big sm-h-title-14">Как
+											получить загранпаспорт</span></a>
+								</div>
+								<div
+									class="lg-offset-bottom-16 md-offset-bottom-24 sm-offset-bottom-24">
+									<a href="/help/faq/roditeli_i_deti/2046"><span
+										class="lg-h-title-16-big md-h-title-16-big sm-h-title-14">Как
+											получить материнский капитал</span></a>
+								</div>
+								<div class="lg-offset-top-24 sm-offset-top-32">
+									<a
+										class="button-small button-second button-white button-long-phone"
+										href="https://www.gosuslugi.ru/help/faq/popular">Все
+										вопросы о получении услуг</a>
+								</div>
+							</section>
+							<div
+								class="grid-wrap__col-lg-7 grid-wrap__col-offset-lg-1 grid-wrap__col-md-6 grid-wrap__col-sm-6">
+								<section>
+									<h4
+										class="lg-h-title-18 md-h-title-18 sm-h-title-16 dark bold offset-top-none lg-offset-bottom-24 md-offset-bottom-24 sm-offset-top-32 sm-offset-bottom-16">Об
+										оплате</h4>
+									<div
+										class="lg-offset-bottom-16 md-offset-bottom-24 sm-offset-bottom-24">
+										<a href="/help/faq/voprosy_po_oplate/2421"><span
+											class="lg-h-title-16-big md-h-title-16-big sm-h-title-14">Как
+												получить скидку 30% на оплату госпошлины</span></a>
+									</div>
+									<div
+										class="lg-offset-bottom-16 md-offset-bottom-24 sm-offset-bottom-24">
+										<a href="/help/faq/voprosy_po_oplate/2445"><span
+											class="lg-h-title-16-big md-h-title-16-big sm-h-title-14">Как
+												оплатить госпошлину на Госуслугах </span></a>
+									</div>
+									<div
+										class="lg-offset-bottom-16 md-offset-bottom-24 sm-offset-bottom-24">
+										<a href="/help/faq/voprosy_po_oplate/28"><span
+											class="lg-h-title-16-big md-h-title-16-big sm-h-title-14">Что
+												можно оплатить на портале</span></a>
+									</div>
+								</section>
+								<section>
+									<h4
+										class="lg-h-title-18 md-h-title-18 sm-h-title-16 dark bold lg-offset-bottom-24 lg-offset-top-56 md-offset-top-40 md-offset-bottom-24 sm-offset-bottom-16 sm-offset-top-32">Как
+										работать с порталом</h4>
+									<div
+										class="lg-offset-bottom-16 md-offset-bottom-24 sm-offset-bottom-24">
+										<a href="/help/faq/c-1/1"><span
+											class="lg-h-title-16-big md-h-title-16-big sm-h-title-14">Как
+												зарегистрироваться на портале</span></a>
+									</div>
+									<div
+										class="lg-offset-bottom-16 md-offset-bottom-24 sm-offset-bottom-24">
+										<a href="/help/faq/c-1/2"><span
+											class="lg-h-title-16-big md-h-title-16-big sm-h-title-14">Как
+												и где подтвердить учетную запись</span></a>
+									</div>
+									<div
+										class="lg-offset-bottom-16 md-offset-bottom-24 sm-offset-bottom-24">
+										<a href="/help/faq/lichnyy_kabinet/40"><span
+											class="lg-h-title-16-big md-h-title-16-big sm-h-title-14">Зачем
+												нужен Личный кабинет</span></a>
+									</div>
+								</section>
+							</div>
+							<section
+								class="grid-wrap__col-lg-8 grid-wrap__col-offset-lg-1 grid-wrap__col-md-10 grid-wrap__col-sm-6">
+								<h3
+									class="lg-h-title-18 md-h-title-18 sm-h-title-16 dark bold offset-top-none lg-offset-bottom-24 md-offset-bottom-16 sm-offset-bottom-16 sm-offset-top-8 md-offset-top-40">Что-то
+									пошло не так?</h3>
+								<div
+									class="lg-h-title-16-big md-h-title-16-big sm-h-title-14  md-offset-top-24 lg-offset-top-16 sm-offset-top-16 gray">
+									<a href="https://www.gosuslugi.ru/help/faq/c-21/6">Почему
+										паспортные данные не проходят проверку</a>
+								</div>
+								<div
+									class="lg-h-title-16-big md-h-title-16-big sm-h-title-14  md-offset-top-24 lg-offset-top-16 sm-offset-top-24 gray">
+									<a href="https://www.gosuslugi.ru/help/faq/popular/2395">Почему
+										не получается погасить судебную задолженность</a>
+								</div>
+								<div
+									class="lg-h-title-16-big md-h-title-16-big sm-h-title-14  md-offset-top-24 lg-offset-top-16 sm-offset-top-24 gray">
+									<a
+										href="https://www.gosuslugi.ru/help/faq/pasporta_registracii_vizy/2260">Нужно
+										ли показывать квитанцию об оплате госпошлины</a>
+								</div>
+								<div
+									class="lg-h-title-16-big md-h-title-16-big sm-h-title-14  md-offset-top-24 lg-offset-top-16 sm-offset-top-24 gray">
+									<a
+										href="https://www.gosuslugi.ru/help/faq/voprosy_po_oplate/2460">Как
+										обжаловать штраф за парковку или нарушение ПДД</a>
+								</div>
+							</section>
+						</div>
+						<div class="grid-wrap__row faq-main-page__button">
+							<div
+								class="grid-wrap__col-lg-24 grid-wrap__col-md-12 grid-wrap__col-sm-6 align-center">
+								<a
+									class="button-base button-medium button-blue button-long-phone"
+									href="/help?from=main">Все частые вопросы</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="content-center-box">
+				<div class="newsBlock grid-wrap" id="news-wrapper">
+					<div class="grid-wrap__row" id="news">
+						<div
+							class="grid-wrap__col-lg-24 grid-wrap__col-md-12 grid-wrap__col-sm-6">
+							<h2
+								class="service-h1 bold lg-offset-bottom-48 sm-offset-bottom-32 offset-top-none">
+								Интересно и полезно</h2>
+						</div>
+						<div
+							class="index-news grid-wrap__col-lg-24 grid-wrap__col-md-12 grid-wrap__col-sm-6 sm-flex-column md-flex-column flex-container lg-justify-between">
+							<div class="index-news__item md-flex-container">
+								<div
+									class="lg-offset-bottom-40 sm-offset-bottom-24 md-flex-auto">
+									<a
+										href="/information/news/2019_03_06_payment_in_the_unauthorized_zone"><img
+										class="index-news__image lazy" alt="null"
+										data-src="https://gu-st.ru/content/annotation/payment_in_the_unauthorized_zone_small.png"></a>
+								</div>
+								<div class="flex-1">
+									<div
+										class="lg-offset-bottom-16 md-offset-bottom-8 sm-offset-bottom-8">
+										<a
+											title="Оплата госуслуг без регистрации и авторизации - портал Государственных услуг"
+											href="/information/news/2019_03_06_payment_in_the_unauthorized_zone"><span
+											class="lg-h-title-18 dark bold">Оплата госуслуг без
+												регистрации и авторизации</span></a>
+									</div>
+									<div
+										class="lg-offset-bottom-24 md-offset-bottom-16 sm-offset-bottom-16">
+										<a
+											href="/information/news/2019_03_06_payment_in_the_unauthorized_zone"><span
+											class="index-news__text">Введите УИН из квитанции и
+												переходите к оплате</span><span class="text-arrow-right"></span></a>
+									</div>
+									<div class="flex-container align-items-center justify-between">
+										<span class="index-news__text index-news__text--light">07.03.2019</span><span
+											class="plain-text title-news shares">11</span>
+									</div>
+								</div>
+							</div>
+							<div class="index-news__item md-flex-container">
+								<div
+									class="lg-offset-bottom-40 sm-offset-bottom-24 md-flex-auto">
+									<a href="/information/news/2019_02_06_microloan"><img
+										class="index-news__image lazy" alt="null"
+										data-src="https://gu-st.ru/content/annotation/microloan_Small.png"></a>
+								</div>
+								<div class="flex-1">
+									<div
+										class="lg-offset-bottom-16 md-offset-bottom-8 sm-offset-bottom-8">
+										<a
+											title="Можно ли получить микрозаем через Госуслуги - портал Государственных услуг"
+											href="/information/news/2019_02_06_microloan"><span
+											class="lg-h-title-18 dark bold">Можно ли получить
+												микрозаем через Госуслуги</span></a>
+									</div>
+									<div
+										class="lg-offset-bottom-24 md-offset-bottom-16 sm-offset-bottom-16">
+										<a href="/information/news/2019_02_06_microloan"><span
+											class="index-news__text">И откуда у МФО доступ к
+												учетным записям</span><span class="text-arrow-right"></span></a>
+									</div>
+									<div class="flex-container align-items-center justify-between">
+										<span class="index-news__text index-news__text--light">06.02.2019</span><span
+											class="plain-text title-news shares">102</span>
+									</div>
+								</div>
+							</div>
+							<div class="index-news__item md-flex-container">
+								<div
+									class="lg-offset-bottom-40 sm-offset-bottom-24 md-flex-auto">
+									<a href="/information/news/2018_01_29_overhaul"><img
+										class="index-news__image lazy" alt="null"
+										data-src="https://gu-st.ru/content/annotation/overhaul_small.png"></a>
+								</div>
+								<div class="flex-1">
+									<div
+										class="lg-offset-bottom-16 md-offset-bottom-8 sm-offset-bottom-8">
+										<a
+											title="Что нового в льготах по взносам на капремонт - портал Государственных услуг"
+											href="/information/news/2018_01_29_overhaul"><span
+											class="lg-h-title-18 dark bold">Что нового в льготах
+												по взносам на капремонт</span></a>
+									</div>
+									<div
+										class="lg-offset-bottom-24 md-offset-bottom-16 sm-offset-bottom-16">
+										<a href="/information/news/2018_01_29_overhaul"><span
+											class="index-news__text">Больше льготников и меньше
+												документов</span><span class="text-arrow-right"></span></a>
+									</div>
+									<div class="flex-container align-items-center justify-between">
+										<span class="index-news__text index-news__text--light">29.01.2019</span><span
+											class="plain-text title-news shares">66</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="button-news">
+						<a class="button-base button-medium button-blue" href="/help/news">Все
+							материалы</a>
+					</div>
+				</div>
+			</div>
+			<div class="main-seo-block offset-top-md">
+				<div class="grid-wrap">
+					<div class="grid-wrap__row">
+						<div class="grid-wrap__col-md-6">
+							<h1>
+								<div class="sm-title-20 bold title-white">Портал
+									государственных услуг</div>
+								<div class="sm-h-title-14 title-white sm-offset-top-16">
+									для жителей <span class="pseudo-white"
+										onclick="APP.regionSelect.show()">Иркутской области</span>
+								</div>
+							</h1>
+							<div class="sm-h-title-14 sm-offset-top-24 title-white">
+								Госуслуги – Единый портал государственных услуг и функций
+								(ЕПГУ), где у каждого гражданина есть возможность:</div>
+							<div class="sm-h-title-14 title-white sm-offset-top-24">
+								- узнать <a href="https://www.gosuslugi.ru/category"
+									class="underline title-white">информацию о государственных
+									и муниципальных услугах</a>;<br> - заказать госуслуги в
+								электронной форме;<br> - записаться на приём в ведомство;<br>
+								- <a href="https://www.gosuslugi.ru/pay"
+									class="underline title-white">оплатить любым электронным
+									способом</a> штрафы Госавтоинспекции, судебные и налоговые
+								задолженности, госпошлины, услуги ЖКХ;<br> - оценить
+								качество предоставления госуслуг.
+							</div>
+							<div class="sm-h-title-16 bold title-white sm-offset-top-24">Статистика
+								портала Госуслуг за 2018 год:</div>
+						</div>
+					</div>
+					<div class="grid-wrap__row sm-offset-top-24">
+						<div class="grid-wrap__col-sm-1">
+							<div class="seo-icon seo-icon-services"></div>
+						</div>
+						<div class="grid-wrap__col-sm-4">
+							<div class="sm-title-26 bold title-white">2,6 млрд</div>
+							<div class="sm-h-title-14 title-white sm-offset-top-8">услуг
+								заказано через сайт Госуслуг и мобильное приложение</div>
+						</div>
+					</div>
+					<div class="grid-wrap__row sm-offset-top-24">
+						<div class="grid-wrap__col-sm-1">
+							<div class="seo-icon seo-icon-users"></div>
+						</div>
+						<div class="grid-wrap__col-sm-4">
+							<div class="sm-title-26 bold title-white">86,5 млн</div>
+							<div class="sm-h-title-14 title-white sm-offset-top-8">зарегистрированных
+								пользователей</div>
+						</div>
+					</div>
+					<div id="moreSeoInfoBlock" class="hide">
+						<div class="grid-wrap__row sm-offset-top-24">
+							<div class="grid-wrap__col-sm-1">
+								<div class="seo-icon seo-icon-rouble"></div>
+							</div>
+							<div class="grid-wrap__col-sm-4">
+								<div class="sm-title-26 bold title-white">48,2 млн</div>
+								<div class="sm-h-title-14 title-white sm-offset-top-8">
+									успешных платежей на&nbsp;<b>56,4</b> млрд рублей
+								</div>
+							</div>
+						</div>
+						<div class="grid-wrap__row sm-offset-top-24">
+							<div class="grid-wrap__col-sm-1">
+								<div class="seo-icon seo-icon-phone"></div>
+							</div>
+							<div class="grid-wrap__col-sm-4">
+								<div class="sm-title-26 bold title-white">728,8 млн</div>
+								<div class="sm-h-title-14 title-white sm-offset-top-8">запусков
+									мобильного приложения Госуслуг</div>
+							</div>
+						</div>
+						<div class="sm-h-title-14 title-white sm-offset-top-24">
+							Задачи портала перечислены в <a
+								href="http://pravo.gov.ru/proxy/ips/?docbody=&nd=102151387"
+								class="underline title-white">Постановлении
+								Правительства&nbsp;РФ от&nbsp;24.10.2011&nbsp;N&nbsp;861</a>
+						</div>
+						<div class="grid-wrap__row sm-offset-top-24">
+							<div class="grid-wrap__col-sm-6">
+								<h2 style="color: white" class="sm-h-title-16 bold title-white ">Госуслуги
+									в Иркутской области</h2>
+								<div class="sm-h-title-14 title-white sm-offset-top-16">Сайт
+									Госуслуг одинаково доступен на всей территории России. Поэтому
+									жители Иркутской области, так же как жители других регионов
+									России, могут заказывать государственные услуги через портал.</div>
+								<div class="sm-h-title-14 title-white sm-offset-top-16">Постепенно
+									к Госуслугам подключается все больше региональных
+									государственных услуг и ведомств. В зависимости от региона на
+									портале доступны популярные услуги:</div>
+								<div class="sm-h-title-14 title-white sm-offset-top-16">
+									- оформление <a
+										title="оформление пособия по уходу за ребёнком в Иркутской области – Госуслуги"
+										href="https://www.gosuslugi.ru/271562"
+										class="underline title-white">пособия по уходу за ребёнком</a>;<br>
+									- <a
+										title="запись в детский сад в Иркутской области – Госуслуги"
+										href="https://www.gosuslugi.ru/10999/1"
+										class="underline title-white">запись в детский сад</a>;<br>
+									- <a
+										title="проверка очереди в детский сад в Иркутской области – Госуслуги"
+										href="https://www.gosuslugi.ru/10999/2"
+										class="underline title-white">проверка очереди в детский
+										сад</a>;<br> - <a
+										title="запись на приём к врачу в Иркутской области – Госуслуги"
+										href="https://www.gosuslugi.ru/10066/1"
+										class="underline title-white">запись на приём к врачу</a>.
+								</div>
+								<div class="sm-h-title-14 title-white sm-offset-top-16">
+									В разделах <a href="https://www.gosuslugi.ru/situation"
+										class="underline title-white">Жизненные ситуации</a> и <a
+										href="https://www.gosuslugi.ru/help"
+										class="underline title-white">Помощь и поддержка</a> граждане
+									найдут ответы на вопросы и подробные инструкции:
+								</div>
+								<div class="sm-h-title-14 title-white sm-offset-top-16">
+									- о <a
+										href="https://www.gosuslugi.ru/situation/kak_otkryt_svoe_delo/OOO/porjadok_registracii_OOO"
+										class="underline title-white">регистрации ООО</a>;<br> -
+									<a
+										href="https://www.gosuslugi.ru/situation/pokupka_i_oformlenie_avtomobilja"
+										class="underline title-white">покупке и оформлению
+										автомобиля</a>;<br> - <a
+										href="https://www.gosuslugi.ru/situation/birth/child_residence_registration"
+										class="underline title-white">регистрации ребёнка по месту
+										жительства</a>;<br> - <a
+										href="https://www.gosuslugi.ru/situation/pomoshch_pensioneram/adresnaya_socialnaya_podderzhka"
+										class="underline title-white">назначении и выплате льгот
+										пенсионерам</a>;<br> - <a
+										href="https://www.gosuslugi.ru/situation/birth/maternity_benefits"
+										class="underline title-white">выплате пособий при рождении
+										ребенка</a>;<br> - <span>и другую информацию</span>.<br>
+								</div>
+								<div class="sm-h-title-14 title-white sm-offset-top-16">
+									<a href="https://www.gosuslugi.ru/help/mobile"
+										class="underline title-white">Скачайте мобильное
+										приложение «Госуслуги»</a> на свой смартфон – доступ к Личному
+									кабинету и услугам станет проще.
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="main-seo-block-more flex-container justify-center">
+						<div class="more-block-position">
+							<span id="showMoreSeoInfoBlock"
+								class="pseudo-white collapsed-block align-center">Подробнее</span>
+							<span id="hideMoreSeoInfoBlock"
+								class="pseudo-white collapsed-block align-center close-block hide">Скрыть</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="footer-wrapper">
+		<aside class="footer-wrapper">
+			<noindex>
+			<div class="grid-wrap footer">
+				<div class="grid-wrap__row">
+					<div class="grid-wrap__col-sm-6">
+						<section class="sm-offset-bottom-24">
+							<h4 data-ng-class="{'active' : action[1]}"
+								data-ng-click="change($event,1);"
+								class="sm-title-16 dark offset-top-none offset-bottom-none">
+								Помощь и поддержка<span class="sm-offset-left-16"
+									data-ng-class="{'icons-arr-down' : !action[1], 'icons-arr-up' : action[1]} "></span>
+							</h4>
+							<div class="sm-offset-top-24" data-ng-show="action[1]">
+								<div>
+									<a class="footer__links" data-link="/help/faq/c-1"
+										data-ng-href="{{$root.betaUrl}}help/faq/c-1">Вход и
+										регистрация</a>
+								</div>
+								<div>
+									<a class="footer__links"
+										data-link="/help/faq/voprosy_po_oplate"
+										data-ng-href="{{$root.betaUrl}}help/faq/voprosy_po_oplate">Вопросы
+										по оплате</a>
+								</div>
+								<div>
+									<a class="footer__links"
+										data-link="https://www.gosuslugi.ru/help/faq/lichnyy_kabinet"
+										data-ng-href="https://www.gosuslugi.ru/help/faq/lichnyy_kabinet">Вопросы
+										по личному кабинету</a>
+								</div>
+								<div>
+									<a class="footer__links"
+										data-link="https://www.gosuslugi.ru/help/faq/avtovladelcam"
+										data-ng-href="https://www.gosuslugi.ru/help/faq/avtovladelcam">Автовладельцам</a>
+								</div>
+								<div>
+									<a class="footer__links"
+										data-link="https://esia.gosuslugi.ru/public/ra/"
+										data-ng-href="https://esia.gosuslugi.ru/public/ra/">Центры
+										обслуживания</a>
+								</div>
+								<div>
+									<a class="footer__links" data-link="/help"
+										data-ng-href="{{$root.betaUrl}}help">Все вопросы и ответы</a>
+								</div>
+							</div>
+						</section>
+						<section class="sm-offset-bottom-24">
+							<h4 data-ng-class="{'active' : action[2]}"
+								data-ng-click="change($event,2);"
+								class="sm-title-16 dark offset-top-none offset-bottom-none">
+								Информация о портале<span class="sm-offset-left-16"
+									data-ng-class="{'icons-arr-down' : !action[2], 'icons-arr-up' : action[2]} "></span>
+							</h4>
+							<div class="sm-offset-top-24" data-ng-show="action[2]">
+								<div>
+									<a class="footer__links" data-link="/help/news"
+										data-ng-href="{{$root.betaUrl}}help/news">Новости</a>
+								</div>
+								<div>
+									<a class="footer__links" data-link="help/payment"
+										data-ng-href="{{$root.betaUrl}}help/payment">Информация о
+										платежах</a>
+								</div>
+								<div>
+									<a class="footer__links"
+										data-link="https://www.gosuslugi.ru/help/faq/yuridicheskie_voprosy"
+										data-ng-href="https://www.gosuslugi.ru/help/faq/yuridicheskie_voprosy">Правовая
+										информация</a>
+								</div>
+								<div>
+									<a class="footer__links" data-link="/new"
+										data-ng-href="{{$root.betaUrl}}new">О портале</a>
+								</div>
+							</div>
+						</section>
+						<section class="sm-offset-bottom-24">
+							<h4 data-ng-class="{'active' : action[3]}"
+								data-ng-click="change($event,3);"
+								class="sm-title-16 dark offset-top-none offset-bottom-none">
+								Мобильные приложения<span class="sm-offset-left-16"
+									data-ng-class="{'icons-arr-down' : !action[3], 'icons-arr-up' : action[3]} "></span>
+							</h4>
+							<div class="sm-offset-top-24" data-ng-show="action[3]">
+								<div>
+									<a class="footer__links" data-link="/help/mobile"
+										data-ng-href="{{$root.betaUrl}}help/mobile">Для граждан</a>
+								</div>
+								<div>
+									<a class="footer__links" data-link="/help/mobile-business"
+										data-ng-href="https://www.gosuslugi.ru/help/mobile-business">Для
+										бизнеса</a>
+								</div>
+						</section>
+						<section class="sm-offset-bottom-24">
+							<h4 data-ng-class="{'active' : action[4]}"
+								data-ng-click="change($event,4);"
+								class="sm-title-16 dark offset-top-none offset-bottom-none">
+								Полезные ресурсы<span class="sm-offset-left-16"
+									data-ng-class="{'icons-arr-down' : !action[4], 'icons-arr-up' : action[4]}"></span>
+							</h4>
+							<div class="sm-offset-top-24" data-ng-show="action[4]">
+								<div>
+									<a class="footer__links" target="_blank" rel="nofollow"
+										data-link="https://www.roi.ru/"
+										data-ng-href="https://www.roi.ru/">Российская общественная
+										инициатива</a>
+								</div>
+								<div>
+									<a class="footer__links" target="_blank" rel="nofollow"
+										data-link="http://pravo.gov.ru/"
+										data-ng-href="http://pravo.gov.ru/">Интернет-портал
+										правовой информации</a>
+								</div>
+							</div>
+						</section>
+						<section class="sm-offset-bottom-24">
+							<h4 data-ng-class="{'active' : action[5]}"
+								data-ng-click="change($event,5);"
+								class="sm-title-16 dark offset-bottom-none offset-top-none">
+								Партнёрам<span class="sm-offset-left-16"
+									data-ng-class="{'icons-arr-down' : !action[5], 'icons-arr-up' : action[5]}"></span>
+							</h4>
+							<div class="sm-offset-top-24" data-ng-show="action[5]">
+								<div>
+									<a class="footer__links" target="_blank"
+										data-link="https://partners.gosuslugi.ru/catalog/"
+										data-ng-href="https://partners.gosuslugi.ru/catalog/">Государственным
+										органам</a>
+								</div>
+								<div>
+									<a class="footer__links" target="_blank"
+										data-link="https://partners.gosuslugi.ru/catalog/"
+										data-ng-href="https://partners.gosuslugi.ru/catalog/">Коммерческим
+										организациям</a>
+								</div>
+								<div>
+									<a class="footer__links" target="_blank"
+										data-link="https://partners.gosuslugi.ru/docs"
+										data-ng-href="https://partners.gosuslugi.ru/docs">Документы</a>
+								</div>
+							</div>
+						</section>
+						<section>
+							<h4 data-ng-class="{'active' : action[6]}"
+								data-ng-click="change($event,6);"
+								class="sm-title-16 dark offset-top-none offset-bottom-none">
+								Наши проекты<span class="sm-offset-left-16"
+									data-ng-class="{'icons-arr-down' : !action[6], 'icons-arr-up' : action[6]}"></span>
+							</h4>
+							<div class="sm-offset-top-24" data-ng-show="action[6]">
+								<div>
+									<a class="footer__links" target="_blank" rel="nofollow"
+										data-link="https://do.gosuslugi.ru/"
+										data-ng-href="https://do.gosuslugi.ru/">Досудебное
+										обжалование</a>
+								</div>
+								<div>
+									<a class="footer__links" target="_blank" rel="nofollow"
+										data-link="https://invest.gosuslugi.ru/epgu-forum/"
+										data-ng-href="https://invest.gosuslugi.ru/epgu-forum/">Контроль
+										инвестиционных программ</a>
+								</div>
+								<div>
+									<a class="footer__links" target="_blank" rel="nofollow"
+										data-link="https://dom.gosuslugi.ru/#/main"
+										data-ng-href="https://dom.gosuslugi.ru/#/main">ГИС ЖКХ</a>
+								</div>
+								<div>
+									<a class="footer__links" data-link="/migrant"
+										data-ng-href="{{$root.betaUrl}}migrant">Беженцам с
+										Юго-Востока Украины</a>
+								</div>
+								<div>
+									<a class="footer__links" data-link="/rating"
+										data-ng-href="{{$root.betaUrl}}rating">Народный рейтинг
+										электронных госуслуг</a>
+								</div>
+								<div>
+									<a class="footer__links" data-link="/esia-help"
+										data-ng-href="{{$root.betaUrl}}esia-help">Единая система
+										идентификации и аутентификации</a>
+								</div>
+							</div>
+						</section>
+					</div>
+				</div>
+			</div>
+			</noindex>
+		</aside>
+		<footer class="grid-wrap footer-info">
+			<div
+				class="flex-container align-items-center footer-last justify-center">
+				<img class="logo-mks lazy"
+					data-src="https://gu-st.ru/st/img/mks.a07617fa91.svg" alt="мкс">
+				<div class="text-site">
+					<span>Официальный интернет-портал государственных услуг,
+						2019 г.</span>
+				</div>
+				<img class="logo-rtk lazy"
+					data-src="https://gu-st.ru/st/img/rostelek_new.2be1d808f6.svg"
+					alt="ростелеком">
+			</div>
+		</footer>
+	</div>
+	<div class="ngdialog region-select-popup hide" id="region-modal"
+		role="alertdialog" aria-labelledby="region-modal">
+		<div class="ngdialog-overlay"></div>
+		<div class="ngdialog-content popup" role="document">
+			<div id="region-model-content"></div>
+		</div>
+	</div>
+	<div class="ngdialog-overlay overlay-search hide"
+		onclick="APP.searchModal.toggle(event)" role="alertdialog"></div>
+	<noscript id="deferred-styles">
+		<link rel="stylesheet" type="text/css"
+			href="https://gu-st.ru/st/mob/deferredMob/style.e7bbded835.css">
+	</noscript>
+	<script>
+		var loadDeferredStyles = function() {
+			var addStylesNode = document.getElementById("deferred-styles");
+			var replacement = document.createElement("div");
+			replacement.innerHTML = addStylesNode.textContent;
+			document.body.appendChild(replacement)
+			addStylesNode.parentElement.removeChild(addStylesNode);
+		};
+	</script>
+	<script>
+		window.APP = {};
+		window.isMainPage = true;
+		APP.config = {
+			notificationApiUrl : '//www.gosuslugi.ru/api/notification/v1/',
+			device : 'mob',
+			disclaimers : [],
+			timingApiUrl : '//www.gosuslugi.ru/health',
+			regionData : {
+				"code" : "25414000000",
+				"name" : "Братск",
+				"path" : "Иркутская область/Братск",
+				"codes" : [ "25414000000", "25000000000" ],
+				"timeZone" : "UTC+8",
+				"detectedBy" : "ip"
+			},
+			catalogApi : '//www.gosuslugi.ru/api/catalog/v2/',
+			sliderBanners : [
+					{
+						"orderNumber" : 53,
+						"closable" : false,
+						"mnemonic" : "OplataUIN",
+						"bgImage" : "",
+						"content" : "<div class=\"grid-wrap__row\">\n    <div class=\"grid-wrap__col-lg-2 grid-wrap__col-md-1 grid-wrap__col-md-land-2 sm-hide\">\n        <a style=\"color: inherit\" href=\"https://oplata.gosuslugi.ru\"><img src=\"https://gu-st.ru/content/Banner/OplataUIN/Desktop_icon.png\" alt=\"Быстрая оплата по квитанции без регистрации\"></a>\n    </div>\n    <div class=\"grid-wrap__col-lg-14 grid-wrap__col-md-11 grid-wrap__col-md-land-16 grid-wrap__col-sm-6\">\n        <h4 class=\"lg-h-title-16 md-h-title-16 sm-title-18 bold title-white offset-top-none lg-offset-bottom-8 md-offset-bottom-8 sm-offset-bottom-16\">\n\t\t\t<a style=\"color: inherit\" href=\"https://oplata.gosuslugi.ru\">Быстрая оплата по квитанции без регистрации</a></h4>\n        <p class=\"h-plain-text title-white offset-bottom-none offset-top-none\"><a style=\"color: inherit\" href=\"https://oplata.gosuslugi.ru\">Оплачивайте пошлины и штрафы картой без регистрации, чек придет на почту.</a></p>\n    </div>\n</div>"
+					},
+					{
+						"orderNumber" : 54,
+						"closable" : true,
+						"mnemonic" : "dolg_dec",
+						"bgImage" : "",
+						"content" : "<div class=\"grid-wrap__row\">\n    <div class=\"grid-wrap__col-lg-2 grid-wrap__col-md-1 grid-wrap__col-md-land-2 sm-hide\">\n        <a style=\"color: inherit\" href=\"https://www.gosuslugi.ru/10002/1?utm_source=beta&amp;utm_campaign=target&amp;utm_medium=banner&amp;utm_content=nalog_dolg_2018\"><img src=\"https://gu-st.ru/content/main_banner/dolg_white.svg\" alt=\"Проверьте налоговую задолженность!\"></a>\n    </div>\n    <div class=\"grid-wrap__col-lg-14 grid-wrap__col-md-11 grid-wrap__col-md-land-16 grid-wrap__col-sm-6\">\n        <h4 class=\"lg-h-title-16 md-h-title-16 sm-title-18 bold title-white offset-top-none lg-offset-bottom-8 md-offset-bottom-8 sm-offset-bottom-16\">\n\t\t\t<a style=\"color: inherit\" href=\"https://www.gosuslugi.ru/10002/1?utm_source=beta&amp;utm_campaign=target&amp;utm_medium=banner&amp;utm_content=nalog_dolg_2018\">Проверьте долги по налогам</a></h4>\n        <p class=\"h-plain-text title-white offset-bottom-none offset-top-none\"><a style=\"color: inherit\" href=\"https://www.gosuslugi.ru/10002/1?utm_source=beta&amp;utm_campaign=target&amp;utm_medium=banner&amp;utm_content=nalog_dolg_2018\">Это легко сделать на Госуслугах без визита в инспекцию. Узнайте, нет ли долга и пеней, и погасите их онлайн на портале.</a></p>\n    </div>\n</div>"
+					},
+					{
+						"orderNumber" : 55,
+						"closable" : false,
+						"mnemonic" : "doctor_call_2",
+						"bgImage" : "",
+						"content" : "<div class=\"grid-wrap__row\">\n    <div class=\"grid-wrap__col-lg-2 grid-wrap__col-md-1 grid-wrap__col-md-land-2 sm-hide\">\n        <a style=\"color: inherit\" href=\"https://www.gosuslugi.ru/10066/1?utm_source=beta&utm_campaign=target&utm_medium=banner&utm_content=doctor_call_2\"><img src=\"https://gu-st.ru/content/main_banner/doctor_white.svg\" alt=\"Запись на приём к врачу через Госуслуги\"></a>\n    </div>\n    <div class=\"grid-wrap__col-lg-14 grid-wrap__col-md-11 grid-wrap__col-md-land-16 grid-wrap__col-sm-6\">\n        <h4 class=\"lg-h-title-16 md-h-title-16 sm-title-16 bold title-white offset-top-none lg-offset-bottom-8 md-offset-bottom-8 sm-offset-bottom-16\"><a style=\"color: inherit\" href=\"https://www.gosuslugi.ru/10066/1?utm_source=beta&utm_campaign=target&utm_medium=banner&utm_content=doctor_call_2\">Запись на приём к врачу через Госуслуги</a></h4>\n        <p class=\"h-plain-text title-white offset-bottom-none offset-top-none\"><a style=\"color: inherit\" href=\"https://www.gosuslugi.ru/10066/1?utm_source=beta&utm_campaign=target&utm_medium=banner&utm_content=doctor_call_2\">Записать можно себя и кого-то из близких. Достаточно знать номер полиса ОМС</a></p>\n    </div>\n</div>"
+					},
+					{
+						"orderNumber" : 60,
+						"closable" : false,
+						"mnemonic" : "banks",
+						"bgImage" : "",
+						"content" : "<div class=\"grid-wrap__row\">\n<div class=\"grid-wrap__col-lg-2 grid-wrap__col-md-1 grid-wrap__col-md-land-2 sm-hide\"><a href=\"https://www.gosuslugi.ru/help/news/2018_03_02_banks?utm_source=beta&amp;utm_campaign=target&amp;utm_medium=banner&amp;utm_content=banks\" style=\"color: inherit;\"><img alt=\"Получите доступ ко всем услугам на портале\" src=\"https://gu-st.ru/content/main_banner/accept2_white.svg\" /></a></div>\n<div class=\"grid-wrap__col-lg-14 grid-wrap__col-md-11 grid-wrap__col-md-land-16 grid-wrap__col-sm-6\">\n<h4 class=\"lg-h-title-16 md-h-title-16 sm-title-16 bold title-white offset-top-none lg-offset-bottom-8 md-offset-bottom-8 sm-offset-bottom-16\"><a href=\"https://www.gosuslugi.ru/help/news/2018_03_02_banks?utm_source=beta&amp;utm_campaign=target&amp;utm_medium=banner&amp;utm_content=banks\" style=\"color: inherit;\">Получите доступ ко всем услугам на портале</a></h4>\n<p class=\"h-plain-text title-white offset-bottom-none offset-top-none\"><a href=\"https://www.gosuslugi.ru/help/news/2018_03_02_banks?utm_source=beta&amp;utm_campaign=target&amp;utm_medium=banner&amp;utm_content=banks\" style=\"color: inherit;\">Клиенты Сбербанка, Тинькофф-банка и Почта-банка могут подтвердить учетную запись через интернет &mdash; так быстрее.</a></p>\n</div>\n</div>"
+					},
+					{
+						"orderNumber" : 90,
+						"closable" : false,
+						"mnemonic" : "30percent",
+						"bgImage" : "",
+						"content" : "<div class=\"grid-wrap__row\">\n    <div class=\"grid-wrap__col-lg-2 grid-wrap__col-md-1 grid-wrap__col-md-land-2 sm-hide\">\n        <a style=\"color: inherit\" href=\"https://www.gosuslugi.ru/help/news/payments_with_discount_30_percents?utm_source=beta&utm_medium=banner&utm_campaign=target&utm_content=skidkanew\"><img src=\"https://gu-st.ru/content/main_banner/30percents_white.svg\" alt=\"Оплачивайте пошлины со скидкой 30%\"></a>\n    </div>\n    <div class=\"grid-wrap__col-lg-14 grid-wrap__col-md-11 grid-wrap__col-md-land-16 grid-wrap__col-sm-6\">\n        <h4 class=\"lg-h-title-16 md-h-title-16 sm-title-16 bold title-white offset-top-none lg-offset-bottom-8 md-offset-bottom-8 sm-offset-bottom-16\"><a style=\"color: inherit\" href=\"https://www.gosuslugi.ru/help/news/payments_with_discount_30_percents?utm_source=beta&utm_medium=banner&utm_campaign=target&utm_content=skidkanew\">Госпошлина со скидкой 30%</a></h4>\n        <p class=\"h-plain-text title-white offset-bottom-none offset-top-none\"><a style=\"color: inherit\" href=\"https://www.gosuslugi.ru/help/news/payments_with_discount_30_percents?utm_source=beta&utm_medium=banner&utm_campaign=target&utm_content=skidkanew\">Оплачивайте госпошлины на портале и экономьте. Скидка рассчитается автоматически, а квитанция появится в ленте уведомлений.</a></p>\n    </div>\n</div>"
+					} ],
+			gosbarUrlStatic : '//gosbar.gosuslugi.ru',
+			manualRegions : {},
+			lkApi : '//www.gosuslugi.ru/api/lk/v1/',
+			templatePath : 'https://gu-st.ru/st/tpl',
+			userSelectedRegion : '',
+			nsiApi : '//www.gosuslugi.ru/api/nsi/v1/',
+			allowedLangs : [ "ru", "en", "de", "fr" ],
+			lang : 'ru',
+			cookieDomain : '.gosuslugi.ru',
+			partnersUrl : 'https://partners.gosuslugi.ru/',
+			betaUrl : 'https://www.gosuslugi.ru/',
+			disableMetric : false,
+			metricId : '31029696',
+			gosbarUrl : '//gosbar.gosuslugi.ru/widget',
+			staticDomain : 'https://gu-st.ru/',
+			gosbarResourceVersion : '',
+			gosbarWarningTextEnabled : false,
+			sliderTimer : 0,
+			searchApiUrl : '//www.gosuslugi.ru/api/search/v1/',
+			searchPing : ''
+		};
+		APP.searchModal = {
+			toggle : function(e) {
+				e.preventDefault();
+				var overlay = document.querySelector('.overlay-search'), modalWrap = document
+						.querySelector('.search-modal-wrap');
+				modalWrap.classList.toggle('hide');
+				if (!modalWrap.classList.contains('hide')) {
+					APP.metric.modalSearch();
+				}
+				overlay.classList.toggle('hide');
+			}
+		};
+	</script>
+	<script>
+		APP.loadJSAsync = function(scripts, callback, error) {
+			if (!(scripts instanceof Array)) {
+				scripts = [ scripts ];
+			}
+			scripts.forEach(function(src) {
+				var s = document.createElement('script');
+				s.type = 'text/javascript';
+				s.async = true;
+				function afterLoad(callback) {
+					if (callback && typeof callback == 'function') {
+						callback.call(callback);
+					}
+				}
+				s.onload = function() {
+					if (!this.executed) {
+						this.executed = true;
+						afterLoad(callback);
+					}
+				};
+				s.onerror = function() {
+					if (!this.executed) {
+						this.executed = true;
+						afterLoad(error);
+					}
+				};
+				s.onreadystatechange = function() {
+					var self = this;
+					if (this.readyState == "complete"
+							|| this.readyState == "loaded") {
+						setTimeout(function() {
+							self.onload();
+						}, 0);
+					}
+				};
+				s.src = src;
+				var x = document.getElementsByTagName('script')[0];
+				x.parentNode.insertBefore(s, x);
+			});
+		};
+	</script>
+	<script async src="https://gu-st.ru/st/js/bundle.min.0233785de9.js"></script>
+</body>
+</html>
+
+n
