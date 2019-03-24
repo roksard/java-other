@@ -32,7 +32,12 @@
 			<artifactId>webIndexer-service</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>rx</groupId>
+			<artifactId>webindexer-dao</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
 	</dependencies>
 	<build>
 		<finalName>webIndexerApp-web</finalName>

@@ -147,6 +147,6 @@ public class Service {
 		System.out.println(
 				calcStats(
 						parseHtml(
-								loadPage("nalog.ru"))));
+								loadPage("yandex.ru"))));
 	}
 }
