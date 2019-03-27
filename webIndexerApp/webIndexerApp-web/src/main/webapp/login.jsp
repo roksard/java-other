@@ -49,7 +49,7 @@
 		if(password == null)
 			password = "";
 		//response.getWriter().println(login + password);
-		User account = Users.map.get(login);
+		User account = Users.getUser(login);
 		if(account != null && account.getPassword().equals(password)) {
 			session.setAttribute("user", login); //define a logged in user
 			response.sendRedirect("login.jsp");

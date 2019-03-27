@@ -1,19 +1,31 @@
 package rx.webindexer.dao;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class StatsUnit {
+public class StatsUnit implements Serializable {
+	private static final long serialVersionUID = 6810977218324303586L;
 	public enum LetterType {cyrillic, latin}
+	
+	public StatsUnit() {
+		super();
+	}
+	
+	public StatsUnit(String name) {
+		super();
+		this.name = name;
+	}
 	
 	protected String name = "";
 	protected int wordsCount = 0;
 	protected float uniqueWordsPercent = 0;
 	protected float nonCyrillicWordsPercent = 0;
 	protected Map<String,Integer> topWords = new LinkedHashMap<>(); 
+	protected boolean calculated = false;
 	  //<кол-во,слово> (кол-во = сколько раз слово встречается в тексте)
 	protected List<TreeMap<Character,Integer>> letterFrequency = new LinkedList<>();
 	public String getName() {
@@ -51,6 +63,12 @@ public class StatsUnit {
 	}
 	public void setLetterFrequency(List<TreeMap<Character, Integer>> letterFrequency) {
 		this.letterFrequency = letterFrequency;
+	}
+	public boolean isCalculated() {
+		return calculated;
+	}
+	public void setCalculated(boolean calculated) {
+		this.calculated = calculated;
 	}
 	@Override
 	public String toString() {

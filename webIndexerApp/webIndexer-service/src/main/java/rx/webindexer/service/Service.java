@@ -73,7 +73,6 @@ public class Service {
 	 * @return array of words extracted from given html data
 	 */
 	public static String[] parseHtml(String pageData) {
-		System.out.println(pageData);
 		Pattern pattern = Pattern.compile("<body.*?>(.*)</body>", Pattern.DOTALL);
 		Matcher match = pattern.matcher(pageData);
 		if (!match.find()) // не найден тег <body>, похоже это не html
@@ -123,7 +122,6 @@ public class Service {
 		List<TreeMap<Character, Integer>> letterFreq = new LinkedList<TreeMap<Character,Integer>>();
 		letterFreq.add(new TreeMap<Character, Integer>()); // подсчет кириллицы букв cyrillic
 		letterFreq.add(new TreeMap<Character, Integer>()); // подсчет остальных букв latin
-		TreeMap<Character, Integer> letters = null;
 		for(Map.Entry<Character,Integer> entry : letterCountMap.entrySet()) {
 			int freq = Math.round(totalLetterCount / ((float)entry.getValue()));
 			//раскидать по разным мапам - кирилл и латинскую это нужно чтобы выводить латиницу и кирилл. в разные строки статистики
@@ -138,15 +136,8 @@ public class Service {
 		result.setNonCyrillicWordsPercent(nonCyrillic / ((float) result.getWordsCount()) * 100);
 		result.setTopWords(MapUtil.getTopByValue(wordCountMap, 10));
 		result.setLetterFrequency(letterFreq);
-		System.out.println("totalLetterCount: " + totalLetterCount);
-		System.out.println(wordCountMap);
+		result.setCalculated(true);;
 		return result;
 	}
 
-	public static void main(String[] args) throws IOException {
-		System.out.println(
-				calcStats(
-						parseHtml(
-								loadPage("yandex.ru"))));
-	}
 }

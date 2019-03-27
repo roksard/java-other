@@ -1,15 +1,12 @@
 package rx.webindexer.dao;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
+	private static final long serialVersionUID = 1402456403585069370L;
 	private String login;
-	private String password;
-	private int id;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+	private String password; //можно хранить только хеш пароля для безопасности
+	
 	public User() {
 		login = "";
 		password = "";
@@ -55,5 +52,8 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+	@Override
+	public String toString() {
+		return this.login +":" + this.password;
+	}
 }
