@@ -10,44 +10,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="webapp-style.css">
 <meta charset="UTF-8">
-<style>
-table {
-	border-style: solid;
-	border-color: #bec7d5;
-	border-width: 0px;
-	width: 800px;
-}
 
-td, th {
-	border-style: solid;
-	border-color: #bec7d5;
-	border-width: 0px;
-	background-color: #ced7e5;
-	padding: 5px;
-}
-
-#button-cell {
-	text-align: center;
-}
-
-#welcome {
-	border-style: solid;
-	background-color: #bec7d5;
-	border-color: #ced7e5;
-	border-width: 0px 0px 0px 0px;
-	font-weight: bold;
-}
-
-th {
-	border-style: solid;
-	border-color: #bec7d5;
-	border-width: 0px 0px 0px 0px;
-}
-#button {
-	font-size: 0.80em;
-}
-</style>
 <title>Список сайтов</title>
 <script>
 function addPage() {
@@ -63,24 +28,40 @@ function addPage() {
 }
 </script>
 
+<style>
+	th {
+		text-align: left;
+	}
+</style>
+
 </head>
 <% 
 	if(!Util.isLogged(request)) {
 		response.sendRedirect("login.jsp");
 		return;
 	}
-	String user = (String)request.getSession().getAttribute("user"); 
+	String user = (String)session.getAttribute("user");
+	String msg = (String)session.getAttribute("message");
+	if(msg != null && msg != "")  //если было какое то сообщение 
+		session.setAttribute("message", null); //удалим его из сессии, чтобы оно не показывалось после обновления страницы
 %>
 <body link="#555555" vlink="#555555" alink="#aaaaaa">
-	
-	<div id="welcome">Добро пожаловать, <%=user %></div>
+	<% if(msg != null) { %>
+		<div align="center"><%=msg %></div>
+	<%} %>
+	<table id="welcome">
+		<tr>
+			<td>Добро пожаловать, <%=user %></td>
+			<td align="center" id="logout"><a href="?logout=true">Выход</a></td>
+		</tr>
+	</table>
 	<% 
 		LinkedList<StatsUnit> pagesStats = StatsStorage.getWebStatsUser(user);
 	%>
-	<table align="center">
+	<table id="site-list">
 		<tr>
 			<th align="center" colspan="4">Список сайтов</th>
-			<th align="center" id="button"><input value="Добавить" onclick="addPage()" type="button"></th> 
+			<th align="right" id="button"><input value="Добавить" onclick="addPage()" type="button"></th> 
 		</tr>
 		<% if(pagesStats.size() == 0) { %>
 			<tr>
@@ -88,9 +69,9 @@ function addPage() {
 			</tr>
 		<% } else { %>
 		<tr id="header">
-			<th align="left">Адрес страницы</th>
-			<th colspan="2">Проиндексирована</th>
-			<th align="center" colspan="2">Действия</th>
+			<th style="width:50%;">Адрес</th>
+			<th colspan="2">Проиндексирован</th>
+			<th colspan="2">Действия</th>
 		</tr>	
 		<%
 			int i = 0;
@@ -99,9 +80,9 @@ function addPage() {
 			<td><%=stats.getName() %></td>
 			<% if(stats.isCalculated()) { %>
 				<td align="center">✓</td>
-				<td id="button-cell"><a href="?stats=<%=i%>">Статистика</a></td>
+				<td id="button-cell"><a href="stats.jsp?id=<%=i%>">Статистика</a></td>
 			<%} else {%>
-				<td align="center"> ‒ </td>
+				<td> ‒ </td>
 				<td id="button-cell"> - </td>
 			<%} %>
 				<td id="button-cell"><a href="?index=<%=i%>">Индексировать</a></td>
@@ -117,7 +98,6 @@ function addPage() {
 		
 		String logout = request.getParameter("logout"); 
 		if(logout != null && logout.equals("true")) {
-			System.out.println("logout="+logout);
 			session.setAttribute("user", null);
 			response.sendRedirect("login.jsp");
 		}		
@@ -126,27 +106,36 @@ function addPage() {
 		if(index != null) {			
 			int id = Integer.parseInt(index);
 			String url = StatsStorage.getWebStatsUser(user).get(id).getName();
-			StatsUnit stats = Service.calcStats( Service.parseHtml( Service.loadPage( url)));
-			stats.setName(url);
-			StatsStorage.getWebStatsUser(user).set(id, stats);
-			response.sendRedirect(""); //refresh page
+			StatsUnit stats = null;
+			try {
+				stats = Service.calcStats( Service.parseHtml( Service.loadPage( url)));
+				stats.setName(url);
+				StatsStorage.getWebStatsUser(user).set(id, stats);
+			} catch(Exception e) {
+				session.setAttribute("message", "Не удалось проиндексировать страницу " + url);
+			}
+			StatsStorage.saveToExternalDefault();
+			response.sendRedirect("mainpanel.jsp"); //refresh page
 		}
 		
 		String remove = request.getParameter("remove");
 		if(remove != null) {
 			int id = Integer.parseInt(remove);
 			StatsStorage.getWebStatsUser(user).remove(id);
-			response.sendRedirect("");
+			StatsStorage.saveToExternalDefault();
+			response.sendRedirect("mainpanel.jsp"); //refresh page
 		}
 		
 		String add = request.getParameter("add");
 		if(add != null) { //добавить страницу
 			String doIndex = request.getParameter("doindex");
 			StatsStorage.addWebStatsUser(user, new StatsUnit(add));
+			StatsStorage.saveToExternalDefault();
 			if(doIndex != null && doIndex.equals("true"))
 				response.sendRedirect("?index=" + (StatsStorage.getWebStatsUser(user).size()-1));
 			else
-				response.sendRedirect("");
+				response.sendRedirect("mainpanel.jsp"); //refresh page
+			
 		}
 		
 	 %>

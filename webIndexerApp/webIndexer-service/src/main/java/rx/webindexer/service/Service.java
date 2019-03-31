@@ -12,7 +12,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -57,7 +56,7 @@ public class Service {
 		while ((inputLine = in.readLine()) != null)
 			textData.append(inputLine);
 		in.close();
-		
+
 		return textData.toString();
 	}
 
@@ -93,11 +92,16 @@ public class Service {
 	public static StatsUnit calcStats(String[] words) {
 		Map<String, Integer> wordCountMap = new HashMap<>(); // <слово, сколько раз встречается в тексте>
 		int emptyWordsCount = 0; // пустые строки, которые не нужно учитывать как слова при подсчете кол-ва слов
-		int nonCyrillic = 0; // кол-во слов на кириллице
-		StatsUnit result = new StatsUnit();	
-		
-		HashMap<Character,Integer> letterCountMap = new HashMap<>();
+		int nonCyrillic = 0; // кол-во слов не кириллицы
+		StatsUnit result = new StatsUnit();
+
 		int totalLetterCount = 0;
+
+		HashMap<Character, Integer> letterCountMap = new HashMap<Character, Integer>();
+		for(Character c = 'a'; c <= 'z'; c++)  //инициализируем латинскими буквами
+			letterCountMap.put(c, 0);
+		for(Character c = 'а'; c <= 'я'; c++) //инициализируем кириллицей
+			letterCountMap.put(c, 0);		
 
 		for (String word : words) {
 			if (word.equals("")) {
@@ -105,39 +109,48 @@ public class Service {
 				continue;
 			}
 			totalLetterCount += word.length();
-			
+
 			Integer count = wordCountMap.get(word);
 			wordCountMap.put(word, count == null ? 1 : count + 1);
 
-			if (Pattern.matches("[^а-яА-Я]", word.charAt(0) + ""))
+			if (Pattern.matches("[^а-яА-Я]", word.charAt(0) + "")) // слово не на кириллице
 				nonCyrillic++;
 
-			for (char letter : word.toCharArray()) { // посчитать буквы 
+			for (char letter : word.toCharArray()) { // посчитать буквы
 				Integer countLetter = letterCountMap.get(letter);
 				letterCountMap.put(letter, countLetter == null ? 1 : countLetter + 1);
 			}
 		}
 		
-		//осталось посчитать частоту вхождения букв:
-		List<TreeMap<Character, Float>> letterFreq = new LinkedList<TreeMap<Character,Float>>();
-		letterFreq.add(new TreeMap<Character, Float>()); // подсчет кириллицы букв cyrillic
-		letterFreq.add(new TreeMap<Character, Float>()); // подсчет остальных букв latin
-		for(Map.Entry<Character,Integer> entry : letterCountMap.entrySet()) {
-			float freq = (float)entry.getValue() / totalLetterCount * 100;
-			//раскидать по разным мапам - кирилл и латинскую это нужно чтобы выводить латиницу и кирилл. в разные строки статистики
-			if (Pattern.matches("[а-яА-Я]", entry.getKey() + ""))  				
-					letterFreq.get(cyrillic.ordinal()).put(entry.getKey(), freq); 
-				else
-					letterFreq.get(latin.ordinal()).put(entry.getKey(), freq);
+		int wordsCount = words.length - emptyWordsCount; //число слов в тексте. сохраним сюда чтоб использовать
+
+		LinkedList<TreeMap<Character, Float>> letterFreq = new LinkedList<TreeMap<Character, Float>>();
+		letterFreq.add(new TreeMap<Character, Float>()); // подсчет букв
+		letterFreq.add(new TreeMap<Character, Float>()); // подсчет букв
+
+		for (Map.Entry<Character, Integer> entry : letterCountMap.entrySet()) {
+			TreeMap<Character, Float> map = null;
+			if (Pattern.matches("[а-яА-Я]", entry.getKey() + "")) //буква кириллицы
+				map = letterFreq.get(cyrillic.ordinal());
+			else
+				map = letterFreq.get(latin.ordinal());
+			map.put(entry.getKey(), entry.getValue() / (float)wordsCount * 100);
 		}
-		
-		result.setWordsCount(words.length - emptyWordsCount);
+
+		result.setWordsCount(wordsCount);
 		result.setUniqueWordsPercent(wordCountMap.size() / ((float) result.getWordsCount()) * 100);
 		result.setNonCyrillicWordsPercent(nonCyrillic / ((float) result.getWordsCount()) * 100);
 		result.setTopWords(MapUtil.getTopByValue(wordCountMap, 10));
 		result.setLetterFrequency(letterFreq);
-		result.setCalculated(true);;
+		result.setCalculated(true);
 		return result;
+	}
+	
+	public static void main(String[] args) {
+		TreeMap<Character, Integer> letterCountMap = new TreeMap<Character, Integer>();
+		for(Character c = 'а'; c <= 'я'; c++) //инициализируем кириллицей
+			letterCountMap.put(c, 0);		
+		System.out.println(letterCountMap);
 	}
 
 }

@@ -36,5 +36,14 @@ public class StatsStorage implements Serializable {
 		list.add(stat);
 		webStats.put(userName, list);
 	}
-	
+	public static boolean saveToExternalDefault() {
+		
+		try {
+			Keeper.saveToExternal(Keeper.STATS_DEFAULT_FILE, webStats);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 }

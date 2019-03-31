@@ -7,18 +7,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="webapp-style.css">
 <meta charset="UTF-8">
-<style>
-	#tooltip {
-		font-size: 80%;
-		color: #999999;
-	}
-</style>
 <title>Вход</title>
 </head>
 <body>
 	<form action="login.jsp" method="post">
-		<table bgcolor="#ffecb3" align="center">
+		<table id="login-table" align="center">
 			<tr>
 				<td>Логин:</td>
 				<td><input type="text" name="login"></td>
@@ -31,7 +26,7 @@
 				<td align="right" colspan="2"><input type="submit"
 					value="Вход"></td>
 			</tr>
-			<tr id="tooltip">
+			<tr id="logintip">
 				<td align="right" colspan="2">логин: admin / пароль: password</td>
 			</tr>
 		</table>
@@ -44,6 +39,11 @@
 		}
 		String login = request.getParameter("login");
 		String password = request.getParameter("password");
+		
+		/*
+		login = "admin"; //TODO удалить эту строку
+		password = "password"; //TODO удалить эту строку */
+		
 		if(login == null)
 			login = "";
 		if(password == null)
