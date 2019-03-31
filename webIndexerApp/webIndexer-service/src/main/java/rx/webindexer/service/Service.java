@@ -119,11 +119,11 @@ public class Service {
 		}
 		
 		//осталось посчитать частоту вхождения букв:
-		List<TreeMap<Character, Integer>> letterFreq = new LinkedList<TreeMap<Character,Integer>>();
-		letterFreq.add(new TreeMap<Character, Integer>()); // подсчет кириллицы букв cyrillic
-		letterFreq.add(new TreeMap<Character, Integer>()); // подсчет остальных букв latin
+		List<TreeMap<Character, Float>> letterFreq = new LinkedList<TreeMap<Character,Float>>();
+		letterFreq.add(new TreeMap<Character, Float>()); // подсчет кириллицы букв cyrillic
+		letterFreq.add(new TreeMap<Character, Float>()); // подсчет остальных букв latin
 		for(Map.Entry<Character,Integer> entry : letterCountMap.entrySet()) {
-			int freq = Math.round(totalLetterCount / ((float)entry.getValue()));
+			float freq = (float)entry.getValue() / totalLetterCount * 100;
 			//раскидать по разным мапам - кирилл и латинскую это нужно чтобы выводить латиницу и кирилл. в разные строки статистики
 			if (Pattern.matches("[а-яА-Я]", entry.getKey() + ""))  				
 					letterFreq.get(cyrillic.ordinal()).put(entry.getKey(), freq); 

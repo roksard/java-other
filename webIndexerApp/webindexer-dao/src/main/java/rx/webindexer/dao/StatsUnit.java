@@ -27,7 +27,7 @@ public class StatsUnit implements Serializable {
 	protected Map<String,Integer> topWords = new LinkedHashMap<>(); 
 	protected boolean calculated = false;
 	  //<кол-во,слово> (кол-во = сколько раз слово встречается в тексте)
-	protected List<TreeMap<Character,Integer>> letterFrequency = new LinkedList<>();
+	protected List<TreeMap<Character,Float>> letterFrequency = new LinkedList<>();
 	public String getName() {
 		return name;
 	}
@@ -43,7 +43,7 @@ public class StatsUnit implements Serializable {
 	public Map<String, Integer> getTopWords() {
 		return topWords;
 	}
-	public List<TreeMap<Character, Integer>> getLetterFrequency() {
+	public List<TreeMap<Character,Float>> getLetterFrequency() {
 		return letterFrequency;
 	}
 	public void setName(String name) {
@@ -61,7 +61,7 @@ public class StatsUnit implements Serializable {
 	public void setTopWords(Map<String, Integer> topWords) {
 		this.topWords = topWords;
 	}
-	public void setLetterFrequency(List<TreeMap<Character, Integer>> letterFrequency) {
+	public void setLetterFrequency(List<TreeMap<Character,Float>> letterFrequency) {
 		this.letterFrequency = letterFrequency;
 	}
 	public boolean isCalculated() {
