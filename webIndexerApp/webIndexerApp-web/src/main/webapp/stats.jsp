@@ -3,7 +3,7 @@
 <%@page import="rx.webindexer.dao.*"%>    
 <%@page import="rx.webapp.Util"%>
 <%@page import="java.util.Map"%>
-<%@page import="java.util.Formatter"%>
+<%@page import="java.util.Locale"%>
 <%@page import="static rx.webindexer.dao.StatsUnit.LetterType.cyrillic"%>
 <%@page import="static rx.webindexer.dao.StatsUnit.LetterType.latin"%>
 
@@ -44,7 +44,7 @@ window.onload = function() {
 			StringBuilder cyrDataValues = new StringBuilder();
 			for(Map.Entry<Character,Float> entry : stats.getLetterFrequency().get(cyrillic.ordinal()).entrySet()) {
 				cyrLabels.append("'" + entry.getKey() + "',");
-				cyrDataValues.append(entry.getValue() + ",");
+				cyrDataValues.append(String.format(Locale.ROOT, "%.2f", entry.getValue()) + ",");
 			}
 			cyrLabels.replace(cyrLabels.length()-1, cyrLabels.length(), ""); //удалить последнюю запятую
 			cyrDataValues.replace(cyrDataValues.length()-1, cyrDataValues.length(), ""); //удалить последнюю запятую
@@ -56,7 +56,7 @@ window.onload = function() {
 			StringBuilder latDataValues = new StringBuilder();
 			for(Map.Entry<Character,Float> entry : stats.getLetterFrequency().get(latin.ordinal()).entrySet()) {
 				latLabels.append("'" + entry.getKey() + "',");
-				latDataValues.append(entry.getValue() + ",");
+				latDataValues.append(String.format(Locale.ROOT, "%.2f", entry.getValue()) + ",");
 			}
 			latLabels.replace(latLabels.length()-1, latLabels.length(), ""); //удалить последнюю запятую
 			latDataValues.replace(latDataValues.length()-1, latDataValues.length(), ""); //удалить последнюю запятую

@@ -61,7 +61,7 @@ function addPage() {
 	<table id="site-list">
 		<tr>
 			<th align="center" colspan="4">Список сайтов</th>
-			<th align="right" id="button"><input value="Добавить" onclick="addPage()" type="button"></th> 
+			<th style="text-align:right" id="button"><input value="Добавить" onclick="addPage()" type="button"></th> 
 		</tr>
 		<% if(pagesStats.size() == 0) { %>
 			<tr>
