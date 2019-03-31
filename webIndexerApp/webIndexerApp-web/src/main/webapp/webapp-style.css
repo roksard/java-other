@@ -1,0 +1,95 @@
+@charset "UTF-8";
+
+a:link {
+  color: #664400;
+}
+
+/* visited link */
+a:visited {
+  color: #664400;
+}
+
+/* mouse over link */
+a:hover {
+  color: #cc8800;
+}
+
+/* selected link */
+a:active {
+  color: #664400;
+}
+
+body {
+	font-family: "Calibri", Sans-serif;
+}
+
+table {
+	width: 100%;
+	background-color: #fff4de;
+	border-collapse: collapse;
+}
+
+td, th {
+	border-color: #ffe6b3;
+	border-style: solid hidden solid hidden; 
+	border-width: 1px;
+	padding: 5px;
+}
+
+#logintip {
+	font-size: 80%;
+	color: #999999;
+	border-width: 0px;
+	border-style: hidden;
+}
+
+#login-table {
+	width: auto;
+}
+
+#login-table-td {
+	border-width: 0px;
+	border-style: hidden;
+}
+
+
+
+#word-list {
+  letter-spacing: 1px;
+  word-spacing: 10px;
+  text-align: left;
+  vertical-align: text-top;
+  width: 80%;
+}
+
+
+#button-cell {
+	text-align: center;
+}
+
+#welcome {
+	width: 100%;
+	border-style: hidden;
+	font-weight: bold;
+	margin-left: auto;
+	margin-bottom: 10px;
+}
+
+#site-list {
+	width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#logout {
+	width: 10%;
+	font-weight: normal;
+}
+
+#button {
+	font-size: 0.80em;
+}
+
+#urlcolumn {
+	width: 50%;
+}
