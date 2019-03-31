@@ -41,7 +41,7 @@ window.onload = function() {
 		if(stats != null) {
 			//инициализация js переменных - кириллица (надписи и данные)
 			StringBuilder cyrLabels = new StringBuilder();
-			StringBuilder cyrDataValues = new StringBuilder(); 
+			StringBuilder cyrDataValues = new StringBuilder();
 			for(Map.Entry<Character,Float> entry : stats.getLetterFrequency().get(cyrillic.ordinal()).entrySet()) {
 				cyrLabels.append("'" + entry.getKey() + "',");
 				cyrDataValues.append(entry.getValue() + ",");
@@ -53,7 +53,7 @@ window.onload = function() {
 			
 			//инициализация js переменных - латиница (надписи и данные)
 			StringBuilder latLabels = new StringBuilder();
-			StringBuilder latDataValues = new StringBuilder(); 
+			StringBuilder latDataValues = new StringBuilder();
 			for(Map.Entry<Character,Float> entry : stats.getLetterFrequency().get(latin.ordinal()).entrySet()) {
 				latLabels.append("'" + entry.getKey() + "',");
 				latDataValues.append(entry.getValue() + ",");
@@ -62,9 +62,6 @@ window.onload = function() {
 			latDataValues.replace(latDataValues.length()-1, latDataValues.length(), ""); //удалить последнюю запятую
 			out.println("var latLabels = ["+ latLabels.toString() +"];");
 			out.println("var latFreqData = ["+ latDataValues.toString() +"];");
-			
-			//var latLabels = ["Mercury", "Venus", "Earth"];
-			//var latFreqData = [0.4*100, 0.34*100, 1.3456*100];
 	%>
 	
 	var cyrDataSet = {
@@ -114,16 +111,14 @@ window.onload = function() {
   	data: {
     	labels: cyrLabels,
     	datasets: [cyrDataSet],
-  	}, 
-  	options: options,
+  	},
 	});
 	var latChart = new Chart(latCanvas, {
   	type: 'bar',
   	data: {
     	labels: latLabels,
     	datasets: [latDataSet]
-  	}, 
-  	options: options,
+  	},
 		});
 	<%
 		} //if (stats != null)
@@ -149,7 +144,7 @@ window.onload = function() {
 					<td id="td-stats"><b>Слов не кириллицы:</b> <%=String.format("%.2f", stats.getNonCyrillicWordsPercent())+"%"%></td>
 				</tr>
 				<tr>
-					<td style="vertical-align: text-top"><b>Часто используемые слова:</b></td><td id="word-list" colspan="2">
+					<td style="vertical-align: text-top" id="td-stats"><b>Часто используемые слова:</b></td><td id="word-list" colspan="2">
 				<%
 					for(Map.Entry<String, Integer> entry : stats.getTopWords().entrySet())  
 						out.print(entry.getKey() + " ");
