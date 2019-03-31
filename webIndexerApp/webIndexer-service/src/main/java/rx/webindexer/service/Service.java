@@ -134,7 +134,7 @@ public class Service {
 				map = letterFreq.get(cyrillic.ordinal());
 			else
 				map = letterFreq.get(latin.ordinal());
-			map.put(entry.getKey(), entry.getValue() / (float)wordsCount * 100);
+			map.put(entry.getKey(), entry.getValue() / (float)totalLetterCount * 100);
 		}
 
 		result.setWordsCount(wordsCount);
@@ -144,13 +144,6 @@ public class Service {
 		result.setLetterFrequency(letterFreq);
 		result.setCalculated(true);
 		return result;
-	}
-	
-	public static void main(String[] args) {
-		TreeMap<Character, Integer> letterCountMap = new TreeMap<Character, Integer>();
-		for(Character c = 'а'; c <= 'я'; c++) //инициализируем кириллицей
-			letterCountMap.put(c, 0);		
-		System.out.println(letterCountMap);
 	}
 
 }
