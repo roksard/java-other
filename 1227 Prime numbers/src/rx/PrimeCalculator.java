@@ -1,9 +1,21 @@
 package rx;
 
-import java.util.*;
-import java.lang.reflect.*;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class PrimeCalculator {
+	public static List<Integer> getPrimes(int amount) {
+		List<Integer> primes = new LinkedList<Integer>();
+		int lastPrime = 0;
+		while (primes.size() < amount) {
+			lastPrime = nextPrime(lastPrime);
+			primes.add(lastPrime);
+		}
+		return primes;
+	}
 	public static int nextPrime(Integer base) {
 		int prime = 2;
 		int current = base;
@@ -25,6 +37,8 @@ public class PrimeCalculator {
 	}
 	
 	public static int nextPrime(int base) { //takes 25% less time than (Integer) one (no autoboxing)
+		if (base < 1)
+			base = 1;
 		int current = base;
 		int prime = 2;
 		int[] primes = new int[base]; //amount of prime numbers is always lower than amount of all numbers
@@ -87,19 +101,19 @@ public class PrimeCalculator {
 	}
 
 	public static void main(String[] args) throws Exception{
-		final int value = 1000;
-		final int loops = 40000;
-		
-		timeTestReflect(null, PrimeCalculator.class.getDeclaredMethod(
-				"nextPrime", int.class), new Integer[] {value}, loops);
-		timeTestReflect(null, PrimeCalculator.class.getDeclaredMethod(
-				"nextPrime", Integer.class), new Integer[] {value}, loops);
-		
-		timeTest(value, loops);
+//		final int value = 1000;
+//		final int loops = 40000;
+//		
+//		timeTestReflect(null, PrimeCalculator.class.getDeclaredMethod(
+//				"nextPrime", int.class), new Integer[] {value}, loops);
+//		timeTestReflect(null, PrimeCalculator.class.getDeclaredMethod(
+//				"nextPrime", Integer.class), new Integer[] {value}, loops);
+//		
+//		timeTest(value, loops);
 		
 //		for (int i = 1; i < 100; i = (int)(i * 1.15 + 1))
 //			System.out.println(nextPrime(i));
-		
+		System.out.println(getPrimes(100));
 	}
 
 }
