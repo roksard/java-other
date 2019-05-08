@@ -1,5 +1,7 @@
 package rx;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -16,6 +18,17 @@ public class PrimeCalculator {
 		}
 		return primes;
 	}
+	
+	public static List<Integer> getPrimesUpTo(int maxPrime) {
+		List<Integer> primes = new LinkedList<Integer>();
+		int lastPrime = 2;
+		while (lastPrime <= maxPrime) {
+			primes.add(lastPrime);
+			lastPrime = nextPrime(lastPrime);
+		}
+		return primes;
+	}
+	
 	public static int nextPrime(Integer base) {
 		int prime = 2;
 		int current = base;
@@ -99,6 +112,24 @@ public class PrimeCalculator {
 		long perIteration2 = delta2 / iterations;
 		System.out.println("Time total/per iteration: "+ delta2 + " / " + perIteration2);
 	}
+	
+	public static void writePrimesToFile(String fileName, int primesUpTo) throws IOException {
+		int lastPrime = 2;
+		int count = 0;
+		FileWriter out = new FileWriter(fileName, false); //rewrite
+		while (lastPrime <= primesUpTo) {
+			if (count++ % 10 == 0)
+				out.write("\n");
+			if(count % 1000 == 0) {
+				out.close();
+				out = new FileWriter(fileName, true); //append
+			}
+			out.write(String.format("%5d ", lastPrime));
+			lastPrime = nextPrime(lastPrime);
+		}
+		out.close();
+		System.out.println("write finished");
+	}
 
 	public static void main(String[] args) throws Exception{
 //		final int value = 1000;
@@ -113,7 +144,8 @@ public class PrimeCalculator {
 		
 //		for (int i = 1; i < 100; i = (int)(i * 1.15 + 1))
 //			System.out.println(nextPrime(i));
-		System.out.println(getPrimes(100));
+		//List<Integer> primes = getPrimesUpTo(50000);
+		writePrimesToFile("primes.txt", 50000);
 	}
 
 }
