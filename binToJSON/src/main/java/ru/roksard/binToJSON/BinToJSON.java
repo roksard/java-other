@@ -121,13 +121,15 @@ public class BinToJSON {
 	public static void main(String[] args) throws IOException {
 		if (args.length != 2) {
 			System.out.println("----- binToJSON ------- \n" + "Использование: \n"
-					+ "java binToJSON <путь-к-бинарному-файлу> <путь-куда-сохранить-JSON>\n"
-					+ "Пример: java binToJSON file.bin file.json");
+					+"java binToJSON <путь-к-бинарному-файлу> <путь-куда-сохранить-JSON>\n"
+					+"Пример: java -jar bintojson.jar file.bin file.json"
+					+"\n\nUsage: java binToJSON <path-to-binary-file> <path-to-save-JSON>\n"
+					+"Example: java -jar bintojson.jar file.bin file.json");
 			System.exit(0);
 		}
 		File fileIn = new File(args[0]);
 		if (!fileIn.exists()) {
-			System.out.println("Файл не найден " + fileIn.getAbsolutePath());
+			System.out.println("Файл не найден / File not found:" + fileIn.getAbsolutePath());
 			System.exit(1);
 		}
 		try (
@@ -179,6 +181,7 @@ public class BinToJSON {
 					out.print("\n  ]");
 				out.print("\n}");
 				fchan.close();
+				System.out.println("Конвертирование успено / Conversion succeeded.");
 			}
 		}
 	}

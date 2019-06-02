@@ -1,6 +1,7 @@
 package ru.roksard.binToJSON;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -60,6 +61,12 @@ public class BinToJSONTest extends BinToJSON {
 					}
 				}
 				rd.close();
+				try {
+					new File(binFile).delete();
+					new File(jsonFile).delete();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
