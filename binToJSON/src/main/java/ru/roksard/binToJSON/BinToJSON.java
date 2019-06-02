@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -120,7 +119,6 @@ public class BinToJSON {
 	}
 
 	public static void main(String[] args) throws IOException {
-		writeBinFile(HEX1, "binaryfile.b");
 		if (args.length != 2) {
 			System.out.println("----- binToJSON ------- \n" + "Использование: \n"
 					+ "java binToJSON <путь-к-бинарному-файлу> <путь-куда-сохранить-JSON>\n"
@@ -132,7 +130,9 @@ public class BinToJSON {
 			System.out.println("Файл не найден " + fileIn.getAbsolutePath());
 			System.exit(1);
 		}
-		try (FileChannel fchan = new FileInputStream(fileIn).getChannel()) {
+		try (
+				FileInputStream fin = new FileInputStream(fileIn);
+				FileChannel fchan = fin.getChannel()) {
 
 			ByteBuffer inBuffer = ByteBuffer.allocate(4096);
 			inBuffer.order(ByteOrder.LITTLE_ENDIAN);
@@ -178,6 +178,7 @@ public class BinToJSON {
 				if (orderFieldsReadLast > 0)
 					out.print("\n  ]");
 				out.print("\n}");
+				fchan.close();
 			}
 		}
 	}
