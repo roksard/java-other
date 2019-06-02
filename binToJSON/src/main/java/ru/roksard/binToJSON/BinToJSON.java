@@ -18,9 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class BinToJSON {
-	static final String HEX1 = "01 00 04 00 A8 32 92 56 02 00 03 00 04 71 02 03 "
-			+ "00 0B 00 8E 8E 8E 20 90 AE AC A0 E8 AA A0 04 00 " + "1D 00 0B 00 07 00 84 EB E0 AE AA AE AB 0C 00 02 "
-			+ "00 20 4E 0D 00 02 00 00 02 0E 00 02 00 40 9C";
+	
 
 	public static void writeBinFile(String hexData, String fileName) throws IOException {
 		try ( 
@@ -39,59 +37,6 @@ public class BinToJSON {
 				buff.flip();
 			} while (hexer.hasNext());
 
-			buff.clear();
-			short tag = 11;
-			buff.putShort(tag);
-			byte[] name = Charset.forName("CP866").encode("молоток").array();
-			buff.putShort((short) name.length);
-			buff.put(name);
-
-			tag = 12;
-			buff.putShort(tag);
-			buff.putShort((short) 1);
-			buff.put((byte) 200);
-
-			tag = 13;
-			buff.putShort(tag);
-			buff.putShort((short) 2);
-			buff.put((byte) 0); // dot
-			buff.put((byte) 4); // quantity
-
-			tag = 14;
-			buff.putShort(tag);
-			buff.putShort((short) 1);
-			buff.put((byte) 220);
-
-			buff.flip();
-			fchan.write(buff);
-			
-			buff.clear();
-			tag = 11;
-			buff.putShort(tag);
-			name = Charset.forName("CP866")
-					.encode("что то такое подлиннее бы вот попробовать")
-					.array();
-			buff.putShort((short) name.length);
-			buff.put(name);
-
-			tag = 12;
-			buff.putShort(tag);
-			buff.putShort((short) 1);
-			buff.put((byte) 200);
-
-			tag = 13;
-			buff.putShort(tag);
-			buff.putShort((short) 2);
-			buff.put((byte) 0); // dot
-			buff.put((byte) 4); // quantity
-
-			tag = 14;
-			buff.putShort(tag);
-			buff.putShort((short) 1);
-			buff.put((byte) 220);
-
-			buff.flip();
-			fchan.write(buff);
 			fchan.close();
 		}
 	}
