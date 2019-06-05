@@ -12,7 +12,8 @@ public class StatsStorage implements Serializable {
 	
 	static {
 		try {
-			webStats = (ConcurrentHashMap<String,LinkedList<StatsUnit>>)Keeper.loadFromExternal(Keeper.STATS_DEFAULT_FILE);
+			webStats = (ConcurrentHashMap<String,LinkedList<StatsUnit>>)Keeper.loadFromExternal
+					(Keeper.LOCAL_DEFAULT_DIR + Keeper.STATS_DEFAULT_FILE);
 		} catch (ClassNotFoundException | IOException e) {
 			webStats = new ConcurrentHashMap<String,LinkedList<StatsUnit>>();
 		}
@@ -39,7 +40,7 @@ public class StatsStorage implements Serializable {
 	public static boolean saveToExternalDefault() {
 		
 		try {
-			Keeper.saveToExternal(Keeper.STATS_DEFAULT_FILE, webStats);
+			Keeper.saveToExternal(Keeper.LOCAL_DEFAULT_DIR + Keeper.STATS_DEFAULT_FILE, webStats);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;

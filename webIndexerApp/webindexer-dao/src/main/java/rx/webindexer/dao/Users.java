@@ -1,6 +1,5 @@
 package rx.webindexer.dao;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
@@ -13,12 +12,13 @@ public class Users implements Serializable {
 	
 	static {
 		try {
-			map = (ConcurrentHashMap<String,User>)Keeper.loadFromExternal(Keeper.USERS_DEFAULT_FILE);
+			map = (ConcurrentHashMap<String,User>)Keeper.loadFromExternal(Keeper.LOCAL_DEFAULT_DIR + 
+					Keeper.USERS_DEFAULT_FILE);
 		} catch (FileNotFoundException e) {
 			try {
 				//Файл не найден, значит он еще не сохранялся на этом сервере, загружаем стандартный из ресурсов
 				//в котором есть единственный пользователь "admin" с паролем "password"
-				map = (ConcurrentHashMap<String,User>)Keeper.loadAsResource(Keeper.USERS_DEFAULT_FILE);
+				map = (ConcurrentHashMap<String,User>)Keeper.loadAsResource("/"+Keeper.USERS_DEFAULT_FILE);
 			} catch (ClassNotFoundException e1) {
 				e1.printStackTrace();
 			} catch (IOException e1) {
@@ -44,6 +44,17 @@ public class Users implements Serializable {
 			return false;
 		else
 			map.put(user.getLogin(), user);
+		return true;
+	}
+	
+	public static boolean saveToExternalDefault() {
+		
+		try {
+			Keeper.saveToExternal(Keeper.LOCAL_DEFAULT_DIR + Keeper.USERS_DEFAULT_FILE, map);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 		return true;
 	}
 	

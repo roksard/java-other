@@ -8,8 +8,9 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Keeper {
-	public static final String STATS_DEFAULT_FILE = "/stats_data.dat";
-	public static final String USERS_DEFAULT_FILE = "/users.dat";
+	public static final String LOCAL_DEFAULT_DIR = ""; //use current dir
+	public static final String STATS_DEFAULT_FILE = "stats_data.dat"; 
+	public static final String USERS_DEFAULT_FILE = "users.dat";
 	
 	public static <T extends Serializable> void saveToExternal(String fileName, T object) throws IOException {
 		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName));

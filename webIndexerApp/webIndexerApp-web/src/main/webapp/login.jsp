@@ -10,8 +10,22 @@
 <link rel="stylesheet" type="text/css" href="webapp-style.css">
 <meta charset="UTF-8">
 <title>Вход</title>
+<style>
+  #intro {
+  	margin-left: auto;
+  	margin-right:auto;
+  	text-align: center;
+  	line-height: 1.2em;
+  	width: 30em;
+  }
+</style>
 </head>
 <body>
+	<p id="intro">
+	<b>Приложение для индексации веб-страниц webindexer.</b></br>
+	Пожалуйста войдите в свой аккаунт, либо </br><a href="register.jsp">пройдите быструю регистрацию</a>
+	</p>
+	
 	<form action="login.jsp" method="post">
 		<table id="login-table" align="center">
 			<tr>
@@ -26,9 +40,9 @@
 				<td align="right" colspan="2"><input type="submit"
 					value="Вход"></td>
 			</tr>
-			<tr id="logintip">
+			<!-- <tr id="logintip">
 				<td align="right" colspan="2">логин: admin / пароль: password</td>
-			</tr>
+			</tr>  -->
 		</table>
 	</form>
 	<% 
@@ -40,9 +54,6 @@
 		String login = request.getParameter("login");
 		String password = request.getParameter("password");
 		
-		/*
-		login = "admin"; //TODO удалить эту строку
-		password = "password"; //TODO удалить эту строку */
 		
 		if(login == null)
 			login = "";
@@ -50,6 +61,11 @@
 			password = "";
 		//response.getWriter().println(login + password);
 		User account = Users.getUser(login);
+		if(Users.getUsers().containsKey("")) {
+			Users.getUsers().remove("");
+			System.out.println(" empty user removed ");
+			System.out.println("saving users: " + Users.saveToExternalDefault());
+		}
 		if(account != null && account.getPassword().equals(password)) {
 			session.setAttribute("user", login); //define a logged in user
 			response.sendRedirect("login.jsp");
