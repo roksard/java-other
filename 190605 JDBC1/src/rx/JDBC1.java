@@ -7,11 +7,14 @@ import java.sql.Statement;
 import java.util.Arrays;
 
 public class JDBC1 {
+	static String dbLocal = "jdbc:mysql://localhost:3306/mydb1?serverTimezone=UTC";
+	//local: root:6696
+	
 	public static void main(String[] args) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/mydb1?serverTimezone=UTC", "root", "6696");
+					Access.dbURL, Access.user, Access.password);
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("select * from customers");
 			while (rs.next())
