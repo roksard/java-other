@@ -5,7 +5,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,13 +21,23 @@ import java.util.Properties;
 
 public class Keeper {
 	static Properties properties = null;
-	public static final String PROPERTIES_FILE = "webindexer.properties";
-	public static final String DB_HOST_PROPERTY = "db.host";
-	public static final String DB_USER_PROPERTY = "db.user";
-	public 	static final String DB_PASSWORD_PROPERTY = "db.pw";
-	public static final String DB_TABLE = "WIUSERS";
+	String PROPERTIES_FILE = "webindexer.properties";
+	String DB_HOST_PROPERTY = "db.host";
+	String DB_USER_PROPERTY = "db.user";
+	String DB_PASSWORD_PROPERTY = "db.pw";
+	String DB_TABLE = "WIUSERS";
+	Connection connection = null;
 
-	public static Properties getProperties() throws FileNotFoundException, IOException {
+	public Keeper() {
+	}
+
+	public Keeper(boolean connectNow) throws SQLException, Exception {
+		if (connectNow) {
+			establishConnection();
+		}
+	}
+
+	public Properties getProperties() throws FileNotFoundException, IOException {
 		// настройки properties используются в течение работы программы
 		// доступ к ним осуществляется с помощью текущего метода
 		if (properties == null) {
@@ -35,82 +49,109 @@ public class Keeper {
 		return properties;
 	}
 
-	public static String getDBAccessUser() throws Exception {
+	public String getDBAccessUser() throws Exception {
 		return getProperties().getProperty(DB_USER_PROPERTY);
 	}
 
-	public static String getDBAccessHost() throws Exception {
+	public String getDBAccessHost() throws Exception {
 		return getProperties().getProperty(DB_HOST_PROPERTY);
 	}
 
-	public static String getDBAccessPassword() throws Exception {
+	public String getDBAccessPassword() throws Exception {
 		return getProperties().getProperty(DB_PASSWORD_PROPERTY);
 	}
 
-	public static Connection getConnection() throws SQLException, Exception {
+	public Connection establishConnection() throws SQLException, Exception {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		return DriverManager.getConnection(getDBAccessHost(), getDBAccessUser(), getDBAccessPassword());
+		connection = DriverManager.getConnection(getDBAccessHost(), getDBAccessUser(), getDBAccessPassword());
+		return connection;
 	}
 
-	public static void closeConnection(Connection con) throws SQLException {
-		if (con != null)
-			con.close();
+	public Connection getConnection() {
+		return connection;
 	}
-	
+
+	public void closeConnection() throws SQLException {
+		if (connection != null)
+			connection.close();
+	}
+
 	public static byte[] objectToByteArray(Object obj) throws IOException {
-		try (
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ObjectOutputStream oos = new ObjectOutputStream(baos);
-			) {
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(baos);) {
 			oos.writeObject(obj);
 			return baos.toByteArray();
-		} 
+		}
 	}
 
-	public static void addUser(String user, String password, LinkedList<StatsUnit> stats) throws Exception {
-		Connection con = null;
+	public PreparedStatement insertUser(String user, String password, LinkedList<StatsUnit> stats) throws Exception {
 		PreparedStatement stmt = null;
-		try  {
-			con = getConnection();
-			stmt = con.prepareStatement("INSERT INTO WIUSERS (user, password, webstats) values (?,?,?)");
-			stmt.setString(1, "'"+user+"'");
-			stmt.setString(2, "'"+password+"'");
-			stmt.setBlob(3, new ByteArrayInputStream( objectToByteArray(stats) ));
+		stmt = connection.prepareStatement("INSERT INTO WIUSERS (user, password, webstats) values (?,?,?)");
+		stmt.setString(1, user);
+		stmt.setString(2, password);
+		stmt.setBlob(3, new ByteArrayInputStream(objectToByteArray(stats)));
+		stmt.execute();
+		return stmt;
+	}
+
+	public PreparedStatement updateUserStats(String user, LinkedList<StatsUnit> stats) throws Exception {
+		PreparedStatement stmt = null;
+		try {
+			stmt = connection.prepareStatement("UPDATE WIUSERS SET webstats = ? WHERE user = ?");
+			stmt.setBlob(1, new ByteArrayInputStream(objectToByteArray(stats)));
+			stmt.setString(2, user);
 			stmt.execute();
+			return stmt;
 		} finally {
-			closeConnection(con);
-			if(stmt != null) 
+			if (stmt != null)
 				stmt.close();
 		}
 
 	}
+
 	
-	public static void updateUserStats(String user, LinkedList<StatsUnit> stats) throws Exception {
-		Connection con = null;
+	public String getUserPassword(String user) throws Exception {
 		PreparedStatement stmt = null;
-		try  {
-			con = getConnection();
-			stmt = con.prepareStatement("UPDATE WIUSERS SET webstats = ? WHERE user = ?");
-			stmt.setBlob(1, new ByteArrayInputStream( objectToByteArray(stats) ));
-			stmt.setString(2, "'"+user+"'");
+		ResultSet rs = null;
+		String result = null;
+		try {
+			stmt = connection.prepareStatement("SELECT password FROM WIUSERS WHERE user = ?");
+			stmt.setString(1, user);
 			stmt.execute();
+			rs = stmt.getResultSet();
+			if (rs != null) {
+				if (rs.next())
+					result = rs.getString(1);
+			}
+			return result;
 		} finally {
-			closeConnection(con);
-			if(stmt != null) 
+			if (stmt != null)
 				stmt.close();
 		}
 
 	}
 
-	public static void main(String[] args) throws Exception {
-		String createTable = "CREATE TABLE `WIUSERS` (\r\n" + "  `id` INT NOT NULL AUTO_INCREMENT,\r\n"
-				+ "  `user` VARCHAR(64) NOT NULL,\r\n" + "  `password` VARCHAR(64) NOT NULL,\r\n"
-				+ "  `webstats` BLOB NULL,\r\n" + "  PRIMARY KEY (`id`),\r\n"
-				+ "  UNIQUE INDEX `id_UNIQUE` (`id` ASC),\r\n"
-				+ "  UNIQUE INDEX `user_UNIQUE` (`user` ASC))\r\n" + "ENGINE = InnoDB\r\n"
-				+ "DEFAULT CHARACTER SET = utf8\r\n" + "COLLATE = utf8_unicode_ci\r\n"
-				+ "COMMENT = 'WebIndexer app users and web stats table';\r\n";
-		System.out.println(createTable);
+	public LinkedList<StatsUnit> getUserStats(String user) throws Exception {
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = connection.prepareStatement("SELECT webstats FROM WIUSERS WHERE user = ?");
+			stmt.setString(1, user);
+			stmt.execute();
+			rs = stmt.getResultSet();
+			if (rs != null) {
+				if (rs.next()) {
+					Blob blob = rs.getBlob(1);
+					ObjectInputStream ois = new ObjectInputStream(blob.getBinaryStream());
+					return (LinkedList<StatsUnit>) ois.readObject();
+				}
+			}
+			return null;
+		} finally {
+			if (stmt != null)
+				stmt.close();
+		}
+
 	}
 
 	/*
@@ -119,13 +160,11 @@ public class Keeper {
 	 * хранится LinkedList<Stats> - связанный список, в котором хранятся данные о
 	 * проиндексированных пользователем страницах
 	 */
-	public static void initDataBase() throws Exception {
-		Connection con = null;
+	public void initDataBase() throws Exception {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			con = getConnection();
-			stmt = con.createStatement();
+			stmt = connection.createStatement();
 			try {
 				// запрос, чтобы проверить что таблица существует
 				stmt.execute("SELECT 1 FROM WIUSERS");
@@ -145,7 +184,6 @@ public class Keeper {
 			}
 
 		} finally {
-			closeConnection(con);
 			if (stmt != null)
 				stmt.close();
 			if (rs != null)
