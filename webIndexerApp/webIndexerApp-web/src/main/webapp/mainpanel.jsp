@@ -16,7 +16,7 @@
 <title>Список сайтов</title>
 <script>
 function addPage() {
-  var url = prompt("Введите адрес страницы:", "http://");
+  var url = prompt("Введите адрес страницы:", "https://");
   if (url != null && url != "") {
 	  var doIndex = confirm("Проиндексировать добавленную страницу?");
 	  var pass = "?add=" + url;
@@ -40,13 +40,13 @@ function addPage() {
 		response.sendRedirect("login.jsp");
 		return;
 	}
-	String user = (String)session.getAttribute("user");
+	User user = (User)session.getAttribute("user");
 	String msg = (String)session.getAttribute("message");
 	if(msg != null && msg != "")  //если было какое то сообщение 
-		session.setAttribute("message", null); //удалим его из сессии, чтобы оно не показывалось после обновления страницы
+		session.setAttribute("message", ""); //удалим его из сессии, чтобы оно не показывалось после обновления страницы
 %>
 <body link="#555555" vlink="#555555" alink="#aaaaaa">
-	<% if(msg != null) { %>
+	<% if(msg != "") { %>
 		<div align="center"><%=msg %></div>
 	<%} %>
 	<table id="welcome">
@@ -56,7 +56,8 @@ function addPage() {
 		</tr>
 	</table>
 	<% 
-		LinkedList<StatsUnit> pagesStats = StatsStorage.getWebStatsUser(user);
+		
+		LinkedList<StatsUnit> pagesStats = ((Keeper)session.getAttribute("keeper")).getUserStats(user.getLogin()); 
 	%>
 	<table id="site-list">
 		<tr>

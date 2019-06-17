@@ -21,7 +21,7 @@ import java.util.Properties;
 
 public class Keeper {
 	static Properties properties = null;
-	String PROPERTIES_FILE = "webindexer.properties";
+	String PROPERTIES_FILE = "/webindexer.properties";
 	String DB_HOST_PROPERTY = "db.host";
 	String DB_USER_PROPERTY = "db.user";
 	String DB_PASSWORD_PROPERTY = "db.pw";
@@ -63,11 +63,8 @@ public class Keeper {
 
 	public Connection establishConnection() throws SQLException, Exception {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		connection = DriverManager.getConnection(getDBAccessHost(), getDBAccessUser(), getDBAccessPassword());
-		return connection;
-	}
-
-	public Connection getConnection() {
+		if (connection.isClosed())
+			connection = DriverManager.getConnection(getDBAccessHost(), getDBAccessUser(), getDBAccessPassword());
 		return connection;
 	}
 
@@ -85,16 +82,31 @@ public class Keeper {
 	}
 
 	public PreparedStatement insertUser(String user, String password, LinkedList<StatsUnit> stats) throws Exception {
-		PreparedStatement stmt = null;
-		stmt = connection.prepareStatement("INSERT INTO WIUSERS (user, password, webstats) values (?,?,?)");
-		stmt.setString(1, user);
-		stmt.setString(2, password);
-		stmt.setBlob(3, new ByteArrayInputStream(objectToByteArray(stats)));
-		stmt.execute();
-		return stmt;
+		boolean closeConnection = false; // нужно ли закрывать соединение по окончании метода
+		if (connection.isClosed()) { // если соединение не установлено, то мы сами его устанавливаем,
+			establishConnection();
+			closeConnection = true; // но также сами и закрываем
+		}
+		try {
+			PreparedStatement stmt = null;
+			stmt = connection.prepareStatement("INSERT INTO WIUSERS (user, password, webstats) values (?,?,?)");
+			stmt.setString(1, user);
+			stmt.setString(2, password);
+			stmt.setBlob(3, new ByteArrayInputStream(objectToByteArray(stats)));
+			stmt.execute();
+			return stmt;
+		} finally {
+			if (closeConnection)
+				closeConnection();
+		}
 	}
 
 	public PreparedStatement updateUserStats(String user, LinkedList<StatsUnit> stats) throws Exception {
+		boolean closeConnection = false; 
+		if (connection.isClosed()) { 
+			establishConnection();
+			closeConnection = true; 
+		}
 		PreparedStatement stmt = null;
 		try {
 			stmt = connection.prepareStatement("UPDATE WIUSERS SET webstats = ? WHERE user = ?");
@@ -105,12 +117,18 @@ public class Keeper {
 		} finally {
 			if (stmt != null)
 				stmt.close();
+			if (closeConnection)
+				closeConnection();
 		}
 
 	}
 
-	
 	public String getUserPassword(String user) throws Exception {
+		boolean closeConnection = false; 
+		if (connection.isClosed()) { 
+			establishConnection();
+			closeConnection = true; 
+		}
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String result = null;
@@ -127,11 +145,18 @@ public class Keeper {
 		} finally {
 			if (stmt != null)
 				stmt.close();
+			if (closeConnection)
+				closeConnection();
 		}
 
 	}
 
 	public LinkedList<StatsUnit> getUserStats(String user) throws Exception {
+		boolean closeConnection = false; 
+		if (connection.isClosed()) { 
+			establishConnection();
+			closeConnection = true; 
+		}
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -150,6 +175,8 @@ public class Keeper {
 		} finally {
 			if (stmt != null)
 				stmt.close();
+			if (closeConnection)
+				closeConnection();
 		}
 
 	}
@@ -161,6 +188,11 @@ public class Keeper {
 	 * проиндексированных пользователем страницах
 	 */
 	public void initDataBase() throws Exception {
+		boolean closeConnection = false; 
+		if (connection.isClosed()) { 
+			establishConnection();
+			closeConnection = true; 
+		}
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -188,6 +220,8 @@ public class Keeper {
 				stmt.close();
 			if (rs != null)
 				rs.close();
+			if (closeConnection)
+				closeConnection();
 		}
 	}
 }
