@@ -66,6 +66,8 @@
 			keeper = new Keeper(false);
 			session.setAttribute("keeper", keeper);
 		}
+		if(login == "" || password == "")
+			return;
 		try {
 			String passwordDB = keeper.getUserPassword(login);
 			if (passwordDB != null && passwordDB.equals(password)) {

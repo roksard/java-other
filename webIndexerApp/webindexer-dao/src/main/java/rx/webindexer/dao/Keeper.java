@@ -83,6 +83,7 @@ public class Keeper {
 
 	public PreparedStatement insertUser(String user, String password, LinkedList<StatsUnit> stats) throws Exception {
 		boolean closeConnection = false; // нужно ли закрывать соединение по окончании метода
+		//TODO: (NullPointerException thrown, cuz connection == null
 		if (connection.isClosed()) { // если соединение не установлено, то мы сами его устанавливаем,
 			establishConnection();
 			closeConnection = true; // но также сами и закрываем

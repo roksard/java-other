@@ -40,10 +40,12 @@ function addPage() {
 		response.sendRedirect("login.jsp");
 		return;
 	}
-	User user = (User)session.getAttribute("user");
+
+	User user = (User)session.getAttribute("user"); 
+	Keeper keeper = (Keeper)session.getAttribute("keeper");
 	String msg = (String)session.getAttribute("message");
 	if(msg != null && msg != "")  //если было какое то сообщение 
-		session.setAttribute("message", ""); //удалим его из сессии, чтобы оно не показывалось после обновления страницы
+		session.setAttribute("message", ""); //удалим его из сессии, т.к мы его уже прочитали
 %>
 <body link="#555555" vlink="#555555" alink="#aaaaaa">
 	<% if(msg != "") { %>
@@ -56,8 +58,12 @@ function addPage() {
 		</tr>
 	</table>
 	<% 
-		
-		LinkedList<StatsUnit> pagesStats = ((Keeper)session.getAttribute("keeper")).getUserStats(user.getLogin()); 
+		LinkedList<StatsUnit> pagesStats = (LinkedList<StatsUnit>) session.getAttribute("stats");
+		if(pagesStats == null) { 
+			//если отсутствует сохраненная статистика в текущей сессии, получаем ее из БД
+			pagesStats = keeper.getUserStats(user.getLogin());
+			session.setAttribute("stats", pagesStats);
+		}
 	%>
 	<table id="site-list">
 		<tr>
@@ -104,36 +110,39 @@ function addPage() {
 		}		
 		
 		String index = request.getParameter("index");
-		if(index != null) {			
+		if(index != null) {	
+			//параметр index передан, что означает необходимость проиндексировать страницу с id=index
 			int id = Integer.parseInt(index);
-			String url = StatsStorage.getWebStatsUser(user).get(id).getName();
+			String url = pagesStats.get(id).getName();
 			StatsUnit stats = null;
 			try {
 				stats = Service.calcStats( Service.parseHtml( Service.loadPage( url)));
 				stats.setName(url);
-				StatsStorage.getWebStatsUser(user).set(id, stats);
+				pagesStats.set(id, stats);
 			} catch(Exception e) {
 				session.setAttribute("message", "Не удалось проиндексировать страницу " + url);
 			}
-			StatsStorage.saveToExternalDefault();
+			keeper.updateUserStats(user.getLogin(), pagesStats);
 			response.sendRedirect("mainpanel.jsp"); //refresh page
 		}
 		
 		String remove = request.getParameter("remove");
 		if(remove != null) {
+			//запрос на удаление страницы
 			int id = Integer.parseInt(remove);
-			StatsStorage.getWebStatsUser(user).remove(id);
-			StatsStorage.saveToExternalDefault();
+			pagesStats.remove(id);
+			keeper.updateUserStats(user.getLogin(), pagesStats);
 			response.sendRedirect("mainpanel.jsp"); //refresh page
 		}
 		
 		String add = request.getParameter("add");
-		if(add != null) { //добавить страницу
+		if(add != null) { 
+			//добавить страницу
 			String doIndex = request.getParameter("doindex");
-			StatsStorage.addWebStatsUser(user, new StatsUnit(add));
-			StatsStorage.saveToExternalDefault();
+			pagesStats.add(new StatsUnit(add));
+			keeper.updateUserStats(user.getLogin(), pagesStats);
 			if(doIndex != null && doIndex.equals("true"))
-				response.sendRedirect("?index=" + (StatsStorage.getWebStatsUser(user).size()-1));
+				response.sendRedirect("?index=" + (pagesStats.size()-1));
 			else
 				response.sendRedirect("mainpanel.jsp"); //refresh page
 			
