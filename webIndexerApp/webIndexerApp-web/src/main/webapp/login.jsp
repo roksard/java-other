@@ -59,19 +59,19 @@
 			login = "";
 		if (password == null)
 			password = "";
-		//response.getWriter().println(login + password);
-		//get password(login)  check if equals
-		Keeper keeper = (Keeper) session.getAttribute("keeper");
-		if (keeper == null) {
-			keeper = new Keeper(false);
-			session.setAttribute("keeper", keeper);
-		}
 		if(login == "" || password == "")
 			return;
+		Keeper keeper = (Keeper) session.getAttribute("keeper");
+		if (keeper == null) {
+			keeper = new Keeper();
+			keeper.establishConnection();
+			session.setAttribute("keeper", keeper);
+		}
 		try {
 			String passwordDB = keeper.getUserPassword(login);
 			if (passwordDB != null && passwordDB.equals(password)) {
 				session.setAttribute("user", new User(login, "")); //объект текущего пользователя будет храниться в сессии
+				session.setAttribute("stats", keeper.getUserStats(login)); //загружаем статистику
 				response.sendRedirect("login.jsp");
 			} else {
 				if (login != "" || password != "") {
@@ -87,7 +87,10 @@
 				session.setAttribute("message", "Не удалось подключиться к БД: " + e1.toString());
 				response.sendRedirect("message.jsp");
 			}
+		} finally {
+			keeper.closeConnection();
 		}
+		
 	%>
 </body>
 </html>

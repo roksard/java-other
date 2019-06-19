@@ -6,6 +6,7 @@
 <%@page import="rx.webindexer.dao.*"%>
 <%@page import="java.io.IOException" %>
 <%@page import="java.util.LinkedList" %>
+<%@page import="java.util.concurrent.CopyOnWriteArrayList" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -41,11 +42,17 @@ function addPage() {
 		return;
 	}
 
-	User user = (User)session.getAttribute("user"); 
+	String user = ((User)session.getAttribute("user")).getLogin(); 
 	Keeper keeper = (Keeper)session.getAttribute("keeper");
 	String msg = (String)session.getAttribute("message");
-	if(msg != null && msg != "")  //если было какое то сообщение 
-		session.setAttribute("message", ""); //удалим его из сессии, т.к мы его уже прочитали
+	if(msg == null || msg.equals(""))
+		msg = ""; 
+	else //если было какое то сообщение
+		session.setAttribute("message", ""); //очистим сообщение, т.к мы его уже прочитали
+		
+	CopyOnWriteArrayList<StatsUnit> pagesStats = (CopyOnWriteArrayList<StatsUnit>) session.getAttribute("stats");
+	if(pagesStats == null)
+		pagesStats = new CopyOnWriteArrayList<StatsUnit>();
 %>
 <body link="#555555" vlink="#555555" alink="#aaaaaa">
 	<% if(msg != "") { %>
@@ -57,14 +64,6 @@ function addPage() {
 			<td align="center" id="logout"><a href="?logout=true">Выход</a></td>
 		</tr>
 	</table>
-	<% 
-		LinkedList<StatsUnit> pagesStats = (LinkedList<StatsUnit>) session.getAttribute("stats");
-		if(pagesStats == null) { 
-			//если отсутствует сохраненная статистика в текущей сессии, получаем ее из БД
-			pagesStats = keeper.getUserStats(user.getLogin());
-			session.setAttribute("stats", pagesStats);
-		}
-	%>
 	<table id="site-list">
 		<tr>
 			<th align="center" colspan="4">Список сайтов</th>
@@ -105,7 +104,7 @@ function addPage() {
 		
 		String logout = request.getParameter("logout"); 
 		if(logout != null && logout.equals("true")) {
-			session.setAttribute("user", null);
+			session.invalidate();
 			response.sendRedirect("login.jsp");
 		}		
 		
@@ -122,7 +121,7 @@ function addPage() {
 			} catch(Exception e) {
 				session.setAttribute("message", "Не удалось проиндексировать страницу " + url);
 			}
-			keeper.updateUserStats(user.getLogin(), pagesStats);
+			keeper.updateUserStats(user, pagesStats);
 			response.sendRedirect("mainpanel.jsp"); //refresh page
 		}
 		
@@ -131,7 +130,7 @@ function addPage() {
 			//запрос на удаление страницы
 			int id = Integer.parseInt(remove);
 			pagesStats.remove(id);
-			keeper.updateUserStats(user.getLogin(), pagesStats);
+			keeper.updateUserStats(user, pagesStats);
 			response.sendRedirect("mainpanel.jsp"); //refresh page
 		}
 		
@@ -140,7 +139,7 @@ function addPage() {
 			//добавить страницу
 			String doIndex = request.getParameter("doindex");
 			pagesStats.add(new StatsUnit(add));
-			keeper.updateUserStats(user.getLogin(), pagesStats);
+			keeper.updateUserStats(user, pagesStats);
 			if(doIndex != null && doIndex.equals("true"))
 				response.sendRedirect("?index=" + (pagesStats.size()-1));
 			else

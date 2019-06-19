@@ -6,22 +6,23 @@
 <%@page import="java.util.Locale"%>
 <%@page import="static rx.webindexer.dao.StatsUnit.LetterType.cyrillic"%>
 <%@page import="static rx.webindexer.dao.StatsUnit.LetterType.latin"%>
+<%@page import="java.util.LinkedList" %>
 
 <% 
 	if(!Util.isLogged(request)) {
 		response.sendRedirect("login.jsp");
 		return;
-	}
-	String user = (String)request.getSession().getAttribute("user");
+	}	
 	String idpass = request.getParameter("id");
 	StatsUnit stats = null;
+	
+	LinkedList<StatsUnit> pagesStats = (LinkedList<StatsUnit>) session.getAttribute("stats");
+	if(pagesStats == null)
+		pagesStats = new LinkedList<StatsUnit>();
+		
 	if(idpass != null) {			
 		int id = Integer.parseInt(idpass);
-		try {
-			stats = StatsStorage.getWebStatsUser(user).get(id);
-		} catch (Exception e) {
-			//ничего не делаем, дальше на странице проверим stats на null
-		}
+		stats = pagesStats.get(id);
 	}
 	
 %>    

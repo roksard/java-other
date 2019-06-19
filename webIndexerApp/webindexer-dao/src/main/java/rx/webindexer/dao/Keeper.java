@@ -5,10 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,6 +16,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.Properties;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Keeper {
 	static Properties properties = null;
@@ -63,7 +62,7 @@ public class Keeper {
 
 	public Connection establishConnection() throws SQLException, Exception {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		if (connection.isClosed())
+		if (!isConnected())
 			connection = DriverManager.getConnection(getDBAccessHost(), getDBAccessUser(), getDBAccessPassword());
 		return connection;
 	}
@@ -71,6 +70,14 @@ public class Keeper {
 	public void closeConnection() throws SQLException {
 		if (connection != null)
 			connection.close();
+	}
+	
+	public boolean isConnected() {
+		try {
+			return (connection != null && (!connection.isClosed()));
+		} catch (SQLException e) {
+			return false;
+		} 
 	}
 
 	public static byte[] objectToByteArray(Object obj) throws IOException {
@@ -81,13 +88,13 @@ public class Keeper {
 		}
 	}
 
-	public PreparedStatement insertUser(String user, String password, LinkedList<StatsUnit> stats) throws Exception {
+	public PreparedStatement insertUser(String user, String password, CopyOnWriteArrayList<StatsUnit> stats) throws Exception {
 		boolean closeConnection = false; // нужно ли закрывать соединение по окончании метода
-		//TODO: (NullPointerException thrown, cuz connection == null
-		if (connection.isClosed()) { // если соединение не установлено, то мы сами его устанавливаем,
+		if (isConnected()); 
+		else { // если соединение не установлено, то мы сами его устанавливаем,
 			establishConnection();
 			closeConnection = true; // но также сами и закрываем
-		}
+		} 
 		try {
 			PreparedStatement stmt = null;
 			stmt = connection.prepareStatement("INSERT INTO WIUSERS (user, password, webstats) values (?,?,?)");
@@ -102,11 +109,12 @@ public class Keeper {
 		}
 	}
 
-	public PreparedStatement updateUserStats(String user, LinkedList<StatsUnit> stats) throws Exception {
+	public PreparedStatement updateUserStats(String user, CopyOnWriteArrayList<StatsUnit> stats) throws Exception {
 		boolean closeConnection = false; 
-		if (connection.isClosed()) { 
+		if (isConnected()); 
+		else { // если соединение не установлено, то мы сами его устанавливаем,
 			establishConnection();
-			closeConnection = true; 
+			closeConnection = true; // но также сами и закрываем
 		}
 		PreparedStatement stmt = null;
 		try {
@@ -126,9 +134,10 @@ public class Keeper {
 
 	public String getUserPassword(String user) throws Exception {
 		boolean closeConnection = false; 
-		if (connection.isClosed()) { 
+		if (isConnected()); 
+		else { // если соединение не установлено, то мы сами его устанавливаем,
 			establishConnection();
-			closeConnection = true; 
+			closeConnection = true; // но также сами и закрываем
 		}
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -152,11 +161,12 @@ public class Keeper {
 
 	}
 
-	public LinkedList<StatsUnit> getUserStats(String user) throws Exception {
+	public CopyOnWriteArrayList<StatsUnit> getUserStats(String user) throws Exception {
 		boolean closeConnection = false; 
-		if (connection.isClosed()) { 
+		if (isConnected()); 
+		else { // если соединение не установлено, то мы сами его устанавливаем,
 			establishConnection();
-			closeConnection = true; 
+			closeConnection = true; // но также сами и закрываем
 		}
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -168,8 +178,12 @@ public class Keeper {
 			if (rs != null) {
 				if (rs.next()) {
 					Blob blob = rs.getBlob(1);
-					ObjectInputStream ois = new ObjectInputStream(blob.getBinaryStream());
-					return (LinkedList<StatsUnit>) ois.readObject();
+					if(blob == null)
+						return null;
+					else {
+						ObjectInputStream ois = new ObjectInputStream(blob.getBinaryStream());
+						return (CopyOnWriteArrayList<StatsUnit>) ois.readObject();
+					}
 				}
 			}
 			return null;
@@ -190,9 +204,10 @@ public class Keeper {
 	 */
 	public void initDataBase() throws Exception {
 		boolean closeConnection = false; 
-		if (connection.isClosed()) { 
+		if (isConnected()); 
+		else { // если соединение не установлено, то мы сами его устанавливаем,
 			establishConnection();
-			closeConnection = true; 
+			closeConnection = true; // но также сами и закрываем
 		}
 		Statement stmt = null;
 		ResultSet rs = null;
