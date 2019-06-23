@@ -3,8 +3,10 @@ package rx.webindexer.dao;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.TreeMap;
 
 import org.junit.After;
@@ -14,6 +16,8 @@ import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
+
+import rx.webindexer.security.Hasher;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestKeeper extends Keeper {
@@ -107,7 +111,7 @@ public class TestKeeper extends Keeper {
 	public void _b_shouldInsertUser() {
 		try {
 			PreparedStatement stmt =
-			insertUser(testUser.getLogin(), testUser.getPassword(), stats);
+			insertUser(testUser.getLogin(), Hasher.hashPasswordRandom(testUser.getPassword()), stats);
 			boolean updated1 = stmt.getUpdateCount() == 1;
 			Assert.assertTrue(updated1);
 		} catch (Exception e) {
@@ -119,7 +123,7 @@ public class TestKeeper extends Keeper {
 	@Test
 	public void _c_shouldGetUserStats() {
 		try {
-			LinkedList<StatsUnit> stats1 = getUserStats(testUser.getLogin());
+			List<StatsUnit> stats1 = getUserStats(testUser.getLogin());
 			Assert.assertTrue(stats1.equals(stats));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -127,11 +131,14 @@ public class TestKeeper extends Keeper {
 		}
 	}
 	
-	@Test
+	@Test @Ignore
 	public void _d_shouldGetUserPassword() {
 		try {
-			String pass = getUserPassword(testUser.getLogin());
-			Assert.assertTrue(pass.equals(testUser.getPassword()));
+			byte[] pwdRaw = getUserPassword(testUser.getLogin());
+			byte[] salt = Hasher.extractSalt(pwdRaw);
+			byte[] hash = Hasher.extractHash(pwdRaw);
+			byte[] userHash = Hasher.hashPassword(testUser.getPassword(), salt);
+			Assert.assertTrue(Arrays.equals(hash, userHash));
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail();

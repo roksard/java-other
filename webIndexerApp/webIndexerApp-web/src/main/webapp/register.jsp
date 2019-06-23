@@ -3,6 +3,7 @@
 <%@page import="javax.xml.ws.RequestWrapper"%>
 <%@page import="rx.webindexer.dao.*"%>
 <%@page import="rx.webapp.Util"%>
+<%@page import="rx.webindexer.security.Hasher"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -84,11 +85,12 @@
 						keeper = new Keeper();
 					}
 					try {
-						keeper.insertUser(login, password, null);
+						keeper.insertUser(login, Hasher.hashPasswordRandom(password), null);
 						session.setAttribute("msg", "Учетная запись " + login + " успешно зарегистрирована.");
 						response.sendRedirect("register.jsp");
 					} catch (Exception e) {
 						e.printStackTrace();
+						keeper.initDataBase();
 					}
 				}
 			}

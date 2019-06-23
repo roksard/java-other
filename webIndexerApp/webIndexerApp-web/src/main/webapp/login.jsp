@@ -8,6 +8,8 @@
 <%@page import="java.util.List" %>
 <%@page import="java.util.ArrayList" %>
 <%@page import="java.util.Collections" %>
+<%@page import="rx.webindexer.security.Hasher"%>
+<%@page import="java.util.Arrays"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -71,8 +73,11 @@
 			session.setAttribute("keeper", keeper);
 		}
 		try {
-			String passwordDB = keeper.getUserPassword(login);
-			if (passwordDB != null && passwordDB.equals(password)) {
+			byte[] hashRaw = keeper.getUserPassword(login);
+			byte[] hash = Hasher.extractHash(hashRaw);
+			byte[] salt = Hasher.extractSalt(hashRaw);
+			byte[] hashUser = Hasher.hashPassword(password, salt);
+			if (Arrays.equals(hash, hashUser)) {
 				session.setAttribute("user", new User(login, "")); //объект текущего пользователя будет храниться в сессии
 				
 				//загружаем статистику веб страниц: 

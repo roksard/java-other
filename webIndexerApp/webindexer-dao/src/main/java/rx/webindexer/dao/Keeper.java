@@ -87,7 +87,7 @@ public class Keeper {
 		}
 	}
 
-	public PreparedStatement insertUser(String user, String password, List<StatsUnit> stats) throws Exception {
+	public PreparedStatement insertUser(String user, byte[] password, List<StatsUnit> stats) throws Exception {
 		boolean closeConnection = false; // нужно ли закрывать соединение по окончании метода
 		if (isConnected()); 
 		else { // если соединение не установлено, то мы сами его устанавливаем,
@@ -98,7 +98,7 @@ public class Keeper {
 			PreparedStatement stmt = null;
 			stmt = connection.prepareStatement("INSERT INTO WIUSERS (user, password, webstats) values (?,?,?)");
 			stmt.setString(1, user);
-			stmt.setString(2, password);
+			stmt.setBytes(2, password);
 			stmt.setBlob(3, new ByteArrayInputStream(objectToByteArray(stats)));
 			stmt.execute();
 			return stmt;
@@ -131,7 +131,7 @@ public class Keeper {
 
 	}
 
-	public String getUserPassword(String user) throws Exception {
+	public byte[] getUserPassword(String user) throws Exception {
 		boolean closeConnection = false; 
 		if (isConnected()); 
 		else { // если соединение не установлено, то мы сами его устанавливаем,
@@ -140,7 +140,7 @@ public class Keeper {
 		}
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String result = null;
+		byte[] result = null;
 		try {
 			stmt = connection.prepareStatement("SELECT password FROM WIUSERS WHERE user = ?");
 			stmt.setString(1, user);
@@ -148,7 +148,7 @@ public class Keeper {
 			rs = stmt.getResultSet();
 			if (rs != null) {
 				if (rs.next())
-					result = rs.getString(1);
+					result = rs.getBytes(1);
 			}
 			return result;
 		} finally {
@@ -219,7 +219,7 @@ public class Keeper {
 				// 42S02: Table or view doesn't exist
 				if (e.getSQLState().equalsIgnoreCase("42S02")) {
 					String createTable = "CREATE TABLE `WIUSERS` (\r\n" + "  `id` INT NOT NULL AUTO_INCREMENT,\r\n"
-							+ "  `user` VARCHAR(64) NOT NULL,\r\n" + "  `password` VARCHAR(64) NOT NULL,\r\n"
+							+ "  `user` VARCHAR(64) NOT NULL,\r\n" + "  `password` BINARY(128) NULL,\r\n"
 							+ "  `webstats` BLOB NULL,\r\n" + "  PRIMARY KEY (`id`),\r\n"
 							+ "  UNIQUE INDEX `id_UNIQUE` (`id` ASC),\r\n"
 							+ "  UNIQUE INDEX `user_UNIQUE` (`user` ASC))\r\n" + "ENGINE = InnoDB\r\n"
