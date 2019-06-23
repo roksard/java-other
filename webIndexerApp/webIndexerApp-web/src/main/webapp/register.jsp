@@ -75,12 +75,21 @@
 			} else {
 				if (!password.equals(password2)) {
 					session.setAttribute("msg",
-							"Введенные пароли не совпадают. Пожалуйста вводите один и тот же" + " пароль.");
+							"Введенные пароли не совпадают. Необходимо ввести один и тот же" + " пароль.");
 					response.sendRedirect("register.jsp");
 				} else {
 					User newOne = new User(login, password);
-					Users.addUser(newOne);
-					Users.saveToExternalDefault();
+					Keeper keeper = (Keeper) session.getAttribute("keeper");
+					if (keeper == null) {
+						keeper = new Keeper();
+					}
+					try {
+						keeper.insertUser(login, password, null);
+						session.setAttribute("msg", "Учетная запись " + login + " успешно зарегистрирована.");
+						response.sendRedirect("register.jsp");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
