@@ -14,9 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Keeper {
 	static Properties properties = null;
@@ -88,7 +87,7 @@ public class Keeper {
 		}
 	}
 
-	public PreparedStatement insertUser(String user, String password, CopyOnWriteArrayList<StatsUnit> stats) throws Exception {
+	public PreparedStatement insertUser(String user, String password, List<StatsUnit> stats) throws Exception {
 		boolean closeConnection = false; // нужно ли закрывать соединение по окончании метода
 		if (isConnected()); 
 		else { // если соединение не установлено, то мы сами его устанавливаем,
@@ -109,7 +108,7 @@ public class Keeper {
 		}
 	}
 
-	public PreparedStatement updateUserStats(String user, CopyOnWriteArrayList<StatsUnit> stats) throws Exception {
+	public PreparedStatement updateUserStats(String user, List<StatsUnit> stats) throws Exception {
 		boolean closeConnection = false; 
 		if (isConnected()); 
 		else { // если соединение не установлено, то мы сами его устанавливаем,
@@ -161,7 +160,7 @@ public class Keeper {
 
 	}
 
-	public CopyOnWriteArrayList<StatsUnit> getUserStats(String user) throws Exception {
+	public List<StatsUnit> getUserStats(String user) throws Exception {
 		boolean closeConnection = false; 
 		if (isConnected()); 
 		else { // если соединение не установлено, то мы сами его устанавливаем,
@@ -182,7 +181,7 @@ public class Keeper {
 						return null;
 					else {
 						ObjectInputStream ois = new ObjectInputStream(blob.getBinaryStream());
-						return (CopyOnWriteArrayList<StatsUnit>) ois.readObject();
+						return (List<StatsUnit>) ois.readObject();
 					}
 				}
 			}

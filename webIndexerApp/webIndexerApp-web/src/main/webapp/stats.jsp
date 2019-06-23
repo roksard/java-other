@@ -6,7 +6,7 @@
 <%@page import="java.util.Locale"%>
 <%@page import="static rx.webindexer.dao.StatsUnit.LetterType.cyrillic"%>
 <%@page import="static rx.webindexer.dao.StatsUnit.LetterType.latin"%>
-<%@page import="java.util.LinkedList" %>
+<%@page import="java.util.List" %>
 
 <% 
 	if(!Util.isLogged(request)) {
@@ -16,13 +16,13 @@
 	String idpass = request.getParameter("id");
 	StatsUnit stats = null;
 	
-	LinkedList<StatsUnit> pagesStats = (LinkedList<StatsUnit>) session.getAttribute("stats");
-	if(pagesStats == null)
-		pagesStats = new LinkedList<StatsUnit>();
+	List<StatsUnit> pagesStats = (List<StatsUnit>) session.getAttribute("stats");
 		
 	if(idpass != null) {			
 		int id = Integer.parseInt(idpass);
-		stats = pagesStats.get(id);
+		synchronized (pagesStats) {
+			stats = pagesStats.get(id);
+		}
 	}
 	
 %>    

@@ -5,6 +5,9 @@
 <%@page import="rx.webapp.Util"%>
 <%@page import="java.sql.SQLException"%>
 <%@page import="java.io.*"%>
+<%@page import="java.util.List" %>
+<%@page import="java.util.ArrayList" %>
+<%@page import="java.util.Collections" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -59,7 +62,7 @@
 			login = "";
 		if (password == null)
 			password = "";
-		if(login == "" || password == "")
+		if (login == "" || password == "")
 			return;
 		Keeper keeper = (Keeper) session.getAttribute("keeper");
 		if (keeper == null) {
@@ -71,7 +74,16 @@
 			String passwordDB = keeper.getUserPassword(login);
 			if (passwordDB != null && passwordDB.equals(password)) {
 				session.setAttribute("user", new User(login, "")); //объект текущего пользователя будет храниться в сессии
-				session.setAttribute("stats", keeper.getUserStats(login)); //загружаем статистику
+				
+				//загружаем статистику веб страниц: 
+				List<StatsUnit> pagesStats = (List<StatsUnit>)keeper.getUserStats(login);
+				if (pagesStats == null) {
+					pagesStats = new ArrayList<StatsUnit>();
+
+				}
+				pagesStats = Collections.synchronizedList(pagesStats);
+				session.setAttribute("stats", pagesStats);
+				
 				response.sendRedirect("login.jsp");
 			} else {
 				if (login != "" || password != "") {
@@ -90,7 +102,6 @@
 		} finally {
 			keeper.closeConnection();
 		}
-		
 	%>
 </body>
 </html>
