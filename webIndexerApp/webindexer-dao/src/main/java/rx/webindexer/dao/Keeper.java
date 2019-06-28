@@ -19,7 +19,7 @@ import java.util.Properties;
 
 public class Keeper {
 	static Properties properties = null;
-	String PROPERTIES_FILE = "/webindexer.properties";
+	String PROPERTIES_FILE = System.getenv("HOME")+"/webindexer.properties";
 	String DB_HOST_PROPERTY = "db.host";
 	String DB_USER_PROPERTY = "db.user";
 	String DB_PASSWORD_PROPERTY = "db.pw";
