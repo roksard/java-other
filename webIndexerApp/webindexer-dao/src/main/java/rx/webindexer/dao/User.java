@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class User implements Serializable {
 	private static final long serialVersionUID = 1402456403585069370L;
 	private String login;
-	private String password; //можно хранить только хеш пароля для безопасности
+	private String password; 
 	
 	public User() {
 		login = "";

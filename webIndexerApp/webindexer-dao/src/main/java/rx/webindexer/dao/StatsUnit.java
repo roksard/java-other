@@ -8,13 +8,62 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class StatsUnit implements Serializable {
-	private static final long serialVersionUID = 6810977218324303586L;
+	private static final long serialVersionUID = 6768679810558495158L;
 	public enum LetterType {cyrillic, latin}
 	
 	public StatsUnit() {
 		super();
 	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (calculated ? 1231 : 1237);
+		result = prime * result + ((letterFrequency == null) ? 0 : letterFrequency.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + Float.floatToIntBits(nonCyrillicWordsPercent);
+		result = prime * result + ((topWords == null) ? 0 : topWords.hashCode());
+		result = prime * result + Float.floatToIntBits(uniqueWordsPercent);
+		result = prime * result + wordsCount;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		StatsUnit other = (StatsUnit) obj;
+		if (calculated != other.calculated)
+			return false;
+		if (letterFrequency == null) {
+			if (other.letterFrequency != null)
+				return false;
+		} else if (!letterFrequency.equals(other.letterFrequency))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (Float.floatToIntBits(nonCyrillicWordsPercent) != Float.floatToIntBits(other.nonCyrillicWordsPercent))
+			return false;
+		if (topWords == null) {
+			if (other.topWords != null)
+				return false;
+		} else if (!topWords.equals(other.topWords))
+			return false;
+		if (Float.floatToIntBits(uniqueWordsPercent) != Float.floatToIntBits(other.uniqueWordsPercent))
+			return false;
+		if (wordsCount != other.wordsCount)
+			return false;
+		return true;
+	}
+
 	public StatsUnit(String name) {
 		super();
 		this.name = name;
