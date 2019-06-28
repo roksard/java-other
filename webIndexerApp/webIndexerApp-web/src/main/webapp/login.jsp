@@ -28,8 +28,13 @@
 </style>
 </head>
 <body>
-	<p id="intro">
-		<b>Приложение для индексации веб-страниц webindexer.</b></br> Пожалуйста
+		<p id="intro"><b>Приложение для индексации веб-страниц webindexer.</b></br>
+		Исходный код приложения доступен по ссылке 
+		<a href="https://github.com/roksard/java-other/tree/master/webIndexerApp">
+		github.com/roksard/java-other/tree/master/webIndexerApp</a> 
+		</p>
+	<p id="intro">	
+		Пожалуйста
 		выполните вход, либо </br> <a href="register.jsp">пройдите быструю
 			регистрацию</a>
 	</p>
@@ -73,14 +78,17 @@
 			session.setAttribute("keeper", keeper);
 		}
 		try {
+			//сверяем хеш введенного пароля и хеш из БД
 			byte[] hashRaw = keeper.getUserPassword(login);
 			byte[] hash = Hasher.extractHash(hashRaw);
 			byte[] salt = Hasher.extractSalt(hashRaw);
 			byte[] hashUser = Hasher.hashPassword(password, salt);
 			if (Arrays.equals(hash, hashUser)) {
-				session.setAttribute("user", new User(login, "")); //объект текущего пользователя будет храниться в сессии
+				//объект текущего пользователя будет храниться в сессии
+				//наличие этого объекта и есть подтверждение логина
+				session.setAttribute("user", new User(login, "")); 
 				
-				//загружаем статистику веб страниц: 
+				//загружаем статистику веб страниц для текущего пользователя 
 				List<StatsUnit> pagesStats = (List<StatsUnit>)keeper.getUserStats(login);
 				if (pagesStats == null) {
 					pagesStats = new ArrayList<StatsUnit>();

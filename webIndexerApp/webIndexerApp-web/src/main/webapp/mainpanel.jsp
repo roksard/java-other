@@ -52,6 +52,7 @@ th {
 	else //если было какое то сообщение
 		session.setAttribute("message", ""); //очистим сообщение, т.к мы его уже прочитали
 
+	//берем статистику веб страниц для пользователя из сессии
 	List<StatsUnit> pagesStats = (List<StatsUnit>) session.getAttribute("stats");
 %>
 <body link="#555555" vlink="#555555" alink="#aaaaaa">
