@@ -14,11 +14,11 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
-	  <maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		<org.jooq.version>3.11.11</org.jooq.version>
 		<db.driver>org.postgresql.Driver</db.driver>
 		<db.url>jdbc:postgresql://127.0.0.1:5432/postgres</db.url>
-		<db.user>postgres</db.user>
+		<db.username>postgres</db.username>
 		<db.password>6696</db.password>
 	</properties>
 
@@ -38,6 +38,21 @@
 			<artifactId>jooq-codegen</artifactId>
 			<version>3.11.11</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>4.2.5.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>4.2.5.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.4.1212</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -55,7 +70,7 @@
 						<configuration>
 							<driver>${db.driver}</driver>
 							<url>${db.url}</url>
-							<username>${db.user}</username>
+							<username>${db.username}</username>
 							<password>${db.password}</password>
 							<srcFiles>
 								<srcFile>src/main/resources/intro_schema.sql</srcFile>
@@ -109,7 +124,7 @@
 					<jdbc>
 						<driver>${db.driver}</driver>
 						<url>${db.url}</url>
-						<user>${db.user}</user>
+						<user>${db.username}</user>
 						<password>${db.password}</password>
 					</jdbc>
 
@@ -124,8 +139,8 @@
 							<inputSchema>public</inputSchema>
 						</database>
 						<target>
-							<packageName>org.jooq.codegen.maven.example</packageName>
-							<directory>target/generated-sources/jooq</directory>
+							<packageName>ru.roksard.jooqgenerated</packageName>
+							<directory>src/main/java</directory>
 						</target>
 					</generator>
 				</configuration>
