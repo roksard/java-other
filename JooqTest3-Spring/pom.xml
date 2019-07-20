@@ -13,6 +13,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+	  <maven.compiler.target>1.8</maven.compiler.target>
 		<org.jooq.version>3.11.11</org.jooq.version>
 		<db.driver>org.postgresql.Driver</db.driver>
 		<db.url>jdbc:postgresql://127.0.0.1:5432/postgres</db.url>
