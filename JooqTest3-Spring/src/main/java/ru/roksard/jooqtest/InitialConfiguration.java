@@ -2,6 +2,9 @@ package ru.roksard.jooqtest;
 
 import javax.sql.DataSource;
 
+import org.jooq.DSLContext;
+import org.jooq.SQLDialect;
+import org.jooq.conf.StatementType;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultDSLContext;
@@ -23,7 +26,7 @@ public class InitialConfiguration {
 	}
 	
 	@Bean
-	public DefaultDSLContext dsl() {
+	public DSLContext dsl() {
 	    return new DefaultDSLContext(configuration());
 	}
 	
@@ -34,6 +37,10 @@ public class InitialConfiguration {
 	
 	public DefaultConfiguration configuration() {
 	    DefaultConfiguration jooqConfiguration = new DefaultConfiguration();
+	    jooqConfiguration.set(SQLDialect.POSTGRES_10);
+	    /*jooqConfiguration
+	    	.setSettings(jooqConfiguration.settings()
+	    			.withStatementType(StatementType.STATIC_STATEMENT)); */
 	    jooqConfiguration.set(connectionProvider());
 	    jooqConfiguration
 	      .set(new DefaultExecuteListenerProvider(exceptionTransformer()));
