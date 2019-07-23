@@ -34,7 +34,7 @@ public class OrganisationController {
 			@RequestParam("organisationNameSearch") String organisationNameSearch,
 			@RequestParam("offset") int offset,
 			@RequestParam("limit") int limit) {
-		db.getEmployeeByName(nameSearch, organisationNameSearch, offset, limit);
+		db.getEmployeeListByName(nameSearch, organisationNameSearch, offset, limit);
 		return null;
 		
 	}

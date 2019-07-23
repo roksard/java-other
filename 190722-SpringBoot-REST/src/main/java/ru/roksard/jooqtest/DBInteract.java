@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
@@ -142,12 +143,24 @@ public class DBInteract {
 				.where(organisation_employee.ORGANISATION_ID.equal(orgId)));
 	}
 	
-	public List<Organisation> getChildOrganisationList(
-			int parentOrgId, int offset, int limit) {
+	/**
+	 * Method is used to show certain level of tree structure of organisations based on id of an 
+	 * organisation. It also allows
+	 * to move through tree structure of Organisations, using references to parent and child 
+	 * organisations. Parent organisation allows to go to upper tree. Child organisation list 
+	 * allows to go to lower level trees. List of child organisations can be sliced into pages
+	 * using offset and limit parameters.
+	 * @param orgId current organisation id
+	 * @param offset offset in a list of child organisations
+	 * @param limit limit list of child organisations by this value
+	 * @return Triplet structure, containing <this org, list of child orgs, parent org>
+	 */
+	public Triplet<Organisation, List<Organisation>, Organisation> getChildOrganisationList(
+			int orgId, int offset, int limit) {
 		Result<Record1<Integer>> result =
 			dsl.select(organisation_child.CHILD_ID)
 				.from(organisation_child)
-				.where(organisation_child.PARENT_ID.equal(parentOrgId))
+				.where(organisation_child.PARENT_ID.equal(orgId))
 				.offset(offset)
 				.limit(limit)
 				.fetch();
@@ -157,11 +170,14 @@ public class DBInteract {
 		for(Record1<Integer> rec : result) {
 			Organisation org = getOrganisation(
 					rec.getValue(organisation_child.CHILD_ID));
-					
 			list.add(org);
 		}
 		
-		return list;
+		Organisation thisOrg = getOrganisation(orgId);
+		Organisation parenOrg = getOrganisation(thisOrg.getParentId());
+		
+		return new Triplet<Organisation, List<Organisation>, Organisation>(
+			thisOrg, list, parenOrg);
 	}
 	
 	/**
@@ -284,5 +300,42 @@ public class DBInteract {
 			list.add(outputRecord);
 		}
 		return list;
+	}
+	
+	/**
+	 * Method is used to show certain level of tree structure of employees based on id of an 
+	 * employee. It also allows
+	 * to move through tree structure of employees, using references to parent and child 
+	 * employees. Parent employee allows to go to upper tree. Child employees list 
+	 * allows to go to lower level trees. List of child employees can be sliced into pages
+	 * using offset and limit parameters.
+	 * @param empId current employee id
+	 * @param offset offset in a list of child employees
+	 * @param limit limit list of child employees by this value
+	 * @return Triplet structure, containing <this empl, list of child empls, parent empl>
+	 */
+	public Triplet<Employee, List<Employee>, Employee> getChildEmployeeList(
+			int empId, int offset, int limit) {
+		Result<Record1<Integer>> result =
+			dsl.select(employee_child.CHILD_ID)
+				.from(employee_child)
+				.where(employee_child.PARENT_ID.equal(empId))
+				.offset(offset)
+				.limit(limit)
+				.fetch();
+		
+		List<Employee> list = new LinkedList<Employee>();
+		
+		for(Record1<Integer> rec : result) {
+			Employee emp = getEmployee(
+					rec.getValue(employee_child.CHILD_ID));
+			list.add(emp);
+		}
+		
+		Employee thisEmp = getEmployee(empId);
+		Employee parentEmp = getEmployee(thisEmp.getParentId());
+		
+		return new Triplet<Employee, List<Employee>, Employee>(
+			thisEmp, list, parentEmp);
 	}
 }
