@@ -63,10 +63,11 @@ public class DBInteract {
 			childId = result.getId();
 		
 		//keeping record of parent-child relationships:
-		dsl.insertInto(organisation_child)
-			.set(organisation_child.PARENT_ID, org.getParentId())
-			.set(organisation_child.CHILD_ID, childId)
-			.execute();
+		if(org.getParentId() != 0)
+			dsl.insertInto(organisation_child)
+				.set(organisation_child.PARENT_ID, org.getParentId())
+				.set(organisation_child.CHILD_ID, childId)
+				.execute();
 		return childId;
 	}
 	
@@ -180,10 +181,11 @@ public class DBInteract {
 			childId = result.getId();
 
 		//keeping record of parent-child relationships:
-		dsl.insertInto(employee_child)
-			.set(employee_child.PARENT_ID, emp.getParentId())
-			.set(employee_child.CHILD_ID, childId)
-			.execute();
+		if(emp.getParentId() != 0)
+			dsl.insertInto(employee_child)
+				.set(employee_child.PARENT_ID, emp.getParentId())
+				.set(employee_child.CHILD_ID, childId)
+				.execute();
 		
 		//keeping record of organisation-employee relationships:
 		dsl.insertInto(organisation_employee)

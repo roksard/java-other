@@ -1,4 +1,5 @@
-/* DROP TABLE IF EXISTS public.organisations, public.employees; */
+--DROP TABLE IF EXISTS organisation_child, organisation_employee, employee_child, organisations, 
+--employees ;
  
 CREATE TABLE IF NOT EXISTS public.organisations (
   id SERIAL,
