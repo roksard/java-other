@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -27,9 +28,15 @@ public class OrganisationController {
 //        return entity;
 //    }
 	
-	@GetMapping("/") //add paging params ?offset=0 &?limit=20
-	public List<Organisation> getOrganisationList() {
+	@GetMapping("/employees") //add paging params //?offset=0&limit=20
+	public List<Organisation> getEmployeeList(
+			@RequestParam("nameSearch") String nameSearch, 
+			@RequestParam("organisationNameSearch") String organisationNameSearch,
+			@RequestParam("offset") int offset,
+			@RequestParam("limit") int limit) {
+		db.getEmployeeByName(nameSearch, organisationNameSearch, offset, limit);
 		return null;
+		
 	}
 	
 	@GetMapping("/{id}")

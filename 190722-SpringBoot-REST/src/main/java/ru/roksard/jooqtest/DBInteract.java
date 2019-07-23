@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.javatuples.Triplet;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
 import org.jooq.Result;
@@ -23,7 +24,7 @@ import ru.roksard.jooqgenerated.tables.records.OrganisationsRecord;
 public class DBInteract {
 	@Autowired
 	private DSLContext dsl;
-	 
+	
 	Organisations organisations = Organisations.ORGANISATIONS;
 	Employees employees = Employees.EMPLOYEES;
 	OrganisationChild organisation_child = OrganisationChild.ORGANISATION_CHILD;
@@ -222,4 +223,66 @@ public class DBInteract {
 		.execute();
 	}
 	
+	public boolean deleteEmployee(int id) {
+		int childSum = 0;
+		//count number of child employees:
+		childSum += dsl.fetchCount(dsl.selectFrom(employee_child)
+			.where(employee_child.PARENT_ID.equal(id)));
+		
+		//delete only if employee has no child employees
+		if(childSum == 0) {
+			dsl.deleteFrom(employees)
+				.where(employees.ID.equal(id))
+				.execute();
+			return true;
+		}
+		return false;
+	}
+	
+	public Employee getEmployee(int id) {
+		EmployeesRecord result = 
+				dsl.selectFrom(employees)
+					.where(employees.ID.equal(id))
+					.fetchOne();
+		
+		Employee emp = null;
+		if(result != null) {
+			emp = new Employee(
+					result.getValue(employees.ID), 
+					result.getValue(employees.NAME),
+					result.getValue(employees.PARENTID),
+					result.getValue(employees.ORGANISATIONID));
+		}
+		return emp;
+	}
+	
+	public List<Triplet<Employee, Organisation, Employee>> getEmployeeListByName(
+			String nameSearch, String organisationNameSearch, int offset, int limit) {
+		Result<EmployeesRecord> result = dsl.selectFrom(employees)
+			.where(employees.ORGANISATIONID.in(
+					dsl.select(organisations.ID)
+						.from(organisations)
+						.where(organisations.NAME.containsIgnoreCase(organisationNameSearch)))
+			.and(employees.NAME.containsIgnoreCase(nameSearch)))
+			.offset(offset)
+			.limit(limit)
+			.fetch();
+		List<Triplet<Employee, Organisation, Employee>> list = new 
+				LinkedList<Triplet<Employee, Organisation, Employee>>();
+		
+		for(EmployeesRecord rec : result) {
+			Employee emp = new Employee(
+					rec.getValue(employees.ID), 
+					rec.getValue(employees.NAME),
+					rec.getValue(employees.PARENTID),
+					rec.getValue(employees.ORGANISATIONID));
+			Employee parent = getEmployee(emp.getParentId());
+			Organisation org = getOrganisation(emp.getOrganisationId());
+			
+			Triplet<Employee, Organisation, Employee> outputRecord = 
+					new Triplet<Employee, Organisation, Employee>(emp, org, parent);
+			list.add(outputRecord);
+		}
+		return list;
+	}
 }
