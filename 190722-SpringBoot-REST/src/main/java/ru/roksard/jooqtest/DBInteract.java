@@ -1,0 +1,223 @@
+package ru.roksard.jooqtest;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import org.jooq.DSLContext;
+import org.jooq.Record1;
+import org.jooq.Result;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import ru.roksard.jooqgenerated.tables.EmployeeChild;
+import ru.roksard.jooqgenerated.tables.Employees;
+import ru.roksard.jooqgenerated.tables.OrganisationChild;
+import ru.roksard.jooqgenerated.tables.OrganisationEmployee;
+import ru.roksard.jooqgenerated.tables.Organisations;
+import ru.roksard.jooqgenerated.tables.records.EmployeesRecord;
+import ru.roksard.jooqgenerated.tables.records.OrganisationsRecord;
+
+@Component
+public class DBInteract {
+	@Autowired
+	private DSLContext dsl;
+	 
+	Organisations organisations = Organisations.ORGANISATIONS;
+	Employees employees = Employees.EMPLOYEES;
+	OrganisationChild organisation_child = OrganisationChild.ORGANISATION_CHILD;
+	OrganisationEmployee organisation_employee = OrganisationEmployee.ORGANISATION_EMPLOYEE;
+	EmployeeChild employee_child = EmployeeChild.EMPLOYEE_CHILD;
+	
+	public Organisation getOrganisation(int id) {
+		OrganisationsRecord result = 
+				dsl.selectFrom(organisations)
+					.where(organisations.ID.equal(id))
+					.fetchOne();
+		
+		Organisation org = null;
+		if(result != null) {
+			org = new Organisation(
+					result.getValue(organisations.ID), 
+					result.getValue(organisations.NAME),
+					result.getValue(organisations.PARENTID));
+		}
+		return org;
+	}
+	
+	/**
+	 * Insert new record into db, storing given organisation
+	 * @param org object to be stored in db
+	 * @return 'id' of new record in db
+	 */
+	public int addOrganisation(Organisation org) {
+		OrganisationsRecord result = dsl.insertInto(organisations)
+			.set(organisations.NAME, org.getName())
+			.set(organisations.PARENTID, org.getParentId())
+			.returning(organisations.ID)
+			.fetchOne();
+		
+		int childId = 0;
+		if(result != null)
+			childId = result.getId();
+		
+		//keeping record of parent-child relationships:
+		dsl.insertInto(organisation_child)
+			.set(organisation_child.PARENT_ID, org.getParentId())
+			.set(organisation_child.CHILD_ID, childId)
+			.execute();
+		return childId;
+	}
+	
+	public void updateOrganisation(Organisation org) {
+		dsl.update(organisations)
+			.set(organisations.NAME, org.getName())
+			.set(organisations.PARENTID, org.getParentId())
+			.where(organisations.ID.equal(org.getId()))
+			.execute();
+		
+		//if parentId == 0, means there is no parent and we delete record from organisation_child
+		if(org.getParentId() != 0)
+			dsl.update(organisation_child)
+				.set(organisation_child.PARENT_ID, org.getParentId())
+				.set(organisation_child.CHILD_ID, org.getId())
+				.where(organisation_child.CHILD_ID.equal(org.getId()))
+				.execute();
+		else
+			dsl.deleteFrom(organisation_child)
+				.where(organisation_child.CHILD_ID.equal(org.getId()))
+				.execute();
+	}
+	
+	public boolean deleteOrganisation(int id) {
+		int childSum = 0;
+		//count number of child orgs:
+		childSum += dsl.fetchCount(dsl.selectFrom(organisation_child)
+			.where(organisation_child.PARENT_ID.equal(id)));
+		
+		//count number of employees
+		childSum += dsl.fetchCount(dsl.selectFrom(organisation_employee)
+				.where(organisation_employee.ORGANISATION_ID.equal(id)));
+		
+		//delete only if org has no child orgs nor employees
+		if(childSum == 0) {
+			dsl.deleteFrom(organisations)
+				.where(organisations.ID.equal(id))
+				.execute();
+			return true;
+		}
+		return false;
+	}
+	
+	public Map<Organisation,Integer> getOrganisationEmployeeCountMap(
+			String nameSearch, int offset, int limit) {
+		Result<OrganisationsRecord> result = 
+			dsl.selectFrom(organisations)
+				.where(organisations.NAME.containsIgnoreCase(nameSearch))
+				.offset(offset)
+				.limit(limit)
+				.fetch();
+		
+		Map<Organisation, Integer> map = new HashMap<Organisation,Integer>();
+		
+		for(OrganisationsRecord rec : result) {
+			Organisation org = new Organisation(
+					rec.getValue(organisations.ID), 
+					rec.getValue(organisations.NAME),
+					rec.getValue(organisations.PARENTID));
+			
+			//get number of employees
+			int emplCount = getOrganisationEmployeeCount(org.getId());
+			map.put(org, emplCount);
+		}
+		
+		return map;
+	}
+	
+	public int getOrganisationEmployeeCount(int orgId) {
+		return dsl.fetchCount(dsl.selectFrom(organisation_employee)
+				.where(organisation_employee.ORGANISATION_ID.equal(orgId)));
+	}
+	
+	public List<Organisation> getChildOrganisationList(
+			int parentOrgId, int offset, int limit) {
+		Result<Record1<Integer>> result =
+			dsl.select(organisation_child.CHILD_ID)
+				.from(organisation_child)
+				.where(organisation_child.PARENT_ID.equal(parentOrgId))
+				.offset(offset)
+				.limit(limit)
+				.fetch();
+		
+		List<Organisation> list = new LinkedList<Organisation>();
+		
+		for(Record1<Integer> rec : result) {
+			Organisation org = getOrganisation(
+					rec.getValue(organisation_child.CHILD_ID));
+					
+			list.add(org);
+		}
+		
+		return list;
+	}
+	
+	/**
+	 * Insert new record into db, storing given employee
+	 * @param org object to be stored in db
+	 * @return 'id' of new record in db
+	 */
+	public int addEmployee(Employee emp) {
+		EmployeesRecord result = dsl.insertInto(employees)
+			.set(employees.NAME, emp.getName())
+			.set(employees.PARENTID, emp.getParentId())
+			.set(employees.ORGANISATIONID, emp.getOrganisationId())
+			.returning(employees.ID)
+			.fetchOne();
+		
+		int childId = 0;
+		if(result != null)
+			childId = result.getId();
+
+		//keeping record of parent-child relationships:
+		dsl.insertInto(employee_child)
+			.set(employee_child.PARENT_ID, emp.getParentId())
+			.set(employee_child.CHILD_ID, childId)
+			.execute();
+		
+		//keeping record of organisation-employee relationships:
+		dsl.insertInto(organisation_employee)
+			.set(organisation_employee.ORGANISATION_ID, emp.getOrganisationId())
+			.set(organisation_employee.EMPLOYEE_ID, childId)
+			.execute();
+		return childId;
+	}
+	
+	public void updateEmployee(Employee emp) {
+		dsl.update(employees)
+			.set(employees.NAME, emp.getName())
+			.set(employees.PARENTID, emp.getParentId())
+			.set(employees.ORGANISATIONID, emp.getOrganisationId())
+			.where(employees.ID.equal(emp.getId()))
+			.execute();
+		
+		//if parentId == 0, means there is no parent and we delete record from employee_child
+		if(emp.getParentId() != 0)
+			dsl.update(employee_child)
+				.set(employee_child.PARENT_ID, emp.getParentId())
+				.set(employee_child.CHILD_ID, emp.getId())
+				.where(employee_child.CHILD_ID.equal(emp.getId()))
+				.execute();
+		else
+			dsl.deleteFrom(employee_child)
+				.where(employee_child.CHILD_ID.equal(emp.getId()))
+				.execute();
+		
+		dsl.update(organisation_employee)
+		.set(organisation_employee.ORGANISATION_ID, emp.getOrganisationId())
+		.set(organisation_employee.EMPLOYEE_ID, emp.getId())
+		.where(organisation_employee.EMPLOYEE_ID.equal(emp.getId()))
+		.execute();
+	}
+	
+}
