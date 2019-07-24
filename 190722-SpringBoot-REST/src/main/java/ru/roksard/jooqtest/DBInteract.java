@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.javatuples.Pair;
 import org.javatuples.Triplet;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
@@ -20,6 +19,11 @@ import ru.roksard.jooqgenerated.tables.OrganisationEmployee;
 import ru.roksard.jooqgenerated.tables.Organisations;
 import ru.roksard.jooqgenerated.tables.records.EmployeesRecord;
 import ru.roksard.jooqgenerated.tables.records.OrganisationsRecord;
+
+import static ru.roksard.jooqtest.BaseResponse.CODE_ERROR;
+import static ru.roksard.jooqtest.BaseResponse.CODE_SUCCESS;
+import static ru.roksard.jooqtest.BaseResponse.ERROR_STATUS;
+import static ru.roksard.jooqtest.BaseResponse.SUCCESS_STATUS;
 
 @Component
 public class DBInteract {
@@ -93,7 +97,7 @@ public class DBInteract {
 				.execute();
 	}
 	
-	public boolean deleteOrganisation(int id) {
+	public BaseResponse deleteOrganisation(int id) {
 		int childSum = 0;
 		//count number of child orgs:
 		childSum += dsl.fetchCount(dsl.selectFrom(organisation_child)
@@ -108,12 +112,13 @@ public class DBInteract {
 			dsl.deleteFrom(organisations)
 				.where(organisations.ID.equal(id))
 				.execute();
-			return true;
+			return new BaseResponse(SUCCESS_STATUS, CODE_SUCCESS);
 		}
-		return false;
+		return new BaseResponse(ERROR_STATUS+": cannot delete while contains child elements: "
+				+childSum, CODE_ERROR);
 	}
 	
-	public Map<Organisation,Integer> getOrganisationEmployeeCountMap(
+	public Map<Organisation,Integer> getOrganisationListEmployeeCount(
 			String nameSearch, int offset, int limit) {
 		Result<OrganisationsRecord> result = 
 			dsl.selectFrom(organisations)
