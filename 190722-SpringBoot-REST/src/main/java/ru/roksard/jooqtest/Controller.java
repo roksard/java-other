@@ -78,8 +78,7 @@ public class Controller {
 	@PostMapping("/organisation/{id}/delete")
 	public BaseResponse deleteOrganisation(@PathVariable int id) {
 		try {
-			BaseResponse response = db.deleteOrganisation(id);
-			return response;
+			return db.deleteOrganisation(id);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -124,6 +123,81 @@ public class Controller {
 			@RequestParam("limit") int limit) {
 		try {
 			return db.getChildOrganisationList(id, offset, limit);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		//something went wrong
+		return null;
+	}
+	
+	@GetMapping("/employee/{id}")
+	public Employee getEmployee(@PathVariable int id) {
+		try {
+			return db.getEmployee(id);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * 
+	 * @param empl employee object passed to be added into db
+	 * @return Status and id of new record added in db
+	 */
+	@PostMapping("/employee/add")
+	public BaseResponse addEmployee(@RequestBody Employee emp) {
+		try {
+			return db.addEmployee(emp);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		return new BaseResponse(ERROR_STATUS, CODE_ERROR);
+	}
+	
+	@PostMapping("/employee/update")
+	public BaseResponse updateEmployee(@RequestBody Employee emp) {
+		try {
+			return db.updateEmployee(emp);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		return new BaseResponse(ERROR_STATUS, CODE_ERROR);
+	}
+	
+	@PostMapping("/employee/{id}/delete")
+	public BaseResponse deleteEmployee(@PathVariable int id) {
+		try {
+			return db.deleteEmployee(id);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		//something went wrong
+		return new BaseResponse(ERROR_STATUS, CODE_ERROR);
+	}
+	
+	@GetMapping("/employee/list")
+	public List<Triplet<Employee, Organisation, Employee>> getEmployeeListByName(
+			@RequestParam("nameSearch") String nameSearch,
+			@RequestParam("organisationNameSearch") String organisationNameSearch, 
+			@RequestParam("offset") int offset,
+			@RequestParam("limit") int limit) {
+		try {
+			return db.getEmployeeListByName(nameSearch, organisationNameSearch, offset, limit);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		//something went wrong
+		return null;
+	}
+	
+	@GetMapping("/employee/{id}/tree")
+	public Triplet<Employee, List<Employee>, Employee> getChildEmployeeList(
+			@PathVariable("id") int id,
+			@RequestParam("offset") int offset,
+			@RequestParam("limit") int limit) {
+		try {
+			return db.getChildEmployeeList(id, offset, limit);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}

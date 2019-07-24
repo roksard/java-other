@@ -1,5 +1,10 @@
 package ru.roksard.jooqtest;
 
+import static ru.roksard.jooqtest.BaseResponse.CODE_ERROR;
+import static ru.roksard.jooqtest.BaseResponse.CODE_SUCCESS;
+import static ru.roksard.jooqtest.BaseResponse.ERROR_STATUS;
+import static ru.roksard.jooqtest.BaseResponse.SUCCESS_STATUS;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,12 +23,8 @@ import ru.roksard.jooqgenerated.tables.OrganisationChild;
 import ru.roksard.jooqgenerated.tables.OrganisationEmployee;
 import ru.roksard.jooqgenerated.tables.Organisations;
 import ru.roksard.jooqgenerated.tables.records.EmployeesRecord;
+import ru.roksard.jooqgenerated.tables.records.OrganisationEmployeeRecord;
 import ru.roksard.jooqgenerated.tables.records.OrganisationsRecord;
-
-import static ru.roksard.jooqtest.BaseResponse.CODE_ERROR;
-import static ru.roksard.jooqtest.BaseResponse.CODE_SUCCESS;
-import static ru.roksard.jooqtest.BaseResponse.ERROR_STATUS;
-import static ru.roksard.jooqtest.BaseResponse.SUCCESS_STATUS;
 
 @Component
 public class DBInteract {
@@ -185,12 +186,29 @@ public class DBInteract {
 			thisOrg, list, parenOrg);
 	}
 	
+	public boolean employeeBelongsToOrganisation(int empId, int orgId) {
+		OrganisationEmployeeRecord rec = dsl.selectFrom(organisation_employee)
+			.where(organisation_employee.EMPLOYEE_ID.equal(empId))
+			.fetchOne();
+		if(rec != null) 
+			if (rec.getValue(organisation_employee.ORGANISATION_ID) == orgId)
+				return true;
+		return false;
+	}
+	
 	/**
 	 * Insert new record into db, storing given employee
 	 * @param org object to be stored in db
 	 * @return 'id' of new record in db
-	 */
-	public int addEmployee(Employee emp) {
+	 */ 
+	public BaseResponse addEmployee(Employee emp) {
+		//check if boss belongs to that organisation
+		if(!employeeBelongsToOrganisation(emp.getParentId(), emp.getOrganisationId()))
+			//if not, then fail adding:
+			return new BaseResponse(ERROR_STATUS+": boss must belong to the same organisation: "
+					+ "boss.orgId: "+getEmployee(emp.getParentId()).getOrganisationId()
+					+ "thisEmployee.orgId: "+emp.getOrganisationId()
+					, CODE_ERROR); 
 		EmployeesRecord result = dsl.insertInto(employees)
 			.set(employees.NAME, emp.getName())
 			.set(employees.PARENTID, emp.getParentId())
@@ -214,10 +232,17 @@ public class DBInteract {
 			.set(organisation_employee.ORGANISATION_ID, emp.getOrganisationId())
 			.set(organisation_employee.EMPLOYEE_ID, childId)
 			.execute();
-		return childId;
+		return new BaseResponse(SUCCESS_STATUS +"(id:"+childId+")", CODE_SUCCESS);
 	}
 	
-	public void updateEmployee(Employee emp) {
+	public BaseResponse updateEmployee(Employee emp) {
+		//check if boss belongs to that organisation
+		if(!employeeBelongsToOrganisation(emp.getParentId(), emp.getOrganisationId()))
+			//if not, then fail adding:
+			return new BaseResponse(ERROR_STATUS+": boss must belong to the same organisation: "
+					+ "boss.orgId: "+getEmployee(emp.getParentId()).getOrganisationId()
+					+ "thisEmployee.orgId: "+emp.getOrganisationId()
+					, CODE_ERROR); 
 		dsl.update(employees)
 			.set(employees.NAME, emp.getName())
 			.set(employees.PARENTID, emp.getParentId())
@@ -242,9 +267,10 @@ public class DBInteract {
 		.set(organisation_employee.EMPLOYEE_ID, emp.getId())
 		.where(organisation_employee.EMPLOYEE_ID.equal(emp.getId()))
 		.execute();
+		return new BaseResponse(SUCCESS_STATUS, CODE_SUCCESS);
 	}
 	
-	public boolean deleteEmployee(int id) {
+	public BaseResponse deleteEmployee(int id) {
 		int childSum = 0;
 		//count number of child employees:
 		childSum += dsl.fetchCount(dsl.selectFrom(employee_child)
@@ -255,9 +281,10 @@ public class DBInteract {
 			dsl.deleteFrom(employees)
 				.where(employees.ID.equal(id))
 				.execute();
-			return true;
+			return new BaseResponse(SUCCESS_STATUS, CODE_SUCCESS);
 		}
-		return false;
+		return new BaseResponse(ERROR_STATUS+": cannot delete while contains child elements: "
+				+childSum, CODE_ERROR);
 	}
 	
 	public Employee getEmployee(int id) {
