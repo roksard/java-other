@@ -5,11 +5,8 @@ import static ru.roksard.jooqtest.BaseResponse.CODE_SUCCESS;
 import static ru.roksard.jooqtest.BaseResponse.ERROR_STATUS;
 import static ru.roksard.jooqtest.BaseResponse.SUCCESS_STATUS;
 
-import java.util.List;
-import java.util.Map;
-
-import org.javatuples.Triplet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin
 @RestController	
 public class Controller {
 	
 	@Autowired
 	private DBInteract db;
+	
 	
 	@GetMapping("/organisation/{id}")
 	public Organisation getOrganisation(@PathVariable int id) {
@@ -95,12 +94,12 @@ public class Controller {
 	 * @return a Map containing entries: <Organisation, number of employees>
 	 */
 	@GetMapping("/organisation/list")
-	public Map<Organisation, Integer> getOrganisationListEmployeeCount(
-			@RequestParam("nameSearch") String nameSearch, 
+	public OrganisationEmployeeCount[] getOrganisationEmployeeNumberList(
+			@RequestParam(value="nameSearch", defaultValue="") String nameSearch, 
 			@RequestParam("offset") int offset,
 			@RequestParam("limit") int limit) {
 		try {
-			return db.getOrganisationListEmployeeCount(nameSearch, offset, limit);
+			return db.getOrganisationEmployeeNumberList(nameSearch, offset, limit);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -108,16 +107,32 @@ public class Controller {
 		return null;
 	}
 	
+	@GetMapping("/organisation/list/count")
+	public int countOrganisationEmployeeNumberList(
+			@RequestParam(value="nameSearch", defaultValue="") String nameSearch) {
+		try {
+			return db.countOrganisationEmployeeNumberList(nameSearch);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		//something went wrong
+		return 0;
+	}
+	
 	/**
-	 * Get list of organisations, search by name and paging. 
-	 * Parameters passed through URL like so: ?offset=0&limit=20
-	 * @param nameSearch parameter containing a name or part of a name of organisation.
-	 * @param offset amount of first records to skip from list
-	 * @param limit max amount of records to select from list
-	 * @return a Map containing entries: <Organisation, number of employees>
+	 * Method is used to show certain level of tree structure of organisations based on id of an 
+	 * organisation. It also allows
+	 * to move through tree structure of Organisations, using references to parent and child 
+	 * organisations. Parent organisation allows to go to upper tree. Child organisation list 
+	 * allows to go to lower level trees. List of child organisations can be sliced into pages
+	 * using offset and limit parameters.
+	 * @param id current organisation id
+	 * @param offset offset in a list of child organisations
+	 * @param limit limit list of child organisations by this value
+	 * @return Triplet structure, containing <this org, list of child orgs, parent org>
 	 */
 	@GetMapping("/organisation/{id}/tree")
-	public Triplet<Organisation, List<Organisation>, Organisation>  getChildOrganisationList(
+	public OrganisationTree  getChildOrganisationList(
 			@PathVariable("id") int id,
 			@RequestParam("offset") int offset,
 			@RequestParam("limit") int limit) {
@@ -128,6 +143,18 @@ public class Controller {
 		}
 		//something went wrong
 		return null;
+	}
+	
+	@GetMapping("/organisation/{id}/tree/count")
+	public int  countChildOrganisationList(
+			@PathVariable("id") int id) {
+		try {
+			return db.countChildOrganisationList(id);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		//something went wrong
+		return 0;
 	}
 	
 	@GetMapping("/employee/{id}")
@@ -177,9 +204,9 @@ public class Controller {
 	}
 	
 	@GetMapping("/employee/list")
-	public List<Triplet<Employee, Organisation, Employee>> getEmployeeListByName(
-			@RequestParam("nameSearch") String nameSearch,
-			@RequestParam("organisationNameSearch") String organisationNameSearch, 
+	public EmployeeOrganisationBoss[] getEmployeeListByName(
+			@RequestParam(value="nameSearch", defaultValue="") String nameSearch,
+			@RequestParam(value="organisationNameSearch", defaultValue="") String organisationNameSearch, 
 			@RequestParam("offset") int offset,
 			@RequestParam("limit") int limit) {
 		try {
@@ -191,8 +218,22 @@ public class Controller {
 		return null;
 	}
 	
+	@GetMapping("/employee/list/count")
+	public int countEmployeeListByName(
+			@RequestParam(value="nameSearch", defaultValue="") String nameSearch,
+			@RequestParam(value="organisationNameSearch", defaultValue="") 
+				String organisationNameSearch) {
+		try {
+			return db.countEmployeeListByName(nameSearch, organisationNameSearch);
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		//something went wrong
+		return 0;
+	}
+	
 	@GetMapping("/employee/{id}/tree")
-	public Triplet<Employee, List<Employee>, Employee> getChildEmployeeList(
+	public EmployeeTree getChildEmployeeList(
 			@PathVariable("id") int id,
 			@RequestParam("offset") int offset,
 			@RequestParam("limit") int limit) {
@@ -203,5 +244,16 @@ public class Controller {
 		}
 		//something went wrong
 		return null;
+	}
+	
+	@GetMapping("/employee/{id}/tree/count")
+	public Value countChildEmployeeList(@PathVariable("id") int id) {
+		try {
+			return new Value(db.countChildEmployeeList(id));
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		//something went wrong
+		return new Value(0);
 	}
 }

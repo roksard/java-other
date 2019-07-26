@@ -16,7 +16,6 @@ public class Employee {
 	}
 	
 	public Employee(String name, int parentId, int organisationId) {
-		this.id = id;
 		this.name = name;
 		this.parentId = parentId;
 		this.organisationId = organisationId;

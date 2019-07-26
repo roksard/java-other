@@ -5,12 +5,9 @@ import static ru.roksard.jooqtest.BaseResponse.CODE_SUCCESS;
 import static ru.roksard.jooqtest.BaseResponse.ERROR_STATUS;
 import static ru.roksard.jooqtest.BaseResponse.SUCCESS_STATUS;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Iterator;
 
-import org.javatuples.Triplet;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
 import org.jooq.Result;
@@ -119,7 +116,7 @@ public class DBInteract {
 				+childSum, CODE_ERROR);
 	}
 	
-	public Map<Organisation,Integer> getOrganisationListEmployeeCount(
+	public OrganisationEmployeeCount[] getOrganisationEmployeeNumberList(
 			String nameSearch, int offset, int limit) {
 		Result<OrganisationsRecord> result = 
 			dsl.selectFrom(organisations)
@@ -128,23 +125,33 @@ public class DBInteract {
 				.limit(limit)
 				.fetch();
 		
-		Map<Organisation, Integer> map = new HashMap<Organisation,Integer>();
+		OrganisationEmployeeCount[] array = new OrganisationEmployeeCount[result.size()];
 		
-		for(OrganisationsRecord rec : result) {
+		Iterator<OrganisationsRecord> it = result.iterator(); 
+		for(int i = 0; i < result.size(); i++) {
+			OrganisationsRecord rec = it.next();
 			Organisation org = new Organisation(
 					rec.getValue(organisations.ID), 
 					rec.getValue(organisations.NAME),
 					rec.getValue(organisations.PARENTID));
 			
 			//get number of employees
-			int emplCount = getOrganisationEmployeeCount(org.getId());
-			map.put(org, emplCount);
+			int emplCount = countEmployeesInOrganisation(org.getId());
+			
+			array[i] = new OrganisationEmployeeCount(org, emplCount);
 		}
-		
-		return map;
+		return array;
 	}
 	
-	public int getOrganisationEmployeeCount(int orgId) {
+	public int countOrganisationEmployeeNumberList(String nameSearch) {
+		int result = 
+			dsl.fetchCount(
+				dsl.selectFrom(organisations)
+					.where(organisations.NAME.containsIgnoreCase(nameSearch)));
+		return result;
+	}
+	
+	public int countEmployeesInOrganisation(int orgId) {
 		return dsl.fetchCount(dsl.selectFrom(organisation_employee)
 				.where(organisation_employee.ORGANISATION_ID.equal(orgId)));
 	}
@@ -161,7 +168,7 @@ public class DBInteract {
 	 * @param limit limit list of child organisations by this value
 	 * @return Triplet structure, containing <this org, list of child orgs, parent org>
 	 */
-	public Triplet<Organisation, List<Organisation>, Organisation> getChildOrganisationList(
+	public OrganisationTree getChildOrganisationList(
 			int orgId, int offset, int limit) {
 		Result<Record1<Integer>> result =
 			dsl.select(organisation_child.CHILD_ID)
@@ -171,19 +178,31 @@ public class DBInteract {
 				.limit(limit)
 				.fetch();
 		
-		List<Organisation> list = new LinkedList<Organisation>();
+		//we have to use array, so jackson can form beautiful json representation of this 
+		Organisation[] listOfChildOrgs = new Organisation[result.size()];
 		
-		for(Record1<Integer> rec : result) {
+		Iterator<Record1<Integer>> it = result.iterator(); 
+		for(int i = 0; i < result.size(); i++) {
+			Record1<Integer> rec = it.next();
 			Organisation org = getOrganisation(
 					rec.getValue(organisation_child.CHILD_ID));
-			list.add(org);
+			listOfChildOrgs[i] = org;
 		}
 		
 		Organisation thisOrg = getOrganisation(orgId);
-		Organisation parenOrg = getOrganisation(thisOrg.getParentId());
+		Organisation parentOrg = getOrganisation(thisOrg.getParentId());
 		
-		return new Triplet<Organisation, List<Organisation>, Organisation>(
-			thisOrg, list, parenOrg);
+		return new OrganisationTree(parentOrg, thisOrg, listOfChildOrgs);
+	}
+	
+	public int countChildOrganisationList(
+			int orgId) {
+		int result =
+			dsl.fetchCount(
+				dsl.select(organisation_child.CHILD_ID)
+					.from(organisation_child)
+					.where(organisation_child.PARENT_ID.equal(orgId)));
+		return result;
 	}
 	
 	public boolean employeeBelongsToOrganisation(int empId, int orgId) {
@@ -304,7 +323,7 @@ public class DBInteract {
 		return emp;
 	}
 	
-	public List<Triplet<Employee, Organisation, Employee>> getEmployeeListByName(
+	public EmployeeOrganisationBoss[] getEmployeeListByName(
 			String nameSearch, String organisationNameSearch, int offset, int limit) {
 		Result<EmployeesRecord> result = dsl.selectFrom(employees)
 			.where(employees.ORGANISATIONID.in(
@@ -315,23 +334,35 @@ public class DBInteract {
 			.offset(offset)
 			.limit(limit)
 			.fetch();
-		List<Triplet<Employee, Organisation, Employee>> list = new 
-				LinkedList<Triplet<Employee, Organisation, Employee>>();
+
+		EmployeeOrganisationBoss[] list = new EmployeeOrganisationBoss[result.size()];
 		
-		for(EmployeesRecord rec : result) {
+		Iterator<EmployeesRecord> it = result.iterator(); 
+		for(int i = 0; i < result.size(); i++) {
+			EmployeesRecord rec = it.next();
 			Employee emp = new Employee(
 					rec.getValue(employees.ID), 
 					rec.getValue(employees.NAME),
 					rec.getValue(employees.PARENTID),
 					rec.getValue(employees.ORGANISATIONID));
-			Employee parent = getEmployee(emp.getParentId());
+			Employee boss = getEmployee(emp.getParentId());
 			Organisation org = getOrganisation(emp.getOrganisationId());
 			
-			Triplet<Employee, Organisation, Employee> outputRecord = 
-					new Triplet<Employee, Organisation, Employee>(emp, org, parent);
-			list.add(outputRecord);
+			list[i] = new EmployeeOrganisationBoss(emp, org, boss);
 		}
 		return list;
+	}
+	
+	public int countEmployeeListByName(
+			String nameSearch, String organisationNameSearch) {
+		int result = dsl.fetchCount( 
+			dsl.selectFrom(employees)
+				.where(employees.ORGANISATIONID.in(
+					dsl.select(organisations.ID)
+						.from(organisations)
+						.where(organisations.NAME.containsIgnoreCase(organisationNameSearch)))
+				.and(employees.NAME.containsIgnoreCase(nameSearch))));
+		return result;
 	}
 	
 	/**
@@ -346,7 +377,7 @@ public class DBInteract {
 	 * @param limit limit list of child employees by this value
 	 * @return Triplet structure, containing <this empl, list of child empls, parent empl>
 	 */
-	public Triplet<Employee, List<Employee>, Employee> getChildEmployeeList(
+	public EmployeeTree getChildEmployeeList(
 			int empId, int offset, int limit) {
 		Result<Record1<Integer>> result =
 			dsl.select(employee_child.CHILD_ID)
@@ -356,18 +387,29 @@ public class DBInteract {
 				.limit(limit)
 				.fetch();
 		
-		List<Employee> list = new LinkedList<Employee>();
+		Employee[] list = new Employee[result.size()];
 		
-		for(Record1<Integer> rec : result) {
+		Iterator<Record1<Integer>> it = result.iterator();
+		for(int i = 0; i < result.size(); i++) {
+			Record1<Integer> rec = it.next();
 			Employee emp = getEmployee(
 					rec.getValue(employee_child.CHILD_ID));
-			list.add(emp);
+			list[i] = emp;
 		}
 		
 		Employee thisEmp = getEmployee(empId);
-		Employee parentEmp = getEmployee(thisEmp.getParentId());
+		Employee boss = getEmployee(thisEmp.getParentId());
 		
-		return new Triplet<Employee, List<Employee>, Employee>(
-			thisEmp, list, parentEmp);
+		return new EmployeeTree(boss, thisEmp, list);
 	}
+	
+	public int countChildEmployeeList(int empId) {
+		int result = dsl.fetchCount(
+			dsl.select(employee_child.CHILD_ID)
+				.from(employee_child)
+				.where(employee_child.PARENT_ID.equal(empId)));
+		return result;
+		
+	}
+		
 }

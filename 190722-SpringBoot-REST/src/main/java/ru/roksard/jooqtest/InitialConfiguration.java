@@ -4,7 +4,6 @@ import javax.sql.DataSource;
 
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
-import org.jooq.conf.StatementType;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultDSLContext;
