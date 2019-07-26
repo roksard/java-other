@@ -11,12 +11,15 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import org.jooq.Catalog;
+import org.jooq.Sequence;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
 
-import ru.roksard.jooqgenerated.tables.Author;
-import ru.roksard.jooqgenerated.tables.AuthorBook;
-import ru.roksard.jooqgenerated.tables.Book;
+import ru.roksard.jooqgenerated.tables.EmployeeChild;
+import ru.roksard.jooqgenerated.tables.Employees;
+import ru.roksard.jooqgenerated.tables.OrganisationChild;
+import ru.roksard.jooqgenerated.tables.OrganisationEmployee;
+import ru.roksard.jooqgenerated.tables.Organisations;
 
 
 /**
@@ -32,7 +35,7 @@ import ru.roksard.jooqgenerated.tables.Book;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = -82057258;
+    private static final long serialVersionUID = 660304743;
 
     /**
      * The reference instance of <code>public</code>
@@ -40,19 +43,29 @@ public class Public extends SchemaImpl {
     public static final Public PUBLIC = new Public();
 
     /**
-     * The table <code>public.author</code>.
+     * The table <code>public.employee_child</code>.
      */
-    public final Author AUTHOR = ru.roksard.jooqgenerated.tables.Author.AUTHOR;
+    public final EmployeeChild EMPLOYEE_CHILD = ru.roksard.jooqgenerated.tables.EmployeeChild.EMPLOYEE_CHILD;
 
     /**
-     * The table <code>public.author_book</code>.
+     * The table <code>public.employees</code>.
      */
-    public final AuthorBook AUTHOR_BOOK = ru.roksard.jooqgenerated.tables.AuthorBook.AUTHOR_BOOK;
+    public final Employees EMPLOYEES = ru.roksard.jooqgenerated.tables.Employees.EMPLOYEES;
 
     /**
-     * The table <code>public.book</code>.
+     * The table <code>public.organisation_child</code>.
      */
-    public final Book BOOK = ru.roksard.jooqgenerated.tables.Book.BOOK;
+    public final OrganisationChild ORGANISATION_CHILD = ru.roksard.jooqgenerated.tables.OrganisationChild.ORGANISATION_CHILD;
+
+    /**
+     * The table <code>public.organisation_employee</code>.
+     */
+    public final OrganisationEmployee ORGANISATION_EMPLOYEE = ru.roksard.jooqgenerated.tables.OrganisationEmployee.ORGANISATION_EMPLOYEE;
+
+    /**
+     * The table <code>public.organisations</code>.
+     */
+    public final Organisations ORGANISATIONS = ru.roksard.jooqgenerated.tables.Organisations.ORGANISATIONS;
 
     /**
      * No further instances allowed
@@ -71,6 +84,19 @@ public class Public extends SchemaImpl {
     }
 
     @Override
+    public final List<Sequence<?>> getSequences() {
+        List result = new ArrayList();
+        result.addAll(getSequences0());
+        return result;
+    }
+
+    private final List<Sequence<?>> getSequences0() {
+        return Arrays.<Sequence<?>>asList(
+            Sequences.EMPLOYEES_ID_SEQ,
+            Sequences.ORGANISATIONS_ID_SEQ);
+    }
+
+    @Override
     public final List<Table<?>> getTables() {
         List result = new ArrayList();
         result.addAll(getTables0());
@@ -79,8 +105,10 @@ public class Public extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
-            Author.AUTHOR,
-            AuthorBook.AUTHOR_BOOK,
-            Book.BOOK);
+            EmployeeChild.EMPLOYEE_CHILD,
+            Employees.EMPLOYEES,
+            OrganisationChild.ORGANISATION_CHILD,
+            OrganisationEmployee.ORGANISATION_EMPLOYEE,
+            Organisations.ORGANISATIONS);
     }
 }

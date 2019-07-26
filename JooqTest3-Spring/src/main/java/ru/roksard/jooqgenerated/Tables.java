@@ -6,9 +6,11 @@ package ru.roksard.jooqgenerated;
 
 import javax.annotation.Generated;
 
-import ru.roksard.jooqgenerated.tables.Author;
-import ru.roksard.jooqgenerated.tables.AuthorBook;
-import ru.roksard.jooqgenerated.tables.Book;
+import ru.roksard.jooqgenerated.tables.EmployeeChild;
+import ru.roksard.jooqgenerated.tables.Employees;
+import ru.roksard.jooqgenerated.tables.OrganisationChild;
+import ru.roksard.jooqgenerated.tables.OrganisationEmployee;
+import ru.roksard.jooqgenerated.tables.Organisations;
 
 
 /**
@@ -25,17 +27,27 @@ import ru.roksard.jooqgenerated.tables.Book;
 public class Tables {
 
     /**
-     * The table <code>public.author</code>.
+     * The table <code>public.employee_child</code>.
      */
-    public static final Author AUTHOR = ru.roksard.jooqgenerated.tables.Author.AUTHOR;
+    public static final EmployeeChild EMPLOYEE_CHILD = ru.roksard.jooqgenerated.tables.EmployeeChild.EMPLOYEE_CHILD;
 
     /**
-     * The table <code>public.author_book</code>.
+     * The table <code>public.employees</code>.
      */
-    public static final AuthorBook AUTHOR_BOOK = ru.roksard.jooqgenerated.tables.AuthorBook.AUTHOR_BOOK;
+    public static final Employees EMPLOYEES = ru.roksard.jooqgenerated.tables.Employees.EMPLOYEES;
 
     /**
-     * The table <code>public.book</code>.
+     * The table <code>public.organisation_child</code>.
      */
-    public static final Book BOOK = ru.roksard.jooqgenerated.tables.Book.BOOK;
+    public static final OrganisationChild ORGANISATION_CHILD = ru.roksard.jooqgenerated.tables.OrganisationChild.ORGANISATION_CHILD;
+
+    /**
+     * The table <code>public.organisation_employee</code>.
+     */
+    public static final OrganisationEmployee ORGANISATION_EMPLOYEE = ru.roksard.jooqgenerated.tables.OrganisationEmployee.ORGANISATION_EMPLOYEE;
+
+    /**
+     * The table <code>public.organisations</code>.
+     */
+    public static final Organisations ORGANISATIONS = ru.roksard.jooqgenerated.tables.Organisations.ORGANISATIONS;
 }

@@ -10,9 +10,11 @@ import org.jooq.Index;
 import org.jooq.OrderField;
 import org.jooq.impl.Internal;
 
-import ru.roksard.jooqgenerated.tables.Author;
-import ru.roksard.jooqgenerated.tables.AuthorBook;
-import ru.roksard.jooqgenerated.tables.Book;
+import ru.roksard.jooqgenerated.tables.EmployeeChild;
+import ru.roksard.jooqgenerated.tables.Employees;
+import ru.roksard.jooqgenerated.tables.OrganisationChild;
+import ru.roksard.jooqgenerated.tables.OrganisationEmployee;
+import ru.roksard.jooqgenerated.tables.Organisations;
 
 
 /**
@@ -32,17 +34,21 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index AUTHOR_PKEY = Indexes0.AUTHOR_PKEY;
-    public static final Index AUTHOR_BOOK_PKEY = Indexes0.AUTHOR_BOOK_PKEY;
-    public static final Index BOOK_PKEY = Indexes0.BOOK_PKEY;
+    public static final Index EMPLOYEE_CHILD_PKEY = Indexes0.EMPLOYEE_CHILD_PKEY;
+    public static final Index EMPLOYEES_PKEY = Indexes0.EMPLOYEES_PKEY;
+    public static final Index ORGANISATION_CHILD_PKEY = Indexes0.ORGANISATION_CHILD_PKEY;
+    public static final Index ORGANISATION_EMPLOYEE_PKEY = Indexes0.ORGANISATION_EMPLOYEE_PKEY;
+    public static final Index ORGANISATIONS_PKEY = Indexes0.ORGANISATIONS_PKEY;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
     // -------------------------------------------------------------------------
 
     private static class Indexes0 {
-        public static Index AUTHOR_PKEY = Internal.createIndex("author_pkey", Author.AUTHOR, new OrderField[] { Author.AUTHOR.ID }, true);
-        public static Index AUTHOR_BOOK_PKEY = Internal.createIndex("author_book_pkey", AuthorBook.AUTHOR_BOOK, new OrderField[] { AuthorBook.AUTHOR_BOOK.AUTHOR_ID, AuthorBook.AUTHOR_BOOK.BOOK_ID }, true);
-        public static Index BOOK_PKEY = Internal.createIndex("book_pkey", Book.BOOK, new OrderField[] { Book.BOOK.ID }, true);
+        public static Index EMPLOYEE_CHILD_PKEY = Internal.createIndex("employee_child_pkey", EmployeeChild.EMPLOYEE_CHILD, new OrderField[] { EmployeeChild.EMPLOYEE_CHILD.PARENT_ID, EmployeeChild.EMPLOYEE_CHILD.CHILD_ID }, true);
+        public static Index EMPLOYEES_PKEY = Internal.createIndex("employees_pkey", Employees.EMPLOYEES, new OrderField[] { Employees.EMPLOYEES.ID }, true);
+        public static Index ORGANISATION_CHILD_PKEY = Internal.createIndex("organisation_child_pkey", OrganisationChild.ORGANISATION_CHILD, new OrderField[] { OrganisationChild.ORGANISATION_CHILD.PARENT_ID, OrganisationChild.ORGANISATION_CHILD.CHILD_ID }, true);
+        public static Index ORGANISATION_EMPLOYEE_PKEY = Internal.createIndex("organisation_employee_pkey", OrganisationEmployee.ORGANISATION_EMPLOYEE, new OrderField[] { OrganisationEmployee.ORGANISATION_EMPLOYEE.ORGANISATION_ID, OrganisationEmployee.ORGANISATION_EMPLOYEE.EMPLOYEE_ID }, true);
+        public static Index ORGANISATIONS_PKEY = Internal.createIndex("organisations_pkey", Organisations.ORGANISATIONS, new OrderField[] { Organisations.ORGANISATIONS.ID }, true);
     }
 }

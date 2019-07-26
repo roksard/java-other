@@ -7,15 +7,20 @@ package ru.roksard.jooqgenerated;
 import javax.annotation.Generated;
 
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.UniqueKey;
 import org.jooq.impl.Internal;
 
-import ru.roksard.jooqgenerated.tables.Author;
-import ru.roksard.jooqgenerated.tables.AuthorBook;
-import ru.roksard.jooqgenerated.tables.Book;
-import ru.roksard.jooqgenerated.tables.records.AuthorBookRecord;
-import ru.roksard.jooqgenerated.tables.records.AuthorRecord;
-import ru.roksard.jooqgenerated.tables.records.BookRecord;
+import ru.roksard.jooqgenerated.tables.EmployeeChild;
+import ru.roksard.jooqgenerated.tables.Employees;
+import ru.roksard.jooqgenerated.tables.OrganisationChild;
+import ru.roksard.jooqgenerated.tables.OrganisationEmployee;
+import ru.roksard.jooqgenerated.tables.Organisations;
+import ru.roksard.jooqgenerated.tables.records.EmployeeChildRecord;
+import ru.roksard.jooqgenerated.tables.records.EmployeesRecord;
+import ru.roksard.jooqgenerated.tables.records.OrganisationChildRecord;
+import ru.roksard.jooqgenerated.tables.records.OrganisationEmployeeRecord;
+import ru.roksard.jooqgenerated.tables.records.OrganisationsRecord;
 
 
 /**
@@ -36,34 +41,53 @@ public class Keys {
     // IDENTITY definitions
     // -------------------------------------------------------------------------
 
+    public static final Identity<EmployeesRecord, Integer> IDENTITY_EMPLOYEES = Identities0.IDENTITY_EMPLOYEES;
+    public static final Identity<OrganisationsRecord, Integer> IDENTITY_ORGANISATIONS = Identities0.IDENTITY_ORGANISATIONS;
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<AuthorRecord> AUTHOR_PKEY = UniqueKeys0.AUTHOR_PKEY;
-    public static final UniqueKey<AuthorBookRecord> AUTHOR_BOOK_PKEY = UniqueKeys0.AUTHOR_BOOK_PKEY;
-    public static final UniqueKey<BookRecord> BOOK_PKEY = UniqueKeys0.BOOK_PKEY;
+    public static final UniqueKey<EmployeeChildRecord> EMPLOYEE_CHILD_PKEY = UniqueKeys0.EMPLOYEE_CHILD_PKEY;
+    public static final UniqueKey<EmployeesRecord> EMPLOYEES_PKEY = UniqueKeys0.EMPLOYEES_PKEY;
+    public static final UniqueKey<OrganisationChildRecord> ORGANISATION_CHILD_PKEY = UniqueKeys0.ORGANISATION_CHILD_PKEY;
+    public static final UniqueKey<OrganisationEmployeeRecord> ORGANISATION_EMPLOYEE_PKEY = UniqueKeys0.ORGANISATION_EMPLOYEE_PKEY;
+    public static final UniqueKey<OrganisationsRecord> ORGANISATIONS_PKEY = UniqueKeys0.ORGANISATIONS_PKEY;
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final ForeignKey<AuthorBookRecord, AuthorRecord> AUTHOR_BOOK__FK_AB_AUTHOR = ForeignKeys0.AUTHOR_BOOK__FK_AB_AUTHOR;
-    public static final ForeignKey<AuthorBookRecord, BookRecord> AUTHOR_BOOK__FK_AB_BOOK = ForeignKeys0.AUTHOR_BOOK__FK_AB_BOOK;
+    public static final ForeignKey<EmployeeChildRecord, EmployeesRecord> EMPLOYEE_CHILD__FK_PARENT = ForeignKeys0.EMPLOYEE_CHILD__FK_PARENT;
+    public static final ForeignKey<EmployeeChildRecord, EmployeesRecord> EMPLOYEE_CHILD__FK_CHILD = ForeignKeys0.EMPLOYEE_CHILD__FK_CHILD;
+    public static final ForeignKey<OrganisationChildRecord, OrganisationsRecord> ORGANISATION_CHILD__FK_PARENT = ForeignKeys0.ORGANISATION_CHILD__FK_PARENT;
+    public static final ForeignKey<OrganisationChildRecord, OrganisationsRecord> ORGANISATION_CHILD__FK_CHILD = ForeignKeys0.ORGANISATION_CHILD__FK_CHILD;
+    public static final ForeignKey<OrganisationEmployeeRecord, OrganisationsRecord> ORGANISATION_EMPLOYEE__FK_ORGANISATION = ForeignKeys0.ORGANISATION_EMPLOYEE__FK_ORGANISATION;
+    public static final ForeignKey<OrganisationEmployeeRecord, EmployeesRecord> ORGANISATION_EMPLOYEE__FK_EMPLOYEE = ForeignKeys0.ORGANISATION_EMPLOYEE__FK_EMPLOYEE;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
     // -------------------------------------------------------------------------
 
+    private static class Identities0 {
+        public static Identity<EmployeesRecord, Integer> IDENTITY_EMPLOYEES = Internal.createIdentity(Employees.EMPLOYEES, Employees.EMPLOYEES.ID);
+        public static Identity<OrganisationsRecord, Integer> IDENTITY_ORGANISATIONS = Internal.createIdentity(Organisations.ORGANISATIONS, Organisations.ORGANISATIONS.ID);
+    }
+
     private static class UniqueKeys0 {
-        public static final UniqueKey<AuthorRecord> AUTHOR_PKEY = Internal.createUniqueKey(Author.AUTHOR, "author_pkey", Author.AUTHOR.ID);
-        public static final UniqueKey<AuthorBookRecord> AUTHOR_BOOK_PKEY = Internal.createUniqueKey(AuthorBook.AUTHOR_BOOK, "author_book_pkey", AuthorBook.AUTHOR_BOOK.AUTHOR_ID, AuthorBook.AUTHOR_BOOK.BOOK_ID);
-        public static final UniqueKey<BookRecord> BOOK_PKEY = Internal.createUniqueKey(Book.BOOK, "book_pkey", Book.BOOK.ID);
+        public static final UniqueKey<EmployeeChildRecord> EMPLOYEE_CHILD_PKEY = Internal.createUniqueKey(EmployeeChild.EMPLOYEE_CHILD, "employee_child_pkey", EmployeeChild.EMPLOYEE_CHILD.PARENT_ID, EmployeeChild.EMPLOYEE_CHILD.CHILD_ID);
+        public static final UniqueKey<EmployeesRecord> EMPLOYEES_PKEY = Internal.createUniqueKey(Employees.EMPLOYEES, "employees_pkey", Employees.EMPLOYEES.ID);
+        public static final UniqueKey<OrganisationChildRecord> ORGANISATION_CHILD_PKEY = Internal.createUniqueKey(OrganisationChild.ORGANISATION_CHILD, "organisation_child_pkey", OrganisationChild.ORGANISATION_CHILD.PARENT_ID, OrganisationChild.ORGANISATION_CHILD.CHILD_ID);
+        public static final UniqueKey<OrganisationEmployeeRecord> ORGANISATION_EMPLOYEE_PKEY = Internal.createUniqueKey(OrganisationEmployee.ORGANISATION_EMPLOYEE, "organisation_employee_pkey", OrganisationEmployee.ORGANISATION_EMPLOYEE.ORGANISATION_ID, OrganisationEmployee.ORGANISATION_EMPLOYEE.EMPLOYEE_ID);
+        public static final UniqueKey<OrganisationsRecord> ORGANISATIONS_PKEY = Internal.createUniqueKey(Organisations.ORGANISATIONS, "organisations_pkey", Organisations.ORGANISATIONS.ID);
     }
 
     private static class ForeignKeys0 {
-        public static final ForeignKey<AuthorBookRecord, AuthorRecord> AUTHOR_BOOK__FK_AB_AUTHOR = Internal.createForeignKey(ru.roksard.jooqgenerated.Keys.AUTHOR_PKEY, AuthorBook.AUTHOR_BOOK, "author_book__fk_ab_author", AuthorBook.AUTHOR_BOOK.AUTHOR_ID);
-        public static final ForeignKey<AuthorBookRecord, BookRecord> AUTHOR_BOOK__FK_AB_BOOK = Internal.createForeignKey(ru.roksard.jooqgenerated.Keys.BOOK_PKEY, AuthorBook.AUTHOR_BOOK, "author_book__fk_ab_book", AuthorBook.AUTHOR_BOOK.BOOK_ID);
+        public static final ForeignKey<EmployeeChildRecord, EmployeesRecord> EMPLOYEE_CHILD__FK_PARENT = Internal.createForeignKey(ru.roksard.jooqgenerated.Keys.EMPLOYEES_PKEY, EmployeeChild.EMPLOYEE_CHILD, "employee_child__fk_parent", EmployeeChild.EMPLOYEE_CHILD.PARENT_ID);
+        public static final ForeignKey<EmployeeChildRecord, EmployeesRecord> EMPLOYEE_CHILD__FK_CHILD = Internal.createForeignKey(ru.roksard.jooqgenerated.Keys.EMPLOYEES_PKEY, EmployeeChild.EMPLOYEE_CHILD, "employee_child__fk_child", EmployeeChild.EMPLOYEE_CHILD.CHILD_ID);
+        public static final ForeignKey<OrganisationChildRecord, OrganisationsRecord> ORGANISATION_CHILD__FK_PARENT = Internal.createForeignKey(ru.roksard.jooqgenerated.Keys.ORGANISATIONS_PKEY, OrganisationChild.ORGANISATION_CHILD, "organisation_child__fk_parent", OrganisationChild.ORGANISATION_CHILD.PARENT_ID);
+        public static final ForeignKey<OrganisationChildRecord, OrganisationsRecord> ORGANISATION_CHILD__FK_CHILD = Internal.createForeignKey(ru.roksard.jooqgenerated.Keys.ORGANISATIONS_PKEY, OrganisationChild.ORGANISATION_CHILD, "organisation_child__fk_child", OrganisationChild.ORGANISATION_CHILD.CHILD_ID);
+        public static final ForeignKey<OrganisationEmployeeRecord, OrganisationsRecord> ORGANISATION_EMPLOYEE__FK_ORGANISATION = Internal.createForeignKey(ru.roksard.jooqgenerated.Keys.ORGANISATIONS_PKEY, OrganisationEmployee.ORGANISATION_EMPLOYEE, "organisation_employee__fk_organisation", OrganisationEmployee.ORGANISATION_EMPLOYEE.ORGANISATION_ID);
+        public static final ForeignKey<OrganisationEmployeeRecord, EmployeesRecord> ORGANISATION_EMPLOYEE__FK_EMPLOYEE = Internal.createForeignKey(ru.roksard.jooqgenerated.Keys.EMPLOYEES_PKEY, OrganisationEmployee.ORGANISATION_EMPLOYEE, "organisation_employee__fk_employee", OrganisationEmployee.ORGANISATION_EMPLOYEE.EMPLOYEE_ID);
     }
 }
