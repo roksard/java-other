@@ -108,15 +108,15 @@ public class Controller {
 	}
 	
 	@GetMapping("/organisation/list/count")
-	public int countOrganisationEmployeeNumberList(
+	public Value countOrganisationEmployeeNumberList(
 			@RequestParam(value="nameSearch", defaultValue="") String nameSearch) {
 		try {
-			return db.countOrganisationEmployeeNumberList(nameSearch);
+			return new Value(db.countOrganisationEmployeeNumberList(nameSearch));
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 		//something went wrong
-		return 0;
+		return null;
 	}
 	
 	/**
@@ -146,15 +146,15 @@ public class Controller {
 	}
 	
 	@GetMapping("/organisation/{id}/tree/count")
-	public int  countChildOrganisationList(
+	public Value  countChildOrganisationList(
 			@PathVariable("id") int id) {
 		try {
-			return db.countChildOrganisationList(id);
+			return new Value(db.countChildOrganisationList(id));
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 		//something went wrong
-		return 0;
+		return null;
 	}
 	
 	@GetMapping("/employee/{id}")
@@ -219,17 +219,17 @@ public class Controller {
 	}
 	
 	@GetMapping("/employee/list/count")
-	public int countEmployeeListByName(
+	public Value countEmployeeListByName(
 			@RequestParam(value="nameSearch", defaultValue="") String nameSearch,
 			@RequestParam(value="organisationNameSearch", defaultValue="") 
 				String organisationNameSearch) {
 		try {
-			return db.countEmployeeListByName(nameSearch, organisationNameSearch);
+			return new Value(db.countEmployeeListByName(nameSearch, organisationNameSearch));
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 		//something went wrong
-		return 0;
+		return null;
 	}
 	
 	@GetMapping("/employee/{id}/tree")
