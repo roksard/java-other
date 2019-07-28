@@ -10,6 +10,7 @@ class OrgList extends React.Component {
     this.tree = this.tree.bind(this);
     this.changeNameHandler = this.changeNameHandler.bind(this);
     this.state = {name: ''};
+    this.selectTab = this.selectTab.bind(this);
   }
   render() {
     return (
@@ -69,6 +70,7 @@ class OrgList extends React.Component {
   }
 
   delete(org) {
+    let selectTab1 = this.props.fnSelectTab.bind(this);
     fetch(global.host + '/organisation/'+org.id+'/delete', {
       method: 'POST',
       headers: {
@@ -76,9 +78,10 @@ class OrgList extends React.Component {
         'Content-Type': 'application/json',
       }, body:{}})
       .then(res => {
-        if((res.status >= 200) && (res.status < 300))
+        if((res.status >= 200) && (res.status < 300)) {
           alert('Удаление успешно.');
-        else {
+          selectTab1(global.orgListTab);
+        } else {
           if(res.status == 409) {
             alert('Неудача: нельзя удалить элемент содержащий дочерние элементы');
           } else 
@@ -86,6 +89,10 @@ class OrgList extends React.Component {
         }
       })
       .catch(console.log);
+  }
+
+  selectTab() {
+    this.props.fnSelectTab(global.orgListTab);
   }
 
 };

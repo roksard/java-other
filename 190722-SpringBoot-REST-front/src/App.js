@@ -101,7 +101,7 @@ class App extends Component {
         <OrgList data={this.state.org_list} offset={this.state.org_list_offset}
           limit={this.state.org_list_limit} count={this.state.org_list_count}
           fnSetOffset={this.setOrgListOffset} fnEdit={this.editOrg} fnTree={this.gotoOrgTreeId} 
-          fnSearch={this.searchOrg} />);
+          fnSearch={this.searchOrg} fnSelectTab={this.selectTab} />);
       case global.orgTreeTab: return (
         <OrgTree data={this.state.org_tree} offset={this.state.org_tree_offset}
           limit={this.state.org_tree_limit} count={this.state.org_tree_count}
@@ -110,7 +110,7 @@ class App extends Component {
         <EmployeeList data={this.state.emp_list} offset={this.state.emp_list_offset}
           limit={this.state.emp_list_limit} count={this.state.emp_list_count}
           fnSetOffset={this.setEmpListOffset} fnEdit={this.editEmp} fnTree={this.gotoEmpTreeId}
-          fnSearch={this.searchEmp}/>);
+          fnSearch={this.searchEmp} fnSelectTab={this.selectTab}/>);
       case global.empTreeTab: return (
         <EmpTree data={this.state.emp_tree} offset={this.state.emp_tree_offset}
           limit={this.state.emp_tree_limit} count={this.state.emp_tree_count}
@@ -128,7 +128,12 @@ class App extends Component {
   }
 
   selectTab(id) {
-    this.setState({ active_tab: id }, this.fetchTab)
+    this.setState({ active_tab: id,  
+      org_list_offset: 0,
+      org_tree_offset: 0,
+      emp_list_offset: 0,
+      emp_tree_offset: 0,
+    }, this.fetchTab)
   }
 
   fetchTab() {

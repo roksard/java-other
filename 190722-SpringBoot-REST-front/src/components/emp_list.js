@@ -6,6 +6,7 @@ class EmpList extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {name: '', orgName: ''};
+    this.selectTab = this.selectTab.bind(this);
   }
   render() {
     return (
@@ -71,6 +72,7 @@ class EmpList extends React.Component {
   }
 
   delete(emp) {
+    let selectTab1 = this.selectTab.bind(this);
     fetch(global.host + '/employee/' + emp.id + '/delete', {
       method: 'POST',
       headers: {
@@ -79,16 +81,22 @@ class EmpList extends React.Component {
       }, body: {}
     })
       .then(res => {
-        if ((res.status >= 200) && (res.status < 300))
+        if ((res.status >= 200) && (res.status < 300)) {
           alert('Удаление успешно.');
-        else {
+          this.selectTab(1);
+        } else {
           if (res.status == 409) {
             alert('Неудача: нельзя удалить элемент содержащий дочерние элементы');
           } else
             alert('Неудача: ' + res.status);
         }
+        
       })
       .catch(console.log);
+  }
+
+  selectTab() {
+    this.props.fnSelectTab(global.empListTab);
   }
 
 };
