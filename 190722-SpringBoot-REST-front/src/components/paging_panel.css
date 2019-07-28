@@ -1,0 +1,16 @@
+.pagingPanel {
+  width: 30%;
+  margin-top: 1em;
+  font-size: 0.7em;
+}
+
+.pagingInteractive {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.pagingInteractiveText {
+  margin-top: auto;
+  margin-bottom: auto;
+}

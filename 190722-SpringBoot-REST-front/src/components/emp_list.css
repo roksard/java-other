@@ -1,0 +1,13 @@
+.empListName {
+  margin-top: 1em;
+  font-weight: bold;
+}
+
+.empSearch {
+  margin: 0.1em;
+  padding: 0.5em;
+  background-color: lightgray;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}

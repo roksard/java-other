@@ -1,0 +1,36 @@
+.orgTree {
+    padding: 0.3em;
+}
+
+.orgName {
+    margin: 0em;
+    padding: 0.3em;
+    border-left-color: rgb(58, 58, 58);
+    border-left-width: 0.1em;
+    border-left-style: solid;
+}
+
+.orgChildList {
+    margin-left: 1em;
+    padding: 0.3em;
+    border-left-color: rgb(58, 58, 58);
+    border-left-width: 0.1em;
+    border-left-style: solid;
+}
+
+.orgChildListHeader {
+    font-weight: bold;
+}
+
+.orgParent {
+    margin-left: 1em;
+    padding: 0.3em;
+    border-left-color: rgb(58, 58, 58);
+    border-left-width: 0.1em;
+    border-left-style: solid;
+}
+
+.orgParentHeader {
+    font-weight: bold;
+}
+

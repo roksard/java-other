@@ -1,0 +1,35 @@
+.empTree {
+    padding: 0.3em;
+}
+
+.empName {
+    margin: 0em;
+    padding: 0.3em;
+    border-left-color: rgb(58, 58, 58);
+    border-left-width: 0.1em;
+    border-left-style: solid;
+}
+
+.empChildList {
+    margin-left: 1em;
+    padding: 0.3em;
+    border-left-color: rgb(58, 58, 58);
+    border-left-width: 0.1em;
+    border-left-style: solid;
+}
+
+.empChildListHeader {
+    font-weight: bold;
+}
+
+.empParent {
+    margin-left: 1em;
+    padding: 0.3em;
+    border-left-color: rgb(58, 58, 58);
+    border-left-width: 0.1em;
+    border-left-style: solid;
+}
+
+.empParentHeader {
+    font-weight: bold;
+}
