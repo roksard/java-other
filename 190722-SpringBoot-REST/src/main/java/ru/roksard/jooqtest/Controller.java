@@ -1,11 +1,11 @@
 package ru.roksard.jooqtest;
 
-import static ru.roksard.jooqtest.BaseResponse.CODE_ERROR;
-import static ru.roksard.jooqtest.BaseResponse.CODE_SUCCESS;
 import static ru.roksard.jooqtest.BaseResponse.ERROR_STATUS;
 import static ru.roksard.jooqtest.BaseResponse.SUCCESS_STATUS;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +38,7 @@ public class Controller {
 	 * @return Status and id of new record added in db
 	 */
 	@PostMapping("/organisation/add")
-	public BaseResponse addOrganisation(@RequestBody Organisation org) {
+	public ResponseEntity<Value> addOrganisation(@RequestBody Organisation org) {
 		int result = 0;
 		try {
 			result = db.addOrganisation(org);
@@ -46,43 +46,43 @@ public class Controller {
 			e.printStackTrace();
 		}
 		if(result != 0)
-			return new BaseResponse(SUCCESS_STATUS +"(id:"+result+")", CODE_SUCCESS);
+			return new ResponseEntity<>(new Value("OK"), HttpStatus.OK);
 		else
-			return new BaseResponse(ERROR_STATUS, CODE_ERROR);
+			return new ResponseEntity<>(new Value("Error"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@PostMapping("/organisation/update")
-	public BaseResponse updateOrganisation(@RequestBody Organisation org) {
+	public ResponseEntity<Value> updateOrganisation(@RequestBody Organisation org) {
 		try {
 			db.updateOrganisation(org);
-			return new BaseResponse(SUCCESS_STATUS, CODE_SUCCESS);
+			return new ResponseEntity<>(new Value("OK"), HttpStatus.OK);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-		return new BaseResponse(ERROR_STATUS, CODE_ERROR);
+		return new ResponseEntity<>(new Value("Error"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@PostMapping("/organisation/{id}/update")
-	public BaseResponse updateOrganisation(@PathVariable int id, @RequestBody Organisation org) {
+	public ResponseEntity<Value> updateOrganisation(@PathVariable int id, @RequestBody Organisation org) {
 		try {
 			org.setId(id);
 			db.updateOrganisation(org);
-			return new BaseResponse(SUCCESS_STATUS, CODE_SUCCESS);
+			return new ResponseEntity<>(new Value("OK"), HttpStatus.OK);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-		return new BaseResponse(ERROR_STATUS, CODE_ERROR);
+		return new ResponseEntity<>(new Value("Error"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@PostMapping("/organisation/{id}/delete")
-	public BaseResponse deleteOrganisation(@PathVariable int id) {
+	public ResponseEntity<Value> deleteOrganisation(@PathVariable int id) {
 		try {
 			return db.deleteOrganisation(id);
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return new ResponseEntity<>(new Value(e.getMessage()), 
+					HttpStatus.EXPECTATION_FAILED);
 		}
-		//something went wrong
-		return new BaseResponse(ERROR_STATUS, CODE_ERROR);
 	}
 	
 	/**
@@ -173,34 +173,34 @@ public class Controller {
 	 * @return Status and id of new record added in db
 	 */
 	@PostMapping("/employee/add")
-	public BaseResponse addEmployee(@RequestBody Employee emp) {
+	public ResponseEntity<Value> addEmployee(@RequestBody Employee emp) {
 		try {
 			return db.addEmployee(emp);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-		return new BaseResponse(ERROR_STATUS, CODE_ERROR);
+		return new ResponseEntity<>(new Value("Error"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@PostMapping("/employee/update")
-	public BaseResponse updateEmployee(@RequestBody Employee emp) {
+	public ResponseEntity<Value> updateEmployee(@RequestBody Employee emp) {
 		try {
 			return db.updateEmployee(emp);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-		return new BaseResponse(ERROR_STATUS, CODE_ERROR);
+		return new ResponseEntity<>(new Value("Error"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@PostMapping("/employee/{id}/delete")
-	public BaseResponse deleteEmployee(@PathVariable int id) {
+	public ResponseEntity<Value> deleteEmployee(@PathVariable int id) {
 		try {
 			return db.deleteEmployee(id);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 		//something went wrong
-		return new BaseResponse(ERROR_STATUS, CODE_ERROR);
+		return new ResponseEntity<>(new Value("Error"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@GetMapping("/employee/list")
@@ -254,6 +254,6 @@ public class Controller {
 			e.printStackTrace();
 		}
 		//something went wrong
-		return new Value(0);
+		return new Value(0); 
 	}
 }

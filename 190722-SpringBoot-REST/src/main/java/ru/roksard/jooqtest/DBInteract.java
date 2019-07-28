@@ -1,17 +1,17 @@
 package ru.roksard.jooqtest;
 
-import static ru.roksard.jooqtest.BaseResponse.CODE_ERROR;
-import static ru.roksard.jooqtest.BaseResponse.CODE_SUCCESS;
 import static ru.roksard.jooqtest.BaseResponse.ERROR_STATUS;
 import static ru.roksard.jooqtest.BaseResponse.SUCCESS_STATUS;
 
-import java.util.Arrays;
 import java.util.Iterator;
 
 import org.jooq.DSLContext;
 import org.jooq.Record1;
 import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import ru.roksard.jooqgenerated.tables.EmployeeChild;
@@ -95,7 +95,7 @@ public class DBInteract {
 				.execute();
 	}
 	
-	public BaseResponse deleteOrganisation(int id) {
+	public ResponseEntity<Value> deleteOrganisation(int id) {
 		int childSum = 0;
 		//count number of child orgs:
 		childSum += dsl.fetchCount(dsl.selectFrom(organisation_child)
@@ -105,15 +105,24 @@ public class DBInteract {
 		childSum += dsl.fetchCount(dsl.selectFrom(organisation_employee)
 				.where(organisation_employee.ORGANISATION_ID.equal(id)));
 		
+		HttpHeaders headers = new HttpHeaders();
 		//delete only if org has no child orgs nor employees
 		if(childSum == 0) {
-			dsl.deleteFrom(organisations)
+			int count = dsl.deleteFrom(organisations)
 				.where(organisations.ID.equal(id))
 				.execute();
-			return new BaseResponse(SUCCESS_STATUS, CODE_SUCCESS);
+			if(count > 0)
+				return new ResponseEntity<>(new Value(SUCCESS_STATUS), HttpStatus.OK);
+			else {
+				headers.add("message", "Not found");
+				return new ResponseEntity<>(new Value("Not found"), headers, HttpStatus.NOT_FOUND);
+			}
 		}
-		return new BaseResponse(ERROR_STATUS+": cannot delete while contains child elements: "
-				+childSum, CODE_ERROR);
+		
+		headers.add("message", "Cannot delete while contains child elements: "
+				+childSum);
+		return new ResponseEntity<>(new Value("Cannot delete while contains child elements: "
+				+childSum), headers, HttpStatus.CONFLICT);
 	}
 	
 	public OrganisationEmployeeCount[] getOrganisationEmployeeNumberList(
@@ -220,14 +229,14 @@ public class DBInteract {
 	 * @param org object to be stored in db
 	 * @return 'id' of new record in db
 	 */ 
-	public BaseResponse addEmployee(Employee emp) {
+	public ResponseEntity<Value> addEmployee(Employee emp) {
 		//check if boss belongs to that organisation
-		if(!employeeBelongsToOrganisation(emp.getParentId(), emp.getOrganisationId()))
+		if(employeeExists(emp.getParentId()) && !employeeBelongsToOrganisation(emp.getParentId(), emp.getOrganisationId()))
 			//if not, then fail adding:
-			return new BaseResponse(ERROR_STATUS+": boss must belong to the same organisation: "
+			return new ResponseEntity<>(new Value("Boss must belong to the same organisation: "
 					+ "boss.orgId: "+getEmployee(emp.getParentId()).getOrganisationId()
 					+ "thisEmployee.orgId: "+emp.getOrganisationId()
-					, CODE_ERROR); 
+					), HttpStatus.CONFLICT); 
 		EmployeesRecord result = dsl.insertInto(employees)
 			.set(employees.NAME, emp.getName())
 			.set(employees.PARENTID, emp.getParentId())
@@ -251,17 +260,21 @@ public class DBInteract {
 			.set(organisation_employee.ORGANISATION_ID, emp.getOrganisationId())
 			.set(organisation_employee.EMPLOYEE_ID, childId)
 			.execute();
-		return new BaseResponse(SUCCESS_STATUS +"(id:"+childId+")", CODE_SUCCESS);
+		return new ResponseEntity<>(new Value("OK"), HttpStatus.OK);
 	}
 	
-	public BaseResponse updateEmployee(Employee emp) {
+	public boolean employeeExists(int id) {
+		return id != 0;
+	}
+	
+	public ResponseEntity<Value> updateEmployee(Employee emp) {
 		//check if boss belongs to that organisation
-		if(!employeeBelongsToOrganisation(emp.getParentId(), emp.getOrganisationId()))
+		if(employeeExists(emp.getParentId()) && !employeeBelongsToOrganisation(emp.getParentId(), emp.getOrganisationId()))
 			//if not, then fail adding:
-			return new BaseResponse(ERROR_STATUS+": boss must belong to the same organisation: "
+			return new ResponseEntity<>(new Value(ERROR_STATUS+": boss must belong to the same organisation: "
 					+ "boss.orgId: "+getEmployee(emp.getParentId()).getOrganisationId()
 					+ "thisEmployee.orgId: "+emp.getOrganisationId()
-					, CODE_ERROR); 
+					), HttpStatus.CONFLICT); 
 		dsl.update(employees)
 			.set(employees.NAME, emp.getName())
 			.set(employees.PARENTID, emp.getParentId())
@@ -286,10 +299,10 @@ public class DBInteract {
 		.set(organisation_employee.EMPLOYEE_ID, emp.getId())
 		.where(organisation_employee.EMPLOYEE_ID.equal(emp.getId()))
 		.execute();
-		return new BaseResponse(SUCCESS_STATUS, CODE_SUCCESS);
+		return new ResponseEntity<>(new Value("OK"), HttpStatus.OK);
 	}
 	
-	public BaseResponse deleteEmployee(int id) {
+	public ResponseEntity<Value> deleteEmployee(int id) {
 		int childSum = 0;
 		//count number of child employees:
 		childSum += dsl.fetchCount(dsl.selectFrom(employee_child)
@@ -300,10 +313,10 @@ public class DBInteract {
 			dsl.deleteFrom(employees)
 				.where(employees.ID.equal(id))
 				.execute();
-			return new BaseResponse(SUCCESS_STATUS, CODE_SUCCESS);
+			return new ResponseEntity<>(new Value("OK"), HttpStatus.OK);
 		}
-		return new BaseResponse(ERROR_STATUS+": cannot delete while contains child elements: "
-				+childSum, CODE_ERROR);
+		return new ResponseEntity<>(new Value(ERROR_STATUS+": cannot delete while contains child elements: "
+				+childSum), HttpStatus.CONFLICT);
 	}
 	
 	public Employee getEmployee(int id) {
