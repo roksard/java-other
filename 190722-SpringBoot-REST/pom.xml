@@ -14,9 +14,9 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<org.jooq.version>3.11.11</org.jooq.version>
 		<db.driver>org.postgresql.Driver</db.driver>
-		<db.url>jdbc:postgresql://127.0.0.1:5432/postgres</db.url>
-		<db.username>postgres</db.username>
-		<db.password>6696</db.password>
+		<db.url>${spring.datasource.url}</db.url>
+		<db.username>${spring.datasource.username}</db.username>
+		<db.password>${spring.datasource.password}</db.password>
 	</properties>
 
 	<dependencyManagement>
@@ -65,7 +65,6 @@
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
-			<version>3.3.1</version>
 		</dependency>
 
 		<dependency>
@@ -88,9 +87,27 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+							<files>
+								<file>src/main/resources/application.properties</file>
+							</files>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<!--<version>2.1.6.RELEASE</version> -->
+				<version>2.1.6.RELEASE</version>
 				<executions>
 					<execution>
 						<goals>
@@ -161,7 +178,7 @@
 							<inputSchema>public</inputSchema>
 						</database>
 						<target>
-							<packageName>ru.roksard.jooqgenerated</packageName>
+							<packageName>ru.roksard.empdb.jooqgenerated</packageName>
 							<directory>src/main/java</directory>
 						</target>
 					</generator>
