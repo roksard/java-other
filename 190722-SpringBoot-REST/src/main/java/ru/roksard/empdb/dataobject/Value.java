@@ -1,12 +1,14 @@
 package ru.roksard.empdb.dataobject;
 
-public class Value {
-	Object value;
+public class Value<T> {
+	T value;
 
-	public Value(Object value) {
+	public Value(T value) {
 		super();
 		this.value = value;
 	}
+
+	
 
 	@Override
 	public int hashCode() {
@@ -16,6 +18,8 @@ public class Value {
 		return result;
 	}
 
+
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -24,6 +28,7 @@ public class Value {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+		@SuppressWarnings("rawtypes")
 		Value other = (Value) obj;
 		if (value == null) {
 			if (other.value != null)
@@ -33,11 +38,13 @@ public class Value {
 		return true;
 	}
 
-	public Object getValue() {
+
+
+	public T getValue() {
 		return value;
 	}
 
-	public void setValue(Object value) {
+	public void setValue(T value) {
 		this.value = value;
 	}
 }

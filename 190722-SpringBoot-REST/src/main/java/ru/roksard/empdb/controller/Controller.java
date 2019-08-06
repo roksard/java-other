@@ -1,5 +1,7 @@
 package ru.roksard.empdb.controller;
 
+//@formatter:off
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,8 @@ import ru.roksard.empdb.dataobject.OrganisationEmployeeCount;
 import ru.roksard.empdb.dataobject.OrganisationTree;
 import ru.roksard.empdb.dataobject.Value;
 
+import static ru.roksard.empdb.util.HttpHeadersUtil.httpHeadersMsg;
+
 @CrossOrigin
 @RestController	
 public class Controller {
@@ -29,13 +33,17 @@ public class Controller {
 	
 	
 	@GetMapping("/organisation/{id}")
-	public Organisation getOrganisation(@PathVariable int id) {
+	public ResponseEntity<Organisation> getOrganisation(@PathVariable int id) {
 		try {
-			return db.getOrganisation(id);
+			return ResponseEntity
+					.ok(db.getOrganisation(id));
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
-		return null;
 	}
 	
 	/**
@@ -44,50 +52,55 @@ public class Controller {
 	 * @return Status and id of new record added in db
 	 */
 	@PostMapping("/organisation/add")
-	public ResponseEntity<Value> addOrganisation(@RequestBody Organisation org) {
-		int result = 0;
+	public ResponseEntity<?> addOrganisation(@RequestBody Organisation org) {
 		try {
-			result = db.addOrganisation(org);
+			return db.addOrganisation(org);
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
-		if(result != 0)
-			return new ResponseEntity<>(new Value("OK"), HttpStatus.OK);
-		else
-			return new ResponseEntity<>(new Value("Error"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	@PostMapping("/organisation/update")
-	public ResponseEntity<Value> updateOrganisation(@RequestBody Organisation org) {
+	public ResponseEntity<?> updateOrganisation(@RequestBody Organisation org) {
 		try {
-			db.updateOrganisation(org);
-			return new ResponseEntity<>(new Value("OK"), HttpStatus.OK);
+			return db.updateOrganisation(org);
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
-		return new ResponseEntity<>(new Value("Error"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@PostMapping("/organisation/{id}/update")
-	public ResponseEntity<Value> updateOrganisation(@PathVariable int id, @RequestBody Organisation org) {
+	public ResponseEntity<?> updateOrganisation(@PathVariable int id, @RequestBody Organisation org) {
 		try {
 			org.setId(id);
-			db.updateOrganisation(org);
-			return new ResponseEntity<>(new Value("OK"), HttpStatus.OK);
+			return db.updateOrganisation(org);
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
-		return new ResponseEntity<>(new Value("Error"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@PostMapping("/organisation/{id}/delete")
-	public ResponseEntity<Value> deleteOrganisation(@PathVariable int id) {
+	public ResponseEntity<?> deleteOrganisation(@PathVariable int id) {
 		try {
 			return db.deleteOrganisation(id);
 		} catch (Throwable e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(new Value(e.getMessage()), 
-					HttpStatus.EXPECTATION_FAILED);
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
 	}
 	
@@ -100,7 +113,7 @@ public class Controller {
 	 * @return a Map containing entries: <Organisation, number of employees>
 	 */
 	@GetMapping("/organisation/list")
-	public OrganisationEmployeeCount[] getOrganisationEmployeeNumberList(
+	public ResponseEntity<OrganisationEmployeeCount[]> getOrganisationEmployeeNumberList(
 			@RequestParam(value="nameSearch", defaultValue="") String nameSearch, 
 			@RequestParam("offset") int offset,
 			@RequestParam("limit") int limit) {
@@ -108,21 +121,26 @@ public class Controller {
 			return db.getOrganisationEmployeeNumberList(nameSearch, offset, limit);
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
-		//something went wrong
-		return null;
 	}
 	
 	@GetMapping("/organisation/list/count")
-	public Value countOrganisationEmployeeNumberList(
+	public ResponseEntity<Value<Integer>> countOrganisationEmployeeNumberList(
 			@RequestParam(value="nameSearch", defaultValue="") String nameSearch) {
 		try {
-			return new Value(db.countOrganisationEmployeeNumberList(nameSearch));
+			return ResponseEntity.ok(new Value<>(
+							db.countOrganisationEmployeeNumberList(nameSearch)));
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
-		//something went wrong
-		return null;
 	}
 	
 	/**
@@ -138,7 +156,7 @@ public class Controller {
 	 * @return Triplet structure, containing <this org, list of child orgs, parent org>
 	 */
 	@GetMapping("/organisation/{id}/tree")
-	public OrganisationTree  getChildOrganisationList(
+	public ResponseEntity<OrganisationTree> getChildOrganisationList(
 			@PathVariable("id") int id,
 			@RequestParam("offset") int offset,
 			@RequestParam("limit") int limit) {
@@ -146,31 +164,38 @@ public class Controller {
 			return db.getChildOrganisationList(id, offset, limit);
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
-		//something went wrong
-		return null;
 	}
 	
 	@GetMapping("/organisation/{id}/tree/count")
-	public Value  countChildOrganisationList(
-			@PathVariable("id") int id) {
+	public ResponseEntity<Value<Integer>> countChildOrganisationList( @PathVariable("id") int id) {
 		try {
-			return new Value(db.countChildOrganisationList(id));
+			return ResponseEntity.ok(new Value<>(
+					db.countChildOrganisationList(id)));
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
-		//something went wrong
-		return null;
 	}
 	
 	@GetMapping("/employee/{id}")
-	public Employee getEmployee(@PathVariable int id) {
+	public ResponseEntity<Employee> getEmployee(@PathVariable int id) {
 		try {
 			return db.getEmployee(id);
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
-		return null;
 	}
 	
 	/**
@@ -179,38 +204,46 @@ public class Controller {
 	 * @return Status and id of new record added in db
 	 */
 	@PostMapping("/employee/add")
-	public ResponseEntity<Value> addEmployee(@RequestBody Employee emp) {
+	public ResponseEntity<?> addEmployee(@RequestBody Employee emp) {
 		try {
 			return db.addEmployee(emp);
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
-		return new ResponseEntity<>(new Value("Error"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@PostMapping("/employee/update")
-	public ResponseEntity<Value> updateEmployee(@RequestBody Employee emp) {
+	public ResponseEntity<?> updateEmployee(@RequestBody Employee emp) {
 		try {
 			return db.updateEmployee(emp);
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
-		return new ResponseEntity<>(new Value("Error"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@PostMapping("/employee/{id}/delete")
-	public ResponseEntity<Value> deleteEmployee(@PathVariable int id) {
+	public ResponseEntity<?> deleteEmployee(@PathVariable int id) {
 		try {
 			return db.deleteEmployee(id);
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
-		//something went wrong
-		return new ResponseEntity<>(new Value("Error"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@GetMapping("/employee/list")
-	public EmployeeOrganisationBoss[] getEmployeeListByName(
+	public ResponseEntity<EmployeeOrganisationBoss[]> getEmployeeListByName(
 			@RequestParam(value="nameSearch", defaultValue="") String nameSearch,
 			@RequestParam(value="organisationNameSearch", defaultValue="") String organisationNameSearch, 
 			@RequestParam("offset") int offset,
@@ -219,27 +252,32 @@ public class Controller {
 			return db.getEmployeeListByName(nameSearch, organisationNameSearch, offset, limit);
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
-		//something went wrong
-		return null;
 	}
 	
 	@GetMapping("/employee/list/count")
-	public Value countEmployeeListByName(
+	public ResponseEntity<Value<Integer>> countEmployeeListByName(
 			@RequestParam(value="nameSearch", defaultValue="") String nameSearch,
 			@RequestParam(value="organisationNameSearch", defaultValue="") 
 				String organisationNameSearch) {
 		try {
-			return new Value(db.countEmployeeListByName(nameSearch, organisationNameSearch));
+			return ResponseEntity.ok(new Value<>(
+					db.countEmployeeListByName(nameSearch, organisationNameSearch)));
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
-		//something went wrong
-		return null;
 	}
 	
 	@GetMapping("/employee/{id}/tree")
-	public EmployeeTree getChildEmployeeList(
+	public ResponseEntity<EmployeeTree> getChildEmployeeList(
 			@PathVariable("id") int id,
 			@RequestParam("offset") int offset,
 			@RequestParam("limit") int limit) {
@@ -247,19 +285,25 @@ public class Controller {
 			return db.getChildEmployeeList(id, offset, limit);
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
-		//something went wrong
-		return null;
 	}
 	
 	@GetMapping("/employee/{id}/tree/count")
-	public Value countChildEmployeeList(@PathVariable("id") int id) {
+	public ResponseEntity<Value<Integer>> countChildEmployeeList(
+											@PathVariable("id") int id) {
 		try {
-			return new Value(db.countChildEmployeeList(id));
+			return ResponseEntity.ok(new Value<>(
+					db.countChildEmployeeList(id)));
 		} catch (Throwable e) {
 			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.headers(httpHeadersMsg(e.getMessage()))
+					.build();
 		}
-		//something went wrong
-		return new Value(0); 
 	}
 }
