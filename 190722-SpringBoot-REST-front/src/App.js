@@ -205,7 +205,6 @@ class App extends Component {
     let id = this.state.org_tree_id;
     fetch(global.host + '/organisation/' + id + '/tree?offset=' + offset + '&limit=' + limit)
       .then(response => {
-        console.log('body:'+response.body);
         if(response.status >= 200 && response.status < 300)
           return response.json();
         else
@@ -286,16 +285,12 @@ class App extends Component {
     //   })
     //   .catch(console.log);
     fetch(global.host + '/employee/' + id + '/tree?offset=' + offset + '&limit=' + limit, {
-        method: 'GET',
-        headers: {
-          'Accept': 'text/html',
-          'Access-Control-Expose-Headers': 'Baeldung-Example-Header',
-        }
+        method: 'GET'
         }
       )
       .then(response => {
         if(response.status >= 200 && response.status < 300)
-          response.json();
+          return response.json();
         else
           console.log('status '+response.status+': '+response.headers.get('empdb-message'))
       })

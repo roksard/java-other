@@ -51,13 +51,14 @@ class EmpEdit extends React.Component {
   }
 
   apply() {
-    if(this.state.organisationId === 0) {
+    if(this.state.organisationId == 0) {
       alert('Введите идентификатор организации');
       return;
     }
 
     let action = this.edit ? '/update' : '/add';
     let selectTab1 = this.selectTab.bind(this);
+    let edit = this.edit;
     fetch(global.host + '/employee' + action, {
       method: 'POST',
       headers: {
@@ -74,9 +75,10 @@ class EmpEdit extends React.Component {
       
       if((res.status >= 200) && (res.status < 300)) {
         let idMsg = '';
-        if(!this.edit)
+        if(!edit)
           idMsg = ' Присвоен идентификатор: ' + res.headers.get(global.msgHeader);
         alert('Редактирование/добавление успешно.' + idMsg);
+        selectTab1();
       } else {
         if (res.status == 409) {
           alert('Ошибка: руководитель должен быть в той же организации.' 
@@ -84,7 +86,7 @@ class EmpEdit extends React.Component {
         } else 
           alert('Ошибка: ' + res.status + ": " +  res.headers.get(global.msgHeader));
       }
-      selectTab1();
+      
     })
     .catch(function(res){ console.log(res) });
   }
