@@ -120,7 +120,7 @@ public class DBInteract {
 			return ResponseEntity.ok().build();
 		else
 			return ResponseEntity.notFound()
-					.headers(httpHeadersMsg("Could not updated, org not found (id:" + org.getId() + ")"))
+					.headers(httpHeadersMsg("Could not update, org not found (id:" + org.getId() + ")"))
 					.build();
 	}
 
@@ -352,7 +352,7 @@ public class DBInteract {
 				return failResponse.getValue();
 		}
 	    	
-		dsl.update(employees)
+		int empUpdated = dsl.update(employees)
 			.set(employees.NAME, emp.getName())
 			.set(employees.PARENTID, emp.getParentId())
 			.set(employees.ORGANISATIONID, emp.getOrganisationId())
@@ -361,23 +361,38 @@ public class DBInteract {
 
 		// if parentId == 0, means there is no parent and we should delete record from
 		// employee_child
-		if (emp.getParentId() != 0)
-			dsl.update(employee_child)
+		int empChildUpdated = 0;
+		if (emp.getParentId() != 0) {
+			empChildUpdated = dsl.update(employee_child)
 				.set(employee_child.PARENT_ID, emp.getParentId())
-				.set(employee_child.CHILD_ID, emp.getId())
 				.where(employee_child.CHILD_ID.equal(emp.getId()))
 				.execute();
-		else
+		
+    		//record is not found (possibly when prev parentId was 0), manually add it
+    		if(empChildUpdated == 0) {
+    			empChildUpdated = dsl.insertInto(employee_child)
+					.set(employee_child.PARENT_ID, emp.getParentId())
+					.set(employee_child.CHILD_ID, emp.getId())
+					.execute();
+    		}
+    			
+		} else {
 			dsl.deleteFrom(employee_child)
 				.where(employee_child.CHILD_ID.equal(emp.getId()))
 				.execute();
+		}
 
-		dsl.update(organisation_employee)
+		int orgEmpUpdated = dsl.update(organisation_employee)
 			.set(organisation_employee.ORGANISATION_ID, emp.getOrganisationId())
-			.set(organisation_employee.EMPLOYEE_ID, emp.getId())
 			.where(organisation_employee.EMPLOYEE_ID.equal(emp.getId()))
 			.execute();
-		return ResponseEntity.ok().build();
+		
+		if(empUpdated > 0 && empChildUpdated > 0 && orgEmpUpdated > 0) 
+			return ResponseEntity.ok().build();
+		else
+			return ResponseEntity.notFound()
+					.headers(httpHeadersMsg("Could not update, employee not found (id:" + emp.getId() + ")"))
+					.build();
 	}
 
 	public ResponseEntity<?> deleteEmployee(int id) {
