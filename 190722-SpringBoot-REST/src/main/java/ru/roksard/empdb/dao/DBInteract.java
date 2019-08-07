@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import ru.roksard.empdb.dataobject.Employee;
 import ru.roksard.empdb.dataobject.EmployeeOrganisationBoss;
@@ -50,7 +51,9 @@ public class DBInteract {
 
 		Organisation org = null;
 		if (result != null) {
-			org = new Organisation(result.getValue(organisations.ID), result.getValue(organisations.NAME),
+			org = new Organisation(
+					result.getValue(organisations.ID), 
+					result.getValue(organisations.NAME),
 					result.getValue(organisations.PARENTID));
 		}
 		return org;
@@ -63,6 +66,7 @@ public class DBInteract {
 	 *                object to be stored in db
 	 * @return 'id' of new record in db
 	 */
+	@Transactional
 	public ResponseEntity<?> addOrganisation(Organisation org) {
 		OrganisationsRecord result = dsl
 				.insertInto(organisations)
@@ -87,6 +91,7 @@ public class DBInteract {
 			.build();
 	}
 
+	@Transactional
 	public ResponseEntity<?> updateOrganisation(Organisation org) {
 		int orgUpdated = dsl.update(organisations)
     		.set(organisations.NAME, org.getName())
@@ -310,6 +315,7 @@ public class DBInteract {
 	 *                object to be stored in db
 	 * @return 'id' of new record in db
 	 */
+	@Transactional
 	public ResponseEntity<?> addEmployee(Employee emp) {
 		if(emp.getParentId() != 0) {//0 = there is no boss for that employee
 			Value<ResponseEntity<?>> failResponse = new Value<>(null);
@@ -344,7 +350,8 @@ public class DBInteract {
     				.headers(httpHeadersMsg("id:"+thisId))
     				.build();
 	}
-
+	
+	@Transactional
 	public ResponseEntity<?> updateEmployee(Employee emp) {
 		if(emp.getParentId() != 0) {//0 = there is no boss for that employee
 			Value<ResponseEntity<?>> failResponse = new Value<>(null);
@@ -358,7 +365,6 @@ public class DBInteract {
 			.set(employees.ORGANISATIONID, emp.getOrganisationId())
 			.where(employees.ID.equal(emp.getId()))
 			.execute();
-
 		// if parentId == 0, means there is no parent and we should delete record from
 		// employee_child
 		int empChildUpdated = 0;
