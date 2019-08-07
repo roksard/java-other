@@ -88,29 +88,40 @@ public class DBInteract {
 	}
 
 	public ResponseEntity<?> updateOrganisation(Organisation org) {
-		dsl
-		.update(organisations)
-		.set(organisations.NAME, org.getName())
-		.set(organisations.PARENTID, org.getParentId())
-		.where(organisations.ID.equal(org.getId()))
-		.execute();
+		int orgUpdated = dsl.update(organisations)
+    		.set(organisations.NAME, org.getName())
+    		.set(organisations.PARENTID, org.getParentId())
+    		.where(organisations.ID.equal(org.getId()))
+    		.execute();
 
 		// if parentId == 0, means there is no parent and we delete record from
 		// organisation_child
-		if (org.getParentId() != 0)
-			dsl
-			.update(organisation_child)
-			.set(organisation_child.PARENT_ID, org.getParentId())
-			.set(organisation_child.CHILD_ID, org.getId())
-			.where(organisation_child.CHILD_ID.equal(org.getId()))
-			.execute();
+		int orgChildUpdated = 0;
+		if (org.getParentId() != 0) {
+			orgChildUpdated = dsl.update(organisation_child)
+    			.set(organisation_child.PARENT_ID, org.getParentId())
+    			.set(organisation_child.CHILD_ID, org.getId())
+    			.where(organisation_child.CHILD_ID.equal(org.getId()))
+    			.execute();
+			
+			//record is not found (possibly when prev parentId was 0), manually add it
+			if(orgChildUpdated == 0) {
+				orgChildUpdated = dsl.insertInto(organisation_child)
+    				.set(organisation_child.PARENT_ID, org.getParentId())
+    				.set(organisation_child.CHILD_ID, org.getId())
+    				.execute();
+			}
+		} else {
+			orgChildUpdated = dsl.deleteFrom(organisation_child)
+    			.where(organisation_child.CHILD_ID.equal(org.getId()))
+    			.execute();
+		}
+		if(orgUpdated > 0 && orgChildUpdated > 0)
+			return ResponseEntity.ok().build();
 		else
-			dsl
-			.deleteFrom(organisation_child)
-			.where(organisation_child.CHILD_ID.equal(org.getId()))
-			.execute();
-		return ResponseEntity.ok()
-				.build();
+			return ResponseEntity.notFound()
+					.headers(httpHeadersMsg("Could not updated, org not found (id:" + org.getId() + ")"))
+					.build();
 	}
 
 	public ResponseEntity<?> deleteOrganisation(int id) {
