@@ -8,7 +8,7 @@ class OrgTree extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
   render() {
-    return this.props.data.organisation === undefined ? 'Нажмите кнопку Дерево '
+    return ((this.props.data === undefined) || (this.props.data.organisation === undefined)) ? 'Нажмите кнопку Дерево '
     +' в списке организаций чтобы посмотреть дерево соответствующей организации'  : (
       <div className='orgTree'>
         <div>Дерево организации</div>

@@ -62,8 +62,7 @@ class OrgEdit extends React.Component {
       if((res.status >= 200) && (res.status < 300))
         alert('Редактирование/добавление успешно.');
       else {
-        alert('Ошибка:' + res.status + res.statusText); 
-        console.log(res);
+        alert('Ошибка:' + res.status + ": " +  res.headers.get(global.msgHeader)); 
       }
       selectTab1();
     })

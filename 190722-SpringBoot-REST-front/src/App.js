@@ -128,12 +128,18 @@ class App extends Component {
   }
 
   selectTab(id) {
-    this.setState({ active_tab: id,  
-      org_list_offset: 0,
-      org_tree_offset: 0,
-      emp_list_offset: 0,
-      emp_tree_offset: 0,
-    }, this.fetchTab)
+    this.setState(
+      { 
+        active_tab: id,  
+        org_list_offset: 0,
+        org_tree_offset: 0,
+        emp_list_offset: 0,
+        emp_tree_offset: 0,
+        org_list_nameSearch: "",
+        emp_list_nameSearch: "",
+        emp_list_organisationNameSearch: "",
+      }
+      , this.fetchTab)
   }
 
   fetchTab() {
@@ -197,9 +203,14 @@ class App extends Component {
     let offset = this.state.org_tree_offset;
     let limit = this.state.org_tree_limit;
     let id = this.state.org_tree_id;
-
     fetch(global.host + '/organisation/' + id + '/tree?offset=' + offset + '&limit=' + limit)
-      .then(response => response.json())
+      .then(response => {
+        console.log('body:'+response.body);
+        if(response.status >= 200 && response.status < 300)
+          return response.json();
+        else
+          console.log('status '+response.status+': '+response.headers.get('empdb-message'))
+      })
       .then(json => {
         this.setState({ org_tree: json });
       })
@@ -267,9 +278,27 @@ class App extends Component {
     let offset = this.state.emp_tree_offset;
     let limit = this.state.emp_tree_limit;
     let id = this.state.emp_tree_id;
-
-    fetch(global.host + '/employee/' + id + '/tree?offset=' + offset + '&limit=' + limit)
-      .then(response => response.json())
+    
+    // fetch(global.host + '/employee/' + id + '/tree?offset=' + offset + '&limit=' + limit)
+    //   .then(response => response.json())
+    //   .then(json => {
+    //     this.setState({ emp_tree: json });
+    //   })
+    //   .catch(console.log);
+    fetch(global.host + '/employee/' + id + '/tree?offset=' + offset + '&limit=' + limit, {
+        method: 'GET',
+        headers: {
+          'Accept': 'text/html',
+          'Access-Control-Expose-Headers': 'Baeldung-Example-Header',
+        }
+        }
+      )
+      .then(response => {
+        if(response.status >= 200 && response.status < 300)
+          response.json();
+        else
+          console.log('status '+response.status+': '+response.headers.get('empdb-message'))
+      })
       .then(json => {
         this.setState({ emp_tree: json });
       })

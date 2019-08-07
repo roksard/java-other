@@ -8,8 +8,8 @@ class EmpTree extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
   render() {
-    return this.props.data.employee === undefined ? 'Нажмите кнопку Дерево '
-    +' в списке сотрудников чтобы посмотреть дерево соответствующего сотрудника' : ( 
+    return (this.props.data === undefined || this.props.data.employee === undefined) ? 
+    'Нажмите кнопку Дерево  в списке сотрудников чтобы посмотреть дерево соответствующего сотрудника' : ( 
       <div className='empTree'>
         <div>Дерево сотрудника</div>
         <div>
