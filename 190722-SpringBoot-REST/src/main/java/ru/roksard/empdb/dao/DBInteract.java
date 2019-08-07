@@ -404,15 +404,20 @@ public class DBInteract {
 
 		// delete only if employee has no child employees
 		if (childSum == 0) {
-			dsl.deleteFrom(employees)
-			.where(employees.ID.equal(id))
-			.execute();
-			
-			return ResponseEntity.ok().build();
-		}
-		return ResponseEntity.status(HttpStatus.CONFLICT)
+			int deleted = dsl.deleteFrom(employees)
+    			.where(employees.ID.equal(id))
+    			.execute();
+			if(deleted > 0) 
+				return ResponseEntity.ok().build();
+			else
+				return ResponseEntity.notFound()
+						.headers(httpHeadersMsg("Could not delete. Employee not found (id:"+id+")"))
+						.build();
+		} else {
+			return ResponseEntity.status(HttpStatus.CONFLICT)
 				.headers(httpHeadersMsg("child elements: " + childSum))
 				.build();
+		}
 	}
 
 	public ResponseEntity<Employee> getEmployee(int id) {
