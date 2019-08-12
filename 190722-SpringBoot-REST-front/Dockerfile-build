@@ -1,0 +1,12 @@
+# base image
+FROM node:alpine
+
+ADD . /app/.
+
+# start app
+WORKDIR /app/
+
+# install and cache app dependencies
+RUN npm install -g serve
+
+CMD ["serve", "-s", ".", "-l", "5000"]
