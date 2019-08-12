@@ -1,68 +1,23 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Приложение на базе Spring/SpringBoot с использованием REST 
+empdb (База данных сотрудников / организаций)
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Как запустить:
+1) Должен быть установлен Docker и Docker-compose
+1.1)Можно проверить набрав в командной строке: 
+  docker -v
+  docker-compose -v
+1.2)Результатом каждой команды должна быть строчка с номером текущей установленной версии
+2) скачиваем файл docker-compose.yml из текущей папки (https://github.com/roksard/java-other/tree/master/190722-SpringBoot-REST-front)
+3) Запускаем командную строку CMD в папке со скачанным файлом: 
+3.1)Сочетание клавиш Win+R -> набираем "cmd" без кавычек -> Enter 
+3.2)cd <имя-папки-куда-скачан docker-compose.yml>
+4)Запускаем docker-compose из командной строки:
+  docker-compose up
+4.1)Docker должен подтянуть недостающие образы и запустить их как контейнеры
+5)Дождаться когда все контейнеры загрузятся (docker_postgresrx_1, docker_empdb_back_1, docker_empdb_front_1). 
+5.1)Должно появиться сообщение в консоли примерно следующее:
+   Started Application in ... seconds 
+6)Открыть браузер и перейти по адресу: 
+   localhost:5000
+6.1)Должна прогрузиться страничка с вкладками: Список организаций, Список сотрудников, Дерево организаций, Дерево сотрудников
+7)В приложении можно добавлять и изменять организации и сотрудников, просматривать список организаций и сотрудников, пользоваться поиском по имени сотрудника и названию организации; а также просматривать древовидную структуру организаций и сотрудников.

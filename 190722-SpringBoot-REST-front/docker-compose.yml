@@ -1,0 +1,17 @@
+version: '3'
+services:
+  empdb_back:
+    image: roksard/empdb_back:latest
+    ports: 
+      - "8080:8080"
+  postgresrx:
+    image: roksard/empdb_postgres:latest
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+  empdb_front:
+    image: roksard/empdb_front:latest
+    ports: 
+      - "5000:5000"
+    depends_on:
+     - postgresrx
+     - empdb_back
