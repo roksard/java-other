@@ -11,6 +11,8 @@ import TabSelect from './components/tab_select.js';
 import OrgEdit from './components/org_edit.js';
 import EmpEdit from './components/emp_edit.js';
 
+const dns = require('dns')
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -25,21 +27,21 @@ class App extends Component {
         org_list: [],
         org_list_count: 0,
         org_list_offset: 0,
-        org_list_limit: 4,
+        org_list_limit: 2,
         org_list_nameSearch: "",
 
         //Organisation tree
         org_tree: {},
         org_tree_count: 0,
         org_tree_offset: 0,
-        org_tree_limit: 4,
+        org_tree_limit: 2,
         org_tree_id: 0,
 
         //Employee list
         emp_list: [],
         emp_list_count: 0,
         emp_list_offset: 0,
-        emp_list_limit: 4,
+        emp_list_limit: 2,
         emp_list_nameSearch: "",
         emp_list_organisationNameSearch: "",
 
@@ -47,7 +49,7 @@ class App extends Component {
         emp_tree: {},
         emp_tree_count: 0,
         emp_tree_offset: 0,
-        emp_tree_limit: 4,
+        emp_tree_limit: 2,
         emp_tree_id: 0,
 
         //edit org
