@@ -1,0 +1,1 @@
+java -jar target/190812-FileStorage-0.0.1-SNAPSHOT.jar
